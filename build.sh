@@ -7,4 +7,4 @@ ruby build.rb db > bin/db/dq.sh
 ruby build.rb core > bin/core/dq.sh
 ruby build.rb clojure_dev > bin/clojure_dev/dq.sh
 ruby build.rb all > bin/all/dq.sh
-ruby build.rb forntend_dev > bin/frontend_dev/dq.sh
+ruby build.rb frontend_dev > bin/frontend_dev/dq.sh
