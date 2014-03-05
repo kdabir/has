@@ -55,14 +55,19 @@ This checks 35 commands on your box
 
 ## Rolling out your own
 
-Checkout the repo, and from the root:
+When you need to mix and match it equally simple. Checkout the repo, and execute from the root:
 
 `ruby build.rb <group1> <group2>... | sh`
 
-e.g. `ruby build.rb ruby_dev frontend_dev db| sh`
+For example, if you develop frontend apps with node/ruby and use some typical databases
 
-e.g. `ruby build.rb java_dev groovy_dev db | sh`
+`ruby build.rb ruby_dev frontend_dev db| sh`
 
+or, you develop server side java/groovy and use some common databases
+
+`ruby build.rb java_dev groovy_dev db | sh`
+
+There no external gem dependency, you just need to have `ruby` though.
 
 ## About
 
