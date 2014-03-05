@@ -59,7 +59,9 @@ Checkout the repo, and from the root:
 
 `ruby build.rb <group1> <group2>... | sh`
 
-e.g. `ruby build.rb ruby_dev frontend | sh`
+e.g. `ruby build.rb ruby_dev frontend_dev db| sh`
+
+e.g. `ruby build.rb java_dev groovy_dev db | sh`
 
 
 ## About
