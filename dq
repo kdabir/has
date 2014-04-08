@@ -72,14 +72,10 @@ declare -a commands=(
 )
 
 _dq_commands() {
-  #e_grp=${1:-*}
-  #e_name=${2:-*}
-
   orig_ifs=$IFS
   IFS=%
 
   for cmd in ${commands[*]}; do
-    #filtering logic to go here
     _dq_command "$cmd"
   done
 
@@ -96,8 +92,11 @@ _dq_command() {
   name=${2:-$(IFS=" "; set -- $cmd; echo $1)}
 
   IFS=$orig_ifs
-  echo "$grp -> $name [ $cmd ]"
-  #_dq_report "$name" "$cmd"
+
+  #filtering logic to go here
+
+  #echo "$grp -> $name [ $cmd ]"
+  _dq_report "$name" "$cmd"
 }
 
 case ${1:-core} in
