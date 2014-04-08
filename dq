@@ -27,11 +27,6 @@ _dq_source() {
   done
 }
 
-#declare -a commands=(
-  #'core:curl --version >/dev/null 2>&1'
-  #'core/golang:go version >/dev/null'
-#)
-
 declare -a commands=(
   'core:git --version'
   'core:vi --version'
