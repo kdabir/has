@@ -1,13 +1,13 @@
 #!/bin/bash
 
-_dq_init() {
-  true
-}
-
 _dq_usage() {
   echo "Usage: $(basename $0) [group]"
   echo "       $(basename $0) {-h|--help}"
+  exit 0
 }
+
+BIN_DIR=$(dirname $0)
+LIB_DIR=$BIN_DIR/lib
 
 OK=0
 KO=0
@@ -23,7 +23,7 @@ _dq_report () {
 }
 
 _dq_source() {
-  if [ -d "./lib" ]; then
+  if [ -d "$LIB_DIR" -o -h "$LIB_DIR" ]; then
     _dq_source_local "$1"
   else
     _dq_source_remote "$1"
@@ -31,7 +31,7 @@ _dq_source() {
 }
 
 _dq_source_local() {
-  for script in $(ls lib/${1}.sh); do
+  for script in $(ls $LIB_DIR/${1}.sh); do
     source $script
   done
 }
@@ -41,12 +41,9 @@ _dq_source_remote() {
   exit 100
 }
 
-_dq_init
-
 case ${1:-core} in
   -h|--help)
     _dq_usage
-    exit 0
     ;;
   all)
     _dq_source '*/*'
