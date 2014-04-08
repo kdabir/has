@@ -33,7 +33,6 @@ _dq_source() {
 #)
 
 declare -a commands=(
-  'core:curl --version'
   'core:git --version'
   'core:vi --version'
   'core:curl --version'
@@ -57,15 +56,16 @@ declare -a commands=(
   'ruby:gem -v'
   'ruby:rvm -v'
   'ruby:rake -V'
+  'pyton:virtualenv --version'
+  'scala:scala -version'
+  'scala:scalac -version'
+  'scala:sbt svt-version'
   'frontend:npm --version'
   'frontend:grunt --version'
   'frontend:bower --version'
   'frontend/yoeman:yo --version'
   'frontend:coffee --version'
   'frontend:sass --version'
-  'scala:scala -version'
-  'scala:scalac -version'
-  'scala:sbt svt-version'
   'db/mysql server:mysqld --version'
   'db/mysql client:mysql --version'
   'db/postgres server:postgres --version'
