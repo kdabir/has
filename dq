@@ -1,0 +1,90 @@
+#!/bin/bash
+
+_dq_init() {
+  true
+}
+
+_dq_usage() {
+  echo "Usage: $(basename $0) [group]"
+  echo "       $(basename $0) {-h|--help}"
+}
+
+OK=0
+KO=0
+
+_dq_report () {
+  if [ "$2" -eq 0 ]; then
+    echo "✔ $1"
+    OK=$(($OK+1))
+  else
+    echo "✘ $1"
+    KO=$(($KO+1))
+  fi
+}
+
+_dq_source() {
+  if [ -d "./lib" ]; then
+    _dq_source_local "$1"
+  else
+    _dq_source_remote "$1"
+  fi
+}
+
+_dq_source_local() {
+  for script in $(ls lib/${1}.sh); do
+    source $script
+  done
+}
+
+_dq_source_remote() {
+  echo "ERROR! No local sources!"
+  exit 100
+}
+
+_dq_init
+
+case ${1:-core} in
+  -h|--help)
+    _dq_usage
+    exit 0
+    ;;
+  all)
+    _dq_source '*/*'
+    ;;
+  core)
+    _dq_source 'core/*'
+    ;;
+  java_dev)
+    _dq_source 'core/java'
+    _dq_source 'java/*'
+    ;;
+  clojure_dev)
+    _dq_source 'core/java'
+    _dq_source 'clojure/*'
+    ;;
+  groovy_dev)
+    _dq_source 'core/java'
+    _dq_source 'java/gradle'
+    _dq_source 'groovy/*'
+    ;;
+  scala_dev)
+    _dq_source 'core/java'
+    _dq_source 'scala/*'
+    ;;
+  ruby_dev)
+    _dq_source 'core/ruby'
+    _dq_source 'ruby/*'
+    ;;
+  frontend_dev)
+    _dq_source 'core/*'
+    _dq_source 'frontend/*'
+    ;;
+  db)
+    _dq_source 'db/*'
+    ;;
+esac
+
+
+echo Your dq is $OK / $(($OK+$KO))
+
+exit $KO
