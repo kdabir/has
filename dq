@@ -6,8 +6,7 @@ _dq_usage() {
   exit 0
 }
 
-BIN_DIR=$(dirname $0)
-LIB_DIR=$BIN_DIR/lib
+LIB_DIR=$(dirname $0)/lib
 
 OK=0
 KO=0
@@ -23,27 +22,88 @@ _dq_report () {
 }
 
 _dq_source() {
-  if [ -d "$LIB_DIR" -o -h "$LIB_DIR" ]; then
-    _dq_source_local "$1"
-  else
-    _dq_source_remote "$1"
-  fi
-}
-
-_dq_source_local() {
   for script in $(ls $LIB_DIR/${1}.sh); do
     source $script
   done
 }
 
-_dq_source_remote() {
-  echo "ERROR! No local sources!"
-  exit 100
+#declare -a commands=(
+  #'core:curl --version >/dev/null 2>&1'
+  #'core/golang:go version >/dev/null'
+#)
+
+declare -a commands=(
+  'core:curl --version'
+  'core:git --version'
+  'core:vi --version'
+  'core:curl --version'
+  'core:python --version'
+  'core:perl -v'
+  'core:node --version'
+  'core:java -version'
+  'core:ruby -v'
+  'core/golang:go version'
+  'java:javac -version'
+  'java:ant -version'
+  'java:mvn -v'
+  'java:gradle -v'
+  'groovy:groovy --version'
+  'groovy:groovyc --version'
+  'groovy:lazybones --version'
+  'clojure:emacs --version'
+  'clojure:clj --help'
+  'clojure:lein -v'
+  'ruby/bundler:bundle -v'
+  'ruby:gem -v'
+  'ruby:rvm -v'
+  'ruby:rake -V'
+  'frontend:npm --version'
+  'frontend:grunt --version'
+  'frontend:bower --version'
+  'frontend/yoeman:yo --version'
+  'frontend:coffee --version'
+  'frontend:sass --version'
+  'scala:scala -version'
+  'scala:scalac -version'
+  'scala:sbt svt-version'
+  'db/mysql server:mysqld --version'
+  'db/mysql client:mysql --version'
+  'db/postgres server:postgres --version'
+  'db/postgres client:psql --version'
+  'db/mongo server:mongod --version'
+  'db/mongo client:mongo --version'
+)
+
+_dq_command() {
+  #e_grp=${1:-*}
+  #e_name=${2:-*}
+
+  orig_ifs=$IFS
+  IFS=%
+
+  for cmd in ${commands[*]}; do
+    IFS=:; set -- $cmd
+    name=$1
+    cmd="$2"
+
+    IFS=/; set -- $name
+    grp=$1
+    name=${2:-$(IFS=" "; set -- $cmd; echo $1)}
+
+    #echo "$grp -> $name [ $cmd ]"
+    IFS=$orig_ifs
+    $cmd >/dev/null 2>&1
+    _dq_report "$name" $?
+  done
+  IFS=$orig_ifs
 }
 
 case ${1:-core} in
   -h|--help)
     _dq_usage
+    ;;
+  -c)
+    _dq_command $2 $3
     ;;
   all)
     _dq_source '*/*'
@@ -82,6 +142,6 @@ case ${1:-core} in
 esac
 
 
-echo Your dq is $OK / $(($OK+$KO))
+echo; echo Your dq is $OK / $(($OK+$KO))
 
 exit $KO
