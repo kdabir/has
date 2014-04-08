@@ -30,45 +30,45 @@ _dq_source() {
 }
 
 declare -a commands=(
-  'core:git --version'
-  'core:vi --version'
-  'core:curl --version'
-  'core:python --version'
-  'core:perl -v'
-  'core:node --version'
-  'core:java -version'
-  'core:ruby -v'
-  'core/golang:go version'
-  'java:javac -version'
-  'java:ant -version'
-  'java:mvn -v'
-  'java:gradle -v'
-  'groovy:groovy --version'
-  'groovy:groovyc --version'
-  'groovy:lazybones --version'
-  'clojure:emacs --version'
-  'clojure:clj --help'
-  'clojure:lein -v'
-  'ruby/bundler:bundle -v'
-  'ruby:gem -v'
-  'ruby:rvm -v'
-  'ruby:rake -V'
-  'pyton:virtualenv --version'
-  'scala:scala -version'
-  'scala:scalac -version'
-  'scala:sbt svt-version'
-  'frontend:npm --version'
-  'frontend:grunt --version'
-  'frontend:bower --version'
-  'frontend/yoeman:yo --version'
-  'frontend:coffee --version'
-  'frontend:sass --version'
-  'db/mysql server:mysqld --version'
-  'db/mysql client:mysql --version'
-  'db/postgres server:postgres --version'
-  'db/postgres client:psql --version'
-  'db/mongo server:mongod --version'
-  'db/mongo client:mongo --version'
+  'core               :git --version'
+  'core               :vi --version'
+  'core               :curl --version'
+  'core               :python --version'
+  'core               :perl -v'
+  'core               :node --version'
+  'core               :java -version'
+  'core               :ruby -v'
+  'core/golang        :go version'
+  'java               :javac -version'
+  'java               :ant -version'
+  'java               :mvn -v'
+  'java               :gradle -v'
+  'groovy             :groovy --version'
+  'groovy             :groovyc --version'
+  'groovy             :lazybones --version'
+  'clojure            :emacs --version'
+  'clojure            :clj --help'
+  'clojure            :lein -v'
+  'ruby/bundler       :bundle -v'
+  'ruby               :gem -v'
+  'ruby               :rvm -v'
+  'ruby               :rake -V'
+  'pyton              :virtualenv --version'
+  'scala              :scala -version'
+  'scala              :scalac -version'
+  'scala              :sbt svt-version'
+  'frontend           :npm --version'
+  'frontend           :grunt --version'
+  'frontend           :bower --version'
+  'frontend/yoeman    :yo --version'
+  'frontend           :coffee --version'
+  'frontend           :sass --version'
+  'db/mysql server    :mysqld --version'
+  'db/mysql client    :mysql --version'
+  'db/postgres server :postgres --version'
+  'db/postgres client :psql --version'
+  'db/mongo server    :mongod --version'
+  'db/mongo client    :mongo --version'
 )
 
 _dq_commands() {
@@ -95,9 +95,9 @@ _dq_command() {
   grp=$1
   name=${2:-$(IFS=" "; set -- $cmd; echo $1)}
 
-  #echo "$grp -> $name [ $cmd ]"
   IFS=$orig_ifs
-  _dq_report "$name" "$cmd"
+  echo "$grp -> $name [ $cmd ]"
+  #_dq_report "$name" "$cmd"
 }
 
 case ${1:-core} in
