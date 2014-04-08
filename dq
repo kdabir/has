@@ -12,7 +12,9 @@ OK=0
 KO=0
 
 _dq_report () {
-  if [ "$2" -eq 0 ]; then
+  $2 >/dev/null 2>&1
+
+  if [ "$?" -eq 0 ]; then
     echo "✔ $1"
     OK=$(($OK+1))
   else
@@ -69,7 +71,7 @@ declare -a commands=(
   'db/mongo client:mongo --version'
 )
 
-_dq_command() {
+_dq_commands() {
   #e_grp=${1:-*}
   #e_name=${2:-*}
 
@@ -77,20 +79,25 @@ _dq_command() {
   IFS=%
 
   for cmd in ${commands[*]}; do
-    IFS=:; set -- $cmd
-    name=$1
-    cmd="$2"
-
-    IFS=/; set -- $name
-    grp=$1
-    name=${2:-$(IFS=" "; set -- $cmd; echo $1)}
-
-    #echo "$grp -> $name [ $cmd ]"
-    IFS=$orig_ifs
-    $cmd >/dev/null 2>&1
-    _dq_report "$name" $?
+    #filtering logic to go here
+    _dq_command "$cmd"
   done
+
   IFS=$orig_ifs
+}
+
+_dq_command() {
+  IFS=:; set -- $1
+  name=$1
+  cmd="$2"
+
+  IFS=/; set -- $name
+  grp=$1
+  name=${2:-$(IFS=" "; set -- $cmd; echo $1)}
+
+  #echo "$grp -> $name [ $cmd ]"
+  IFS=$orig_ifs
+  _dq_report "$name" "$cmd"
 }
 
 case ${1:-core} in
@@ -98,7 +105,7 @@ case ${1:-core} in
     _dq_usage
     ;;
   -c)
-    _dq_command $2 $3
+    _dq_commands $2 $3
     ;;
   all)
     _dq_source '*/*'
