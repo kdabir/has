@@ -5,6 +5,7 @@
 groups = {
     :all => "*/*",
     :core => "core/*",
+    :shell => "shell/*",
     :java_dev => ["core/java", "java/*"],
     :clojure_dev => ["core/java", "clojure/*"],
     :groovy_dev => ["core/java","java/gradle", "groovy/*"],

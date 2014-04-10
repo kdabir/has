@@ -24,6 +24,9 @@ There is more to it. Depending on what you develop, we have got some preselected
 To see if you have some common commands installed that a developer machine usually needs
 `curl -sL https://raw.github.com/kdabir/dq/master/bin/core/dq.sh | sh`
 
+#### shell tools
+`curl -sL https://raw.github.com/kdabir/dq/master/bin/shell/dq.sh | sh`
+
 #### ruby dev
 `curl -sL https://raw.github.com/kdabir/dq/master/bin/ruby_dev/dq.sh | sh`
 
@@ -51,7 +54,7 @@ To see if you have some common commands installed that a developer machine usual
 
 `curl -sL https://raw.github.com/kdabir/dq/master/bin/all/dq.sh | sh`
 
-This checks 35 commands on your box
+This checks for about 41 commands on your box
 
 ## Rolling out your own
 

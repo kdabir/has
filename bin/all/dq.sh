@@ -11,8 +11,14 @@ _dq_report () {
 	fi
 }
 
+ack --version > /dev/null 2>&1
+_dq_report 'ack' $?
+
 ant -version > /dev/null 2>&1
 _dq_report 'ant' $?
+autojump --version > /dev/null 2>&1
+_dq_report 'autojump' $?
+
 bower --version > /dev/null 2>&1
 _dq_report 'bower' $?
 bundle -v > /dev/null 2>&1
@@ -107,10 +113,19 @@ _dq_report 'scala' $STATUS
 scalac -version > /dev/null 2>&1
 _dq_report 'scalac' $?
 
+tree --version > /dev/null 2>&1
+_dq_report 'tree' $?
+
 vi --version > /dev/null 2>&1
 _dq_report 'vi' $?
+wget --version > /dev/null 2>&1
+_dq_report 'wget' $?
+
 yo --version > /dev/null 2>&1
 _dq_report 'yoeman' $?
+
+zsh --version > /dev/null 2>&1
+_dq_report 'zsh' $?
 
 echo Your dq is $OK / $(($OK+$KO))
 
