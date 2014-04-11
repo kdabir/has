@@ -1,6 +1,6 @@
 # dq
 
-Check how developer friendly your machine is!
+Check how developer friendly is your machine!
 
 `curl -sL https://raw.github.com/kdabir/dq/master/bin/core/dq.sh | sh`
 
@@ -54,11 +54,11 @@ To see if you have some common commands installed that a developer machine usual
 
 `curl -sL https://raw.github.com/kdabir/dq/master/bin/all/dq.sh | sh`
 
-This checks for about 41 commands on your box
+This checks for about 40 commands on your box
 
 ## Rolling out your own
 
-When you need to mix and match it equally simple. Checkout the repo, and execute from the root:
+When you need to mix and match, it's equally simple. Checkout the repo, and execute from the root:
 
 `ruby build.rb <group1> <group2>... | sh`
 
@@ -66,7 +66,7 @@ For example, if you develop frontend apps with node/ruby and use some typical da
 
 `ruby build.rb ruby_dev frontend_dev db| sh`
 
-or, you develop server side java/groovy and use some common databases
+Or, you develop server side java/groovy and use some common databases
 
 `ruby build.rb java_dev groovy_dev db | sh`
 
