@@ -1,34 +1,5 @@
 #!/bin/bash
 
-_dq_usage() {
-  echo "Usage: $(basename $0) [group]"
-  echo "       $(basename $0) {-h|--help}"
-  exit 0
-}
-
-LIB_DIR=$(dirname $0)/lib
-
-OK=0
-KO=0
-
-_dq_report () {
-  $2 >/dev/null 2>&1
-
-  if [ $? -eq $3 ]; then
-    echo "✔ $1"
-    OK=$(($OK+1))
-  else
-    echo "✘ $1"
-    KO=$(($KO+1))
-  fi
-}
-
-_dq_source() {
-  for script in $(ls $LIB_DIR/${1}.sh); do
-    source $script
-  done
-}
-
 declare -a commands=(
   'core               :git --version'
   'core               :vi --version'
@@ -54,7 +25,7 @@ declare -a commands=(
   'ruby               :rvm -v'
   'ruby               :rake -V'
   'pyton              :virtualenv --version'
-  'scala              :scala -version :1'
+  'scala              :scala -version       :1'
   'scala              :scalac -version'
   'scala              :sbt svt-version'
   'frontend           :npm --version'
@@ -71,7 +42,15 @@ declare -a commands=(
   'db/mongo client    :mongo --version'
 )
 
+OK=0
+KO=0
+
 _dq_commands() {
+  e_grp=${1:-*}
+  e_name=${2:-*}
+
+  #echo "$e_grp/$e_name"
+
   orig_ifs=$IFS
   IFS=%
 
@@ -86,7 +65,7 @@ _dq_command() {
   IFS=:; set -- $1
   name=$1
   cmd="$2"
-  exit=${3:-0}
+  exit_code=${3:-0}
 
   IFS=/; set -- $name
   grp=$1
@@ -94,52 +73,75 @@ _dq_command() {
 
   IFS=$orig_ifs
 
-  #filtering logic to go here
+  grp=${grp/% */}
+  name=${name/% */}
 
-  #echo "$grp -> $name [ $cmd ] -> $ex1t"
-  _dq_report "$name" "$cmd" $exit
+  #echo "$grp -> $name [ $cmd ] -> $ex1t_code"
+
+  if [[ $grp == $e_grp && $name == $e_name ]]; then
+    _dq_report "$name" "$cmd" $exit_code
+  fi
+}
+
+_dq_report () {
+  $2 >/dev/null 2>&1
+
+  if [ $? -eq $3 ]; then
+    echo "✔ $1"
+    OK=$(($OK+1))
+  else
+    echo "✘ $1"
+    KO=$(($KO+1))
+  fi
+}
+
+_dq_usage() {
+  echo "Usage: $(basename $0) [set]"
+  echo "       $(basename $0) -o|--only [group] [name]"
+  echo "       $(basename $0) {-h|--help}"
+  exit 0
 }
 
 case ${1:-core} in
   -h|--help)
     _dq_usage
     ;;
-  -c)
+  -o|--only)
     _dq_commands $2 $3
     ;;
   all)
-    _dq_source '*/*'
+    _dq_commands "*" "*"
     ;;
   core)
-    _dq_source 'core/*'
+    _dq_commands core "*"
     ;;
   java_dev)
-    _dq_source 'core/java'
-    _dq_source 'java/*'
+    _dq_commands core java
+    _dq_commands java "*"
     ;;
   clojure_dev)
-    _dq_source 'core/java'
-    _dq_source 'clojure/*'
+    _dq_commands core java
+    _dq_commands clojure "*"
     ;;
   groovy_dev)
-    _dq_source 'core/java'
-    _dq_source 'java/gradle'
-    _dq_source 'groovy/*'
+    _dq_commands core java
+    _dq_commands java gradle
+    _dq_commands groovy "*"
     ;;
   scala_dev)
-    _dq_source 'core/java'
-    _dq_source 'scala/*'
+    _dq_commands core java
+    _dq_commands scala "*"
     ;;
   ruby_dev)
-    _dq_source 'core/ruby'
-    _dq_source 'ruby/*'
+    _dq_commands core ruby
+    _dq_commands ruby "*"
     ;;
   frontend_dev)
-    _dq_source 'core/*'
-    _dq_source 'frontend/*'
+    _dq_commands core "*"
+    _dq_commands frontend "*"
     ;;
   db)
-    _dq_source 'db/*'
+    _dq_commands db "*"
     ;;
 esac
 
