@@ -14,7 +14,7 @@ KO=0
 _dq_report () {
   $2 >/dev/null 2>&1
 
-  if [ "$?" -eq 0 ]; then
+  if [ $? -eq $3 ]; then
     echo "✔ $1"
     OK=$(($OK+1))
   else
@@ -54,7 +54,7 @@ declare -a commands=(
   'ruby               :rvm -v'
   'ruby               :rake -V'
   'pyton              :virtualenv --version'
-  'scala              :scala -version'
+  'scala              :scala -version :1'
   'scala              :scalac -version'
   'scala              :sbt svt-version'
   'frontend           :npm --version'
@@ -86,6 +86,7 @@ _dq_command() {
   IFS=:; set -- $1
   name=$1
   cmd="$2"
+  exit=${3:-0}
 
   IFS=/; set -- $name
   grp=$1
@@ -95,8 +96,8 @@ _dq_command() {
 
   #filtering logic to go here
 
-  #echo "$grp -> $name [ $cmd ]"
-  _dq_report "$name" "$cmd"
+  #echo "$grp -> $name [ $cmd ] -> $ex1t"
+  _dq_report "$name" "$cmd" $exit
 }
 
 case ${1:-core} in
