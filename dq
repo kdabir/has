@@ -35,7 +35,7 @@ declare -a commands=(
   'pyton              :virtualenv --version'
   'scala              :scala -version       :1'
   'scala              :scalac -version'
-  'scala              :sbt svt-version'
+  'scala              :sbt sbt-version'
   'frontend           :npm --version'
   'frontend           :grunt --version'
   'frontend           :bower --version'
