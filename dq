@@ -1,5 +1,9 @@
 #!/bin/bash
 
+set -o nounset
+shopt -s extglob
+
+
 declare -a commands=(
   'core               :git --version'
   'core               :vi --version'
@@ -73,10 +77,10 @@ _dq_command() {
 
   IFS=$orig_ifs
 
-  grp=${grp/% */}
-  name=${name/% */}
+  grp=${grp%%*( )}
+  name=${name%%*( )}
 
-  #echo "$grp -> $name [ $cmd ] -> $ex1t_code"
+  #echo "$grp -> $name [ $cmd ] -> $exit_code"
 
   if [[ $grp == $e_grp && $name == $e_name ]]; then
     _dq_report "$name" "$cmd" $exit_code
