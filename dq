@@ -121,31 +121,32 @@ case ${1:-core} in
     _dq_commands "*" "*"
     ;;
   core)
-    _dq_commands core "*"
+    _dq_commands shell "*"
+    _dq_commands lang "*"
     ;;
   java_dev)
-    _dq_commands core java
+    _dq_commands lang java
     _dq_commands java "*"
     ;;
   clojure_dev)
-    _dq_commands core java
+    _dq_commands lang java
     _dq_commands clojure "*"
     ;;
   groovy_dev)
-    _dq_commands core java
+    _dq_commands lang java
     _dq_commands java gradle
     _dq_commands groovy "*"
     ;;
   scala_dev)
-    _dq_commands core java
+    _dq_commands lang java
     _dq_commands scala "*"
     ;;
   ruby_dev)
-    _dq_commands core ruby
+    _dq_commands lang ruby
     _dq_commands ruby "*"
     ;;
   frontend_dev)
-    _dq_commands core "*"
+    _dq_commands shell "*"
     _dq_commands frontend "*"
     ;;
   db)
