@@ -11,7 +11,7 @@ declare -a commands=(
   'lang               :node --version'
   'lang               :java -version'
   'lang               :ruby -v'
-  'core/golang        :go version'
+  'lang/golang        :go version'
   'shell              :ack --version'
   'shell              :autojump --version'
   'shell              :tree --version'
