@@ -122,7 +122,7 @@ wget --version > /dev/null 2>&1
 _dq_report 'wget' $?
 
 yo --version > /dev/null 2>&1
-_dq_report 'yoeman' $?
+_dq_report 'yeoman' $?
 
 zsh --version > /dev/null 2>&1
 _dq_report 'zsh' $?

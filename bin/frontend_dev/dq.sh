@@ -44,7 +44,7 @@ _dq_report 'sass' $?
 vi --version > /dev/null 2>&1
 _dq_report 'vi' $?
 yo --version > /dev/null 2>&1
-_dq_report 'yoeman' $?
+_dq_report 'yeoman' $?
 
 echo Your dq is $OK / $(($OK+$KO))
 
