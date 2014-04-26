@@ -57,6 +57,27 @@ To see if you have some common commands installed that a developer machine usual
 
 This checks for about 40 commands on your box
 
+#### Specific commands only
+
+`curl -sL https://raw.github.com/dexterous/dq/bash-only/dq | bash -s -- --only lang`
+
+This checks for all the commands in the `lang` group only.
+
+`curl -sL https://raw.github.com/dexterous/dq/bash-only/dq | bash -s -- --only lang java`
+
+This checks for all the `java` command in the `lang` group only.
+
+The `--only` flag accepts glob params as well.
+
+```
+$ curl -sL https://raw.github.com/dexterous/dq/bash-only/dq | bash -s -- --only lang p*
+✔ python
+✔ perl
+
+Your dq is 2 / 2
+```
+
+
 ## About
 
 Ever got onto a new machine or a remote server? If you develop, you almost certainly need to check availability of your
