@@ -39,7 +39,7 @@ declare -a commands=(
   'frontend           :npm --version'
   'frontend           :grunt --version'
   'frontend           :bower --version'
-  'frontend/yoeman    :yo --version'
+  'frontend/yeoman    :yo --version'
   'frontend           :coffee --version'
   'frontend           :sass --version'
   'db/mysql server    :mysqld --version'
