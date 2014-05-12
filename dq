@@ -91,14 +91,22 @@ _dq_command() {
   fi
 }
 
+PASS='✔'
+FAIL='✘'
+
+if [[ $TERM == xterm-*color ]]; then
+  PASS="\E[32m$PASS\E[0m"
+  FAIL="\E[31m$FAIL\E[0m"
+fi
+
 _dq_report () {
   $2 >/dev/null 2>&1
 
   if [ $? -eq $3 ]; then
-    echo "✔ $1"
+    echo -e "$PASS $1"
     OK=$(($OK+1))
   else
-    echo "✘ $1"
+    echo -e "$FAIL $1"
     KO=$(($KO+1))
   fi
 }
