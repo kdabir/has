@@ -25,9 +25,6 @@ There is more to it. Depending on what you develop, we have got some preselected
 To see if you have some common commands installed that a developer machine usually needs
 `curl -sL https://raw.github.com/dexterous/dq/bash-only/dq | bash -s -- core`
 
-#### shell tools
-`curl -sL https://raw.github.com/dexterous/dq/bash-only/dq | bash -s -- shell`
-
 #### ruby dev
 `curl -sL https://raw.github.com/dexterous/dq/bash-only/dq | bash -s -- ruby_dev`
 
