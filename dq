@@ -1,0 +1,168 @@
+#!/bin/bash
+
+shopt -s extglob
+
+
+declare -a commands=(
+  'shell              :ack --version'
+  'shell              :autojump --version'
+  'shell              :tree --version'
+  'shell              :wget --version'
+  'shell              :curl --version'
+  'shell              :zsh --version'
+  'shell              :git --version'
+  'shell              :vi --version'
+  'lang               :python --version'
+  'lang               :perl -v'
+  'lang               :node --version'
+  'lang               :java -version'
+  'lang               :ruby -v'
+  'lang/golang        :go version'
+  'java               :javac -version'
+  'java               :ant -version'
+  'java               :mvn -v'
+  'java               :gradle -v'
+  'groovy             :groovy --version'
+  'groovy             :groovyc --version'
+  'groovy             :lazybones --version'
+  'clojure            :emacs --version'
+  'clojure            :clj --help'
+  'clojure            :lein -v'
+  'ruby/bundler       :bundle -v'
+  'ruby               :gem -v'
+  'ruby               :rvm -v'
+  'ruby               :rake -V'
+  'pyton              :virtualenv --version'
+  'scala              :scala -version       :1'
+  'scala              :scalac -version'
+  'scala              :sbt sbt-version'
+  'frontend           :npm --version'
+  'frontend           :grunt --version'
+  'frontend           :bower --version'
+  'frontend/yeoman    :yo --version'
+  'frontend           :coffee --version'
+  'frontend           :sass --version'
+  'db/mysql server    :mysqld --version'
+  'db/mysql client    :mysql --version'
+  'db/postgres server :postgres --version'
+  'db/postgres client :psql --version'
+  'db/mongo server    :mongod --version'
+  'db/mongo client    :mongo --version'
+)
+
+OK=0
+KO=0
+
+_dq_commands() {
+  e_grp=${1:-*}
+  e_name=${2:-*}
+
+  #echo "$e_grp/$e_name"
+
+  orig_ifs=$IFS
+  IFS=%
+
+  for cmd in ${commands[*]}; do
+    _dq_command "$cmd"
+  done
+
+  IFS=$orig_ifs
+}
+
+_dq_command() {
+  IFS=:; set -- $1
+  name=$1
+  cmd="$2"
+  exit_code=${3:-0}
+
+  IFS=/; set -- $name
+  grp=$1
+  name=${2:-$(IFS=" "; set -- $cmd; echo $1)}
+
+  IFS=$orig_ifs
+
+  grp=${grp%%*( )}
+  name=${name%%*( )}
+
+  #echo "$grp -> $name [ $cmd ] -> $exit_code"
+
+  if [[ $grp == $e_grp && $name == $e_name ]]; then
+    _dq_report "$name" "$cmd" $exit_code
+  fi
+}
+
+PASS='✔'
+FAIL='✘'
+
+if [[ $TERM == xterm-*color ]]; then
+  PASS="\E[32m$PASS\E[0m"
+  FAIL="\E[31m$FAIL\E[0m"
+fi
+
+_dq_report () {
+  $2 >/dev/null 2>&1
+
+  if [ $? -eq $3 ]; then
+    echo -e "$PASS $1"
+    OK=$(($OK+1))
+  else
+    echo -e "$FAIL $1"
+    KO=$(($KO+1))
+  fi
+}
+
+_dq_usage() {
+  echo "Usage: $(basename $0) [set]"
+  echo "       $(basename $0) -o|--only [group] [name]"
+  echo "       $(basename $0) {-h|--help}"
+  exit 0
+}
+
+case ${1:-core} in
+  -h|--help)
+    _dq_usage
+    ;;
+  -o|--only)
+    _dq_commands $2 $3
+    ;;
+  all)
+    _dq_commands "*" "*"
+    ;;
+  core)
+    _dq_commands shell "*"
+    _dq_commands lang "*"
+    ;;
+  java_dev)
+    _dq_commands lang java
+    _dq_commands java "*"
+    ;;
+  clojure_dev)
+    _dq_commands lang java
+    _dq_commands clojure "*"
+    ;;
+  groovy_dev)
+    _dq_commands lang java
+    _dq_commands java gradle
+    _dq_commands groovy "*"
+    ;;
+  scala_dev)
+    _dq_commands lang java
+    _dq_commands scala "*"
+    ;;
+  ruby_dev)
+    _dq_commands lang ruby
+    _dq_commands ruby "*"
+    ;;
+  frontend_dev)
+    _dq_commands shell "*"
+    _dq_commands frontend "*"
+    ;;
+  db)
+    _dq_commands db "*"
+    ;;
+esac
+
+
+echo; echo Your dq is $OK / $(($OK+$KO))
+
+exit $KO
