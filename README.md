@@ -2,11 +2,8 @@
 
 Check how developer friendly is your machine!
 
-`curl -sL https://raw.github.com/dexterous/dq/bash-only/dq | bash`
-
-This should produce output like :
-
 ```
+$ dq
 ✔ curl
 ✔ git
 ✔ java
@@ -19,55 +16,62 @@ This should produce output like :
 Your dq is 7 / 8
 ```
 
+## Install
+
+1. `wget -O ~/bin/dq https://raw.github.com/dexterous/dq/bash-only/dq`
+1. `git clone git://github.com/dexterous/dq.git` and add `dq` to `PATH`
+
+## Usage
+ 
 There is more to it. Depending on what you develop, we have got some preselected profiles:
 
 #### Minimal
 To see if you have some common commands installed that a developer machine usually needs
-`curl -sL https://raw.github.com/dexterous/dq/bash-only/dq | bash -s -- core`
+`dq core`
 
 #### ruby dev
-`curl -sL https://raw.github.com/dexterous/dq/bash-only/dq | bash -s -- ruby_dev`
+`dq ruby_dev`
 
 #### frontend dev
-`curl -sL https://raw.github.com/dexterous/dq/bash-only/dq | bash -s -- frontend_dev`
+`dq frontend_dev`
 
 #### java dev
-`curl -sL https://raw.github.com/dexterous/dq/bash-only/dq | bash -s -- java_dev`
+`dq java_dev`
 
 #### clojure dev
-`curl -sL https://raw.github.com/dexterous/dq/bash-only/dq | bash -s -- clojure_dev`
+`dq clojure_dev`
 
 #### groovy dev
-`curl -sL https://raw.github.com/dexterous/dq/bash-only/dq | bash -s -- groovy_dev`
+`dq groovy_dev`
 
 #### scala dev
-`curl -sL https://raw.github.com/dexterous/dq/bash-only/dq | bash -s -- scala_dev`
+`dq scala_dev`
 
 #### db
-`curl -sL https://raw.github.com/dexterous/dq/bash-only/dq | bash -s -- db`
+`dq db`
 
 #### all
 
 **Feeling courageous**, see what all you have got :
 
-`curl -sL https://raw.github.com/dexterous/dq/bash-only/dq | bash -s -- all`
+`dq all`
 
 This checks for about 40 commands on your box
 
 #### Specific commands only
 
-`curl -sL https://raw.github.com/dexterous/dq/bash-only/dq | bash -s -- --only lang`
+`dq --only lang`
 
 This checks for all the commands in the `lang` group only.
 
-`curl -sL https://raw.github.com/dexterous/dq/bash-only/dq | bash -s -- --only lang java`
+`dq --only lang java`
 
 This checks for all the `java` command in the `lang` group only.
 
 The `--only` flag accepts glob params as well.
 
 ```
-$ curl -sL https://raw.github.com/dexterous/dq/bash-only/dq | bash -s -- --only lang p*
+$ dq --only lang p*
 ✔ python
 ✔ perl
 
