@@ -78,6 +78,11 @@ $ dq --only lang p*
 Your dq is 2 / 2
 ```
 
+## Don't want to install
+
+Run it straight off the interwebs!
+
+`curl -sL https://raw.github.com/dexterous/dq/bash-only/dq | bash -s -- core`
 
 ## About
 
