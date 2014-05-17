@@ -36,6 +36,8 @@ declare -a commands=(
   'scala              :scala -version       :1'
   'scala              :scalac -version'
   'scala              :sbt sbt-version'
+  'golang             :godep                :2'
+  'golang             :gox --help           :2'
   'frontend           :npm --version'
   'frontend           :grunt --version'
   'frontend           :bower --version'
