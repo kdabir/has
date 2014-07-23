@@ -32,7 +32,7 @@ declare -a commands=(
   'ruby               :gem -v'
   'ruby               :rvm -v'
   'ruby               :rake -V'
-  'pyton              :virtualenv --version'
+  'python             :virtualenv --version'
   'scala              :scala -version       :1'
   'scala              :scalac -version'
   'scala              :sbt sbt-version'
