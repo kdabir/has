@@ -1,6 +1,6 @@
 command_name="yeoman"
-output=$(yo --version)
+output=$(yo --version 2>&1)
 status=$?
-version=$(echo "$output" | grep -o "\d*\.\d*.\d*")
+version=$(echo "$output" | egrep -o "$SIMPLE_VERSIONING")
 
 _dq_report "$command_name" $status "$version"
