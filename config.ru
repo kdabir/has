@@ -24,7 +24,8 @@ class Shorty < Guillotine::App
     Guillotine::MemoryAdapter.new
   end
 
-  set :service => Guillotine::Service.new(adapter, ENV['DOMAIN_RESTRICTION'])
+  set :service => Guillotine::Service.new(adapter, :strip_query => false,
+                                          :required_host => ENV['DOMAIN_RESTRICTION'])
 end
 
 map '/check' do
