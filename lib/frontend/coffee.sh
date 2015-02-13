@@ -1,2 +1,6 @@
-coffee --version > /dev/null 2>&1
-_dq_report 'coffee' $?
+command_name="coffee"
+output=$(coffee --version)
+status=$?
+version=$(echo "$output" | grep -o "\d*\.\d*.\d*")
+
+_dq_report "$command_name" $status "$version"

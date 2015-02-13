@@ -25,7 +25,7 @@ def build *args
               .sort { |x, y| File.basename(x) <=> File.basename(y) }          # sort alphabetically
               .collect { |file| File.read(file) }.join("\n")                  # concat
 
-  [File.read("include/setup.sh"), content, File.read("include/report.sh")].join("\n")
+  [File.read("include/setup.sh"), content, File.read("include/report.sh")].join("\n\n")
 end
 
 puts build *ARGV unless ARGV.empty?

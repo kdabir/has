@@ -1,2 +1,6 @@
-git --version > /dev/null 2>&1
-_dq_report 'git' $?
+command_name="git"
+output=$(git --version)
+status=$?
+version=$(echo "$output" | grep -o "\d*\.\d*.\d*")
+
+_dq_report "$command_name" $status "$version"
