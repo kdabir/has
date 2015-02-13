@@ -10,6 +10,7 @@ HEADERS_FOR_SHELL = {'Content-Type' => 'text/plain'}
 map '/dq' do
   run Proc.new { |env|
         commands_to_check = Rack::Request.new(env).params[:check.to_s] || "core/*"
+        puts "processing: [#{commands_to_check}]"
         [200, HEADERS_FOR_SHELL, [build(commands_to_check)]]
       }
 end
