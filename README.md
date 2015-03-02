@@ -2,75 +2,74 @@
 
 Check how developer friendly is your machine!
 
-`curl -sL https://raw.github.com/kdabir/dq/master/bin/core/dq.sh | sh`
+## How ?
 
-This should produce output like :
+Just fire the following from the Terminal 
 
-```
-✔ curl
-✔ git
-✔ java
-✔ node
-✔ perl
-✔ python
-✔ ruby
-✔ vi
-Your dq is 8 / 8
-```
+    curl -sL https://dqhub.herokuapp.com/dq?check=*/java,*/ruby,*/python,*/git,*/node | bash`
 
-There is more to it. Depending on what you develop, we have got some preselected profiles:
+Should produce output like:
 
-#### Minimal
-To see if you have some common commands installed that a developer machine usually needs
-`curl -sL https://raw.github.com/kdabir/dq/master/bin/core/dq.sh | sh`
+    ✔ git                            2.3.0
+    ✔ java                           1.8.0
+    ✔ node                           0.12.0
+    ✔ python                         2.7.6
+    ✔ ruby                           2.1.2
+    Your dq is 5 / 5
 
-#### shell tools
-`curl -sL https://raw.github.com/kdabir/dq/master/bin/shell/dq.sh | sh`
+We have checks for more than 40 commands, 
 
-#### ruby dev
-`curl -sL https://raw.github.com/kdabir/dq/master/bin/ruby_dev/dq.sh | sh`
+## Sharable url?
+The urls like above look bit long and scary. They are not 'share' friendly. We've got you covered. You can shorten 
+the url either using dqhub itself (and give a logical name too) or any third party url-shortner.
 
-#### frontend dev
-`curl -sL https://raw.github.com/kdabir/dq/master/bin/frontend_dev/dq.sh | sh`
-
-#### java dev
-`curl -sL https://raw.github.com/kdabir/dq/master/bin/java_dev/dq.sh | sh`
-
-#### clojure dev
-`curl -sL https://raw.github.com/kdabir/dq/master/bin/clojure_dev/dq.sh | sh`
-
-#### groovy dev
-`curl -sL https://raw.github.com/kdabir/dq/master/bin/groovy_dev/dq.sh | sh`
-
-#### scala dev
-`curl -sL https://raw.github.com/kdabir/dq/master/bin/scala_dev/dq.sh | sh`
-
-#### db
-`curl -sL https://raw.github.com/kdabir/dq/master/bin/db/dq.sh | sh`
-
-#### all
-
+We have already done for the check that we did above:
+ 
+    curl -sL https://dqhub.herokuapp.com/check/minimal | bash
+ 
 **Feeling courageous**, see what all you have got :
 
-`curl -sL https://raw.github.com/kdabir/dq/master/bin/all/dq.sh | sh`
+    curl -sL https://dqhub.herokuapp.com/check/all | bash
 
 This checks for about 40 commands on your box
 
-## Rolling out your own
+## More configurable DQ
+
+You can edit the query params to make dq check for only those commands that you care about:
+
+    https://dqhub.herokuapp.com/dq?check=frontend/*
+    
+Check the lib directory structure, `check` query param should be comma separated list of globs (path)
+     
+
+## Running Locally
+
+`cd` in to directory and just do a `bundle install` once and then to start server `rackup`.
+
+
+## Rolling out your own locally
 
 When you need to mix and match, it's equally simple. Checkout the repo, and execute from the root:
 
-`ruby build.rb <group1> <group2>... | sh`
+`ruby build.rb <command_patterns> | sh`
 
 For example, if you develop frontend apps with node/ruby and use some typical databases
 
-`ruby build.rb ruby_dev frontend_dev db| sh`
+`ruby build.rb "db/*,frontend/*,ruby/*" | sh`
 
 Or, you develop server side java/groovy and use some common databases
 
-`ruby build.rb java_dev groovy_dev db | sh`
+`ruby build.rb "java/*,groovy/*,db/*" | sh`
 
 There no external gem dependency, you just need to have `ruby` though.
+
+
+## Deploying to heroku
+
+ heroku addons:add mongolab
+ 
+## #noserver
+checkout bash-only branch, it's maintained by awesome @dexterous.
 
 ## About
 
@@ -83,13 +82,12 @@ apt name but that was the best name I could think of.
 ## Contributing
 
 Please submit more command checks, it's very easy to do so. Fork the repo and send PR.
-Issues and feedback welcomed.
+Issues and feedback welcome.
 
 ## Paranoid ?
 
-Don't want to run `curl` piping to `sh`. Understandably, you might be concerned. Worry not.
-- The source is hosted and is served directly from github, no app server in the middle.
-- If you still want to check, do a  `curl -sL https://raw.github.com/kdabir/dq/master/bin/core/dq.sh | cat`  first.
-    (basically, replacing `sh` with `cat`, to see the content of the file )
+Don't want to run `curl` piping to `bash`. Understandably, you might be concerned. Worry not.
+- If you still want to check, do a  `curl -sL <url> | cat`  first.
+    (replacing `bash` with `cat`, to see the content of the file )
 
 ### ♥
