@@ -2,71 +2,29 @@
 
 shopt -s extglob
 
-
-declare -a commands=(
-  'shell              :ack --version'
-  'shell              :autojump --version'
-  'shell              :tree --version'
-  'shell              :wget --version'
-  'shell              :curl --version'
-  'shell              :zsh --version'
-  'shell              :git --version'
-  'shell              :vi --version'
-  'lang               :python --version'
-  'lang               :perl -v'
-  'lang               :node --version'
-  'lang               :java -version'
-  'lang               :ruby -v'
-  'lang/golang        :go version'
-  'java               :javac -version'
-  'java               :ant -version'
-  'java               :mvn -v'
-  'java               :gradle -v'
-  'groovy             :groovy --version'
-  'groovy             :groovyc --version'
-  'groovy             :lazybones --version'
-  'clojure            :emacs --version'
-  'clojure            :clj --help'
-  'clojure            :lein -v'
-  'ruby/bundler       :bundle -v'
-  'ruby               :gem -v'
-  'ruby               :rvm -v'
-  'ruby               :rake -V'
-  'python             :virtualenv --version'
-  'scala              :scala -version       :1'
-  'scala              :scalac -version'
-  'scala              :sbt sbt-version'
-  'golang             :godep                :2'
-  'golang             :gox --help           :2'
-  'frontend           :npm --version'
-  'frontend           :grunt --version'
-  'frontend           :bower --version'
-  'frontend/yeoman    :yo --version'
-  'frontend           :coffee --version'
-  'frontend           :sass --version'
-  'db/mysql server    :mysqld --version'
-  'db/mysql client    :mysql --version'
-  'db/postgres server :postgres --version'
-  'db/postgres client :psql --version'
-  'db/mongo server    :mongod --version'
-  'db/mongo client    :mongo --version'
-)
-
 OK=0
 KO=0
+
+RCFILE="$HOME/.dqrc"
 
 _dq_commands() {
   e_grp=${1:-*}
   e_name=${2:-*}
+
+  if [ -e $RCFILE -a -f $RCFILE -a -s $RCFILE ]; then
+    true #all good
+  else
+    sed -e '0,/^__DATA__$/d' $0 > $RCFILE
+  fi
 
   #echo "$e_grp/$e_name"
 
   orig_ifs=$IFS
   IFS=%
 
-  for cmd in ${commands[*]}; do
+  while read cmd; do
     _dq_command "$cmd"
-  done
+  done < $RCFILE
 
   IFS=$orig_ifs
 }
@@ -168,3 +126,51 @@ esac
 echo; echo Your dq is $OK / $(($OK+$KO))
 
 exit $KO
+
+__DATA__
+shell              :ack              --version
+shell              :autojump         --version
+shell              :tree             --version
+shell              :wget             --version
+shell              :curl             --version
+shell              :zsh              --version
+shell              :git              --version
+shell              :vi               --version
+lang               :python           --version
+lang               :perl              -v
+lang               :node             --version
+lang               :java              -version
+lang               :ruby              -v
+lang/golang        :go                 version
+java               :javac             -version
+java               :ant               -version
+java               :mvn               -v
+java               :gradle            -v
+groovy             :groovy           --version
+groovy             :groovyc          --version
+groovy             :lazybones        --version
+clojure            :emacs            --version
+clojure            :clj              --help
+clojure            :lein              -v
+ruby/bundler       :bundle            -v
+ruby               :gem               -v
+ruby               :rvm               -v
+ruby               :rake              -V
+python             :virtualenv       --version
+scala              :scala             -version     :1
+scala              :scalac            -version
+scala              :sbt                sbt-version
+golang             :godep                          :2
+golang             :gox              --help        :2
+frontend           :npm              --version
+frontend           :grunt            --version
+frontend           :bower            --version
+frontend/yeoman    :yo               --version
+frontend           :coffee           --version
+frontend           :sass             --version
+db/mysql server    :mysqld           --version
+db/mysql client    :mysql            --version
+db/postgres server :postgres         --version
+db/postgres client :psql             --version
+db/mongo server    :mongod           --version
+db/mongo client    :mongo            --version
