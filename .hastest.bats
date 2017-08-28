@@ -1,9 +1,9 @@
 #!/usr/bin/env bats
 
 @test "works with single command check" {
-    result=$(bash has node)
+    result=$(bash has git)
 
-   [[ $result == *"✔ node"* ]]
+   [[ $result == *"✔ git"* ]]
 }
 
 @test "safely tells about tools not configured" {
