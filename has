@@ -1,0 +1,121 @@
+#!/usr/bin/env bash
+
+## Important so that version is not extracted for failed commands (not found)
+set -o pipefail
+
+PASS='✔'
+FAIL='✘'
+
+REGEX_SIMPLE_VERSION="([[:digit:]]+\.?){2,3}"
+
+__dynamic_detect(){
+  cmd=$1
+  params=$2
+  version=$(eval ${cmd} ${params} "2>&1" | egrep -o "$REGEX_SIMPLE_VERSION" | head -1)
+  status=$?
+}
+
+# commands that use `--version` flag
+__dynamic_detect--version(){
+  __dynamic_detect $1 "--version"
+}
+
+## commands that use `-version` flag
+__dynamic_detect-version(){
+  __dynamic_detect $1 "-version"
+}
+
+# commands that use `-v` flag
+__dynamic_detect-v(){
+  __dynamic_detect $1 "-v"
+}
+
+
+__detect(){
+  name=$1
+
+  # setup aliases
+  case ${name} in
+    golang) command="go" ;;
+    jre) command="java" ;;
+    jdk) command="javac" ;;
+    nodejs) command="node" ;;
+    goreplay) command="gor";;
+    *)      command=${name} ;;
+  esac
+
+  case ${command} in
+    go)
+      version=$(go version 2>&1| egrep -o "$REGEX_SIMPLE_VERSION" | head -1)
+      status=$?
+      ;;
+
+    hugo)
+      version=$(hugo version 2>&1| egrep -o "$REGEX_SIMPLE_VERSION" | head -1)
+      status=$?
+      ;;
+
+    ab)
+      version=$(ab -V 2>&1 | egrep -o "$REGEX_SIMPLE_VERSION" | head -1)
+      status=$?
+      ;;
+
+    gor)
+      version=$(gor version 2>&1 | egrep -o "$REGEX_SIMPLE_VERSION" | head -1)
+      if [ $? -eq 1 ]; then status=0; else status=1; fi
+      ;;
+
+    # those that need -version flag
+    ant|java|javac) __dynamic_detect-version ${command} ;;
+
+    # those that need --version flag
+    git|node|npm|ruby|gem|rake) __dynamic_detect--version ${command} ;;
+    groovy|gradle) __dynamic_detect--version ${command} ;;
+
+    *)
+      ## Can allow dynamic checking here
+      if [[ "${HAS_ALLOW_UNSAFE}" == "y" ]]; then
+        __dynamic_detect--version ${command}
+      else
+         status="-1"
+      fi
+      ;;
+  esac
+
+  if [ "$status" -eq "-1" ]; then
+
+    echo ${FAIL} ${command} "not understood"
+
+  elif [ $status -eq 127 ]; then
+
+    echo ${FAIL} ${command}
+
+  elif [ ${status} -eq 0 ]; then
+
+    echo ${PASS} ${command} ${version}
+
+  else
+
+    echo ${PASS} ${command}
+  fi
+}
+
+
+# if no arguments passed to script
+if [ "$#" -eq 0 ]; then
+
+  # print help
+  echo "${0} v1.0"
+  echo "USAGE: ${0} <command-names>.."
+  echo "EXAMPLE: ${0} git curl node"
+
+else
+
+  # for each arg
+  for cmd in "$@"; do
+      __detect $cmd
+  done
+
+fi
+
+
