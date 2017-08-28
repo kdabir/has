@@ -36,3 +36,5 @@ And uses it
 
 
 ### ♥
+
+[![Build Status](https://travis-ci.org/kdabir/has.svg?branch=has)](https://travis-ci.org/kdabir/has)
