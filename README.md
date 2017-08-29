@@ -36,7 +36,7 @@ Just download the `has` script in your path.
 
 If you are lazy, you can run `has` directly off the internet as well:
 
-    curl -sL https://raw.githubusercontent.com/kdabir/has/master/has | bash -s git node npm
+    curl -sL https://git.io/_has | bash -s git node npm
     ✔ git 2.14.1
     ✔ node 8.2.1
     ✔ npm 5.3.0
@@ -44,7 +44,7 @@ If you are lazy, you can run `has` directly off the internet as well:
 
 And if that's too much of typing every time, setup an alias
     
-    alias has="curl -sL https://raw.githubusercontent.com/kdabir/has/master/has | bash -s"
+    alias has="curl -sL https://git.io/_has | bash -s"
 
 And uses it
 
