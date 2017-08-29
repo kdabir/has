@@ -1,19 +1,22 @@
 #!/usr/bin/env bats
 
 @test "works with single command check" {
-    result=$(bash has git)
+  run bash has git
 
-   [[ $result == *"✔ git"* ]]
+  [ "$status" -eq 0 ]
+  [[ $output == *"✔ git"* ]]
 }
 
 @test "safely tells about tools not configured" {
-    result=$(bash has something-missing)
+  run bash has something-missing
 
-   [[ $result == *"✘ something-missing not understood"* ]]
+  [ "$status" -eq 1 ]
+  [[ $output == *"✘ something-missing not understood"* ]]
 }
 
-@test "env lets override safety check" {
-    result=$(HAS_ALLOW_UNSAFE=y bash has something-missing)
+@test "env var lets override safety check" {
+  HAS_ALLOW_UNSAFE=y run bash has something-missing
 
-   [[ $result == *"✘ something-missing"* ]]
+  [ "$status" -eq 1 ]
+  [[ $output == *"✘ something-missing"* ]]
 }

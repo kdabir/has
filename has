@@ -6,6 +6,9 @@ set -o pipefail
 PASS='✔'
 FAIL='✘'
 
+OK=0
+KO=0
+
 REGEX_SIMPLE_VERSION="([[:digit:]]+\.?){2,3}"
 
 __dynamic_detect(){
@@ -85,19 +88,21 @@ __detect(){
   if [ "$status" -eq "-1" ]; then
 
     echo ${FAIL} ${command} "not understood"
-
-  elif [ $status -eq 127 ]; then
+    KO=$(($KO+1))
+  elif [ ${status} -eq 127 ]; then
 
     echo ${FAIL} ${command}
-
+    KO=$(($KO+1))
   elif [ ${status} -eq 0 ]; then
 
     echo ${PASS} ${command} ${version}
-
+    OK=$(($OK+1))
   else
 
     echo ${PASS} ${command}
+    OK=$(($OK+1))
   fi
+
 }
 
 
@@ -116,6 +121,8 @@ else
       __detect $cmd
   done
 
+#  echo  ${OK} / $(($OK+$KO))
+  exit ${KO}
 fi
 
 
