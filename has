@@ -48,6 +48,23 @@ __detect(){
   esac
 
   case ${command} in
+
+    # those that need --version flag
+    git|hg|svn|bzr)         __dynamic_detect--version ${command} ;;
+    node|npm)               __dynamic_detect--version ${command} ;;
+    ruby|gem|rake|bundle)   __dynamic_detect--version ${command} ;;
+    python|python3)         __dynamic_detect--version ${command} ;;
+    perl)                   __dynamic_detect--version ${command} ;;
+    groovy|gradle|mvn)      __dynamic_detect--version ${command} ;;
+    bash|zsh|curl|wget)     __dynamic_detect--version ${command} ;;
+    vim|emacs|nano|subl)    __dynamic_detect--version ${command} ;;
+    bats|tree|ack|autojump) __dynamic_detect--version ${command} ;;
+
+    # those that need -version flag
+    ant|java|javac)         __dynamic_detect-version ${command} ;;
+
+
+    ## Example of commands that need custom processing
     go)
       version=$(go version 2>&1| egrep -o "$REGEX_SIMPLE_VERSION" | head -1)
       status=$?
@@ -68,30 +85,18 @@ __detect(){
       if [ $? -eq 1 ]; then status=0; else status=1; fi
       ;;
 
-    # those that need -version flag
-    ant|java|javac) __dynamic_detect-version ${command} ;;
-
-    # those that need --version flag
-    git|hg|svn|bzr)         __dynamic_detect--version ${command} ;;
-    node|npm)               __dynamic_detect--version ${command} ;;
-    ruby|gem|rake|bundle)   __dynamic_detect--version ${command} ;;
-    python|python3)         __dynamic_detect--version ${command} ;;
-    perl)                   __dynamic_detect--version ${command} ;;
-    groovy|gradle|mvn)      __dynamic_detect--version ${command} ;;
-    bash|zsh|curl|wget)     __dynamic_detect--version ${command} ;;
-    vim|emacs|nano|subl)    __dynamic_detect--version ${command} ;;
-    bats|tree|ack|autojump) __dynamic_detect--version ${command} ;;
-
     *)
       ## Can allow dynamic checking here
       if [[ "${HAS_ALLOW_UNSAFE}" == "y" ]]; then
         __dynamic_detect--version ${command}
+        ## fallback checking based on status!=127
       else
          status="-1"
       fi
       ;;
   esac
 
+  ## When unsafe processing is not allowed, the -1 signifies
   if [ "$status" -eq "-1" ]; then
 
     echo ${FAIL} ${command} "not understood"
@@ -115,11 +120,11 @@ __detect(){
 
 # if no arguments passed to script
 if [ "$#" -eq 0 ]; then
-
   # print help
-  echo "${0} v1.0"
-  echo "USAGE: ${0} <command-names>.."
-  echo "EXAMPLE: ${0} git curl node"
+  BINARY_NAME="has"
+  echo "${BINARY_NAME} v1.0"
+  echo "USAGE:    ${BINARY_NAME} <command-names>.."
+  echo "EXAMPLE:  ${BINARY_NAME} git curl node"
 
 else
 

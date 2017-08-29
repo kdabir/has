@@ -4,20 +4,37 @@
 
 ## How ?
 
-  Download the `has` file. There is no dependency apart from `bash` itself 
+Download the `has` file. There is no dependency apart from `bash` itself 
 
-    $ bash has node npm java git gradle 
+    $ has node npm java git gradle 
     ✔ node 8.2.1
     ✔ npm 5.3.0
     ✔ java 1.8.0
     ✔ git 2.14.1
     ✔ gradle 4.0.1
 
+If everything is good `has` exists with status code `0`. The status code 
+reflects number of commands **not found** on your path.  
+
+    $ has node go javac
+    ✔ node 8.2.1
+    ✔ go 1.8.3
+    ✘ javac
+
+And echo the status:
+
+    $ echo $?
+    1
+
+
 ## Installing
 
 Just download the `has` script in your path. 
 
-If you are lazy, you can has of the internet as well
+    git clone https://github.com/kdabir/has.git && cd has && make install
+
+
+If you are lazy, you can run `has` directly off the internet as well:
 
     curl -sL https://raw.githubusercontent.com/kdabir/has/master/has | bash -s git node npm
     ✔ git 2.14.1
@@ -25,7 +42,7 @@ If you are lazy, you can has of the internet as well
     ✔ npm 5.3.0
 
 
-And if that's too much of typing everytime, setup an alias
+And if that's too much of typing every time, setup an alias
     
     alias has="curl -sL https://raw.githubusercontent.com/kdabir/has/master/has | bash -s"
 
