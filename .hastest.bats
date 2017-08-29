@@ -20,3 +20,11 @@
   [ "$status" -eq 1 ]
   [[ $output == *"✘ something-missing"* ]]
 }
+
+@test "status code reflect number of failed commands" {
+  HAS_ALLOW_UNSAFE=y run bash has something-missing make git foobar
+
+  [ "$status" -eq 2 ]
+  [[ $output == *"✘ something-missing"* ]]
+  [[ $output == *"✘ foobar"* ]]
+}
