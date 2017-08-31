@@ -59,4 +59,4 @@ And uses it
 
 ## Demo 
 
-[![asciicast](https://asciinema.org/a/135757.png)](https://asciinema.org/a/135757)
+[![asciicast](https://asciinema.org/a/135790.png)](https://asciinema.org/a/135790)
