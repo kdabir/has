@@ -13,7 +13,7 @@ Download the `has` file. There is no dependency apart from `bash` itself
     ✔ git 2.14.1
     ✔ gradle 4.0.1
 
-If everything is good `has` exists with status code `0`. The status code 
+If everything is good `has` exits with status code `0`. The status code 
 reflects number of commands **not found** on your path.  
 
     $ has node go javac
@@ -46,7 +46,7 @@ And if that's too much of typing every time, setup an alias
     
     alias has="curl -sL https://git.io/_has | bash -s"
 
-And uses it
+And use it
 
     $ has git
     ✔ git 2.14.1
