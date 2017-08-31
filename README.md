@@ -1,6 +1,6 @@
 # has
 
-`has` helps you check presence of various command line tools on path.
+`has` helps you check presence of various command line tools and their versions on path.
 
 ## How ?
 
