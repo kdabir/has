@@ -55,3 +55,8 @@ And uses it
 ### ♥
 
 [![Build Status](https://travis-ci.org/kdabir/has.svg?branch=has)](https://travis-ci.org/kdabir/has)
+
+
+## Demo 
+
+[![asciicast](https://asciinema.org/a/135757.png)](https://asciinema.org/a/135757)
