@@ -51,6 +51,11 @@ And use it
     $ has git
     ✔ git 2.14.1
 
+## command not understood by has?
+
+Let's say `$ has foobar` returns `foobar not understood`, because `has` may not have whitelisted `foobar`.
+
+In such cases, pass `HAS_ALLOW_UNSAFE=y has foobar`. This is should still check for existance of `foobar` and tries to detect version as well.
 
 ### ♥
 
