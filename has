@@ -72,6 +72,7 @@ __detect(){
     jq|ag|brew)             __dynamic_detect--version ${command} ;;
 
     node|npm|yarn)          __dynamic_detect--version ${command} ;;
+    grunt|brunch)           __dynamic_detect--version ${command} ;;
     ruby|gem|rake|bundle)   __dynamic_detect--version ${command} ;;
     python|python3)         __dynamic_detect--version ${command} ;;
     perl|php)               __dynamic_detect--version ${command} ;;
@@ -87,6 +88,12 @@ __detect(){
     ## go needs version arg
     go)
       version=$(go version 2>&1| egrep -o "$REGEX_SIMPLE_VERSION" | head -1)
+      status=$?
+      ;;
+
+    ## TODO cleanup, currently need to add extra space in regex, otherwise the time gets selected
+    gulp)
+      version=$(gulp --version 2>&1| egrep -o " $REGEX_SIMPLE_VERSION" | head -1)
       status=$?
       ;;
 
