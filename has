@@ -103,6 +103,11 @@ __detect(){
       if [ $? -eq 1 ]; then status=0; else status=1; fi
       ;;
 
+    sbt)
+        version=$(sbt about 2>&1 | egrep -o "([[:digit:]]{1,4}\.){2}[[:digit:]]{1,4}" | head -1)
+        status=$?
+      ;;
+
     *)
       ## Can allow dynamic checking here, i.e. checking commands that are not listed above
       if [[ "${HAS_ALLOW_UNSAFE}" == "y" ]]; then
