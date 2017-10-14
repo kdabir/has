@@ -1,6 +1,6 @@
 # has
 
-`has` checks presence of various command line tools and their versions on the path
+`has` checks presence of various command line tools on the path and also reports their installed version
 
 ## How ?
 
@@ -57,11 +57,20 @@ Let's say `$ has foobar` returns `foobar not understood`, because `has` may not 
 
 In such cases, pass `HAS_ALLOW_UNSAFE=y has foobar`. This is should still check for existance of `foobar` and tries to detect version as well.
 
-### ♥
-
-[![Build Status](https://travis-ci.org/kdabir/has.svg?branch=has)](https://travis-ci.org/kdabir/has)
-
 
 ## Demo 
 
 [![asciicast](https://asciinema.org/a/135790.png)](https://asciinema.org/a/135790)
+
+## Contributing
+
+[![Build Status](https://travis-ci.org/kdabir/has.svg?branch=has)](https://travis-ci.org/kdabir/has)
+
+
+1. Star the repo, tweet about it, spread the word 
+2. Update the documentation (i.e. the README file)
+3. Adding support for more commands
+4. Adding more features to `has`
+
+
+#### ♥
