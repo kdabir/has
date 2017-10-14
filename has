@@ -3,14 +3,19 @@
 ## Important so that version is not extracted for failed commands (not found)
 set -o pipefail
 
+## constant - symbols for success failure
 PASS='✔'
 FAIL='✘'
 
+## These variables are used to keep track of passed and failed commands
 OK=0
 KO=0
 
+## Regex to extract simple version - extracts numeric sem-ver style versions
 REGEX_SIMPLE_VERSION="([[:digit:]]+\.?){2,3}"
 
+
+## try to extract version by executing $1 with $2 arg
 __dynamic_detect(){
   cmd=$1
   params=$2
@@ -33,11 +38,17 @@ __dynamic_detect-v(){
   __dynamic_detect $1 "-v"
 }
 
+# commands that use `version` argument
+__dynamic_detect-arg_version(){
+  __dynamic_detect $1 "version"
+}
 
+
+## the main function
 __detect(){
   name=$1
 
-  # setup aliases
+  # setup aliases maps commonly used name to exact command name
   case ${name} in
     golang) command="go" ;;
     jre) command="java" ;;
@@ -49,7 +60,7 @@ __detect(){
 
   case ${command} in
 
-    # those that need --version flag
+    # commands that need --version flag
     git|hg|svn|bzr)         __dynamic_detect--version ${command} ;;
     node|npm)               __dynamic_detect--version ${command} ;;
     ruby|gem|rake|bundle)   __dynamic_detect--version ${command} ;;
@@ -62,56 +73,61 @@ __detect(){
     jq|ag|brew)             __dynamic_detect--version ${command} ;;
     gcc|make)               __dynamic_detect--version ${command} ;;
 
-    # those that need -version flag
+    # commands that need -version flag
     ant|java|javac)         __dynamic_detect-version ${command} ;;
 
+    # commands that need version arg
+    hugo)                   __dynamic_detect-arg_version ${command} ;;
 
     ## Example of commands that need custom processing
+    ## go needs version arg
     go)
       version=$(go version 2>&1| egrep -o "$REGEX_SIMPLE_VERSION" | head -1)
       status=$?
       ;;
 
-    hugo)
-      version=$(hugo version 2>&1| egrep -o "$REGEX_SIMPLE_VERSION" | head -1)
-      status=$?
-      ;;
-
+    ## ab uses -V flag
     ab)
       version=$(ab -V 2>&1 | egrep -o "$REGEX_SIMPLE_VERSION" | head -1)
       status=$?
       ;;
 
+    ## gor returns version but does not return normal status code, hence needs custom processing
     gor)
       version=$(gor version 2>&1 | egrep -o "$REGEX_SIMPLE_VERSION" | head -1)
       if [ $? -eq 1 ]; then status=0; else status=1; fi
       ;;
 
     *)
-      ## Can allow dynamic checking here
+      ## Can allow dynamic checking here, i.e. checking commands that are not listed above
       if [[ "${HAS_ALLOW_UNSAFE}" == "y" ]]; then
         __dynamic_detect--version ${command}
-        ## fallback checking based on status!=127
+        ## fallback checking based on status!=127 (127 means command not found)
+        ## TODO can check other type of supported version-checks if status was not 127
       else
-         status="-1"
+        ## -1 is special way to tell command is not supported/whitelisted by `has`
+        status="-1"
       fi
       ;;
   esac
 
-  ## When unsafe processing is not allowed, the -1 signifies
-  if [ "$status" -eq "-1" ]; then
+
+  if [ "$status" -eq "-1" ]; then     ## When unsafe processing is not allowed, the -1 signifies
 
     echo ${FAIL} ${command} "not understood"
     KO=$(($KO+1))
-  elif [ ${status} -eq 127 ]; then
+
+  elif [ ${status} -eq 127 ]; then    ## command not installed
 
     echo ${FAIL} ${command}
     KO=$(($KO+1))
-  elif [ ${status} -eq 0 ]; then
+
+  elif [ ${status} -eq 0 ]; then      ## successfully executed
 
     echo ${PASS} ${command} ${version}
     OK=$(($OK+1))
-  else
+
+  else  ## as long as its not 127, command is there, but we might not have been able to extract version
 
     echo ${PASS} ${command}
     OK=$(($OK+1))
