@@ -78,6 +78,7 @@ __detect(){
 
     # commands that need -version flag
     ant|java|javac)         __dynamic_detect-version ${command} ;;
+    scala)                  __dynamic_detect-version ${command} ;;
 
     # commands that need version arg
     hugo)                   __dynamic_detect-arg_version ${command} ;;
