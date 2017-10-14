@@ -70,7 +70,7 @@ __detect(){
     bats|tree|ack|autojump) __dynamic_detect--version ${command} ;;
     jq|ag|brew)             __dynamic_detect--version ${command} ;;
 
-    node|npm)               __dynamic_detect--version ${command} ;;
+    node|npm|yarn)          __dynamic_detect--version ${command} ;;
     ruby|gem|rake|bundle)   __dynamic_detect--version ${command} ;;
     python|python3)         __dynamic_detect--version ${command} ;;
     perl|php)               __dynamic_detect--version ${command} ;;
