@@ -133,7 +133,7 @@ __detect(){
     echo ${FAIL} ${command}
     KO=$(($KO+1))
 
-  elif [ ${status} -eq 0 ]; then      ## successfully executed
+  elif [ ${status} -eq 0 ] || [ ${status} -eq 141 ]; then      ## successfully executed
 
     echo ${PASS} ${command} ${version}
     OK=$(($OK+1))
