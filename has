@@ -73,7 +73,7 @@ __detect(){
     node|npm|yarn)          __dynamic_detect--version ${command} ;;
     ruby|gem|rake|bundle)   __dynamic_detect--version ${command} ;;
     python|python3)         __dynamic_detect--version ${command} ;;
-    perl|php)               __dynamic_detect--version ${command} ;;
+    perl|php|php5)          __dynamic_detect--version ${command} ;;
     groovy|gradle|mvn)      __dynamic_detect--version ${command} ;;
 
     # commands that need -version flag
