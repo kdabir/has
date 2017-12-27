@@ -116,6 +116,11 @@ __detect(){
         status=$?
       ;;
 
+    has)
+      version=$(has 2>&1 | egrep -o "$REGEX_SIMPLE_VERSION" | head -1)
+      status=$?
+      ;;
+
     *)
       ## Can allow dynamic checking here, i.e. checking commands that are not listed above
       if [[ "${HAS_ALLOW_UNSAFE}" == "y" ]]; then
@@ -158,7 +163,7 @@ __detect(){
 if [ "$#" -eq 0 ]; then
   # print help
   BINARY_NAME="has"
-  VERSION="v1.1.0"
+  VERSION="v1.2.0"
   echo "${BINARY_NAME} ${VERSION}"
   echo "USAGE:    ${BINARY_NAME} <command-names>.."
   echo "EXAMPLE:  ${BINARY_NAME} git curl node"
