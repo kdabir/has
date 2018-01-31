@@ -2,6 +2,8 @@
 
 `has` checks presence of various command line tools on the path and also reports their installed version
 
+[![Build Status](https://travis-ci.org/kdabir/has.svg?branch=master)](https://travis-ci.org/kdabir/has)
+
 ## How ?
 
 Download the `has` file. There is no dependency apart from `bash` itself 
