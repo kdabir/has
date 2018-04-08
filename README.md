@@ -5,6 +5,10 @@
 [![Build Status](https://travis-ci.org/kdabir/has.svg?branch=master)](https://travis-ci.org/kdabir/has)
 [![Open Source Helpers](https://www.codetriage.com/kdabir/has/badges/users.svg)](https://www.codetriage.com/kdabir/has)
 
+
+[![demo](demo.svg)](demo.svg)
+
+
 ## How ?
 
 Download the `has` file. There is no dependency apart from `bash` itself 
