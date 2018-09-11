@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+## source: https://github.com/kdabir/has
+
 ## Important so that version is not extracted for failed commands (not found)
 set -o pipefail
 
@@ -182,5 +184,3 @@ else
 #  echo  ${OK} / $(($OK+$KO))
   exit ${KO}
 fi
-
-
