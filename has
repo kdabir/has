@@ -57,6 +57,8 @@ __detect(){
     goreplay) command="gor";;
     httpie) command="http";;
     homebrew) command="brew";;
+    awsebcli) command="eb";;
+    awscli) command="aws";;
     *)      command=${name} ;;
   esac
 
@@ -78,6 +80,8 @@ __detect(){
     perl|php|php5)          __dynamic_detect--version ${command} ;;
     groovy|gradle|mvn)      __dynamic_detect--version ${command} ;;
     lein)                   __dynamic_detect--version ${command} ;;
+    aws|eb|sls|gcloud)      __dynamic_detect--version ${command} ;;
+
 
     # commands that need -version flag
     ant|java|javac)         __dynamic_detect-version ${command} ;;
@@ -163,7 +167,7 @@ __detect(){
 if [ "$#" -eq 0 ]; then
   # print help
   BINARY_NAME="has"
-  VERSION="v1.2.0"
+  VERSION="v1.2.1"
   echo "${BINARY_NAME} ${VERSION}"
   echo "USAGE:    ${BINARY_NAME} <command-names>.."
   echo "EXAMPLE:  ${BINARY_NAME} git curl node"
