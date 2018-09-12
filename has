@@ -74,7 +74,8 @@ __detect(){
     vim|emacs|nano|subl)    __dynamic_detect--version ${command} ;;
     bats|tree|ack|autojump) __dynamic_detect--version ${command} ;;
     jq|ag|brew)             __dynamic_detect--version ${command} ;;
-
+    
+    R)                      __dynamic_detect--version ${command} ;;
     node|npm|yarn)          __dynamic_detect--version ${command} ;;
     grunt|brunch)           __dynamic_detect--version ${command} ;;
     ruby|gem|rake|bundle)   __dynamic_detect--version ${command} ;;
