@@ -6,8 +6,8 @@
 set -o pipefail
 
 ## constant - symbols for success failure
-PASS='✔'
-FAIL='✘'
+PASS="\e[1m\e[38;5;2m✔\e[m"
+FAIL="\e[1m\e[38;5;1m✘\e[m"
 
 ## These variables are used to keep track of passed and failed commands
 OK=0
@@ -143,23 +143,19 @@ __detect(){
 
 
   if [ "$status" -eq "-1" ]; then     ## When unsafe processing is not allowed, the -1 signifies
-
-    echo ${FAIL} ${command} "not understood"
+    printf "${FAIL} ${command} not understood\n"
     KO=$(($KO+1))
 
   elif [ ${status} -eq 127 ]; then    ## command not installed
-
-    echo ${FAIL} ${command}
+    printf "${FAIL} ${command}\n"
     KO=$(($KO+1))
 
   elif [ ${status} -eq 0 ] || [ ${status} -eq 141 ]; then      ## successfully executed
-
-    echo ${PASS} ${command} ${version}
+    printf "${PASS} ${command} ${version}\n"
     OK=$(($OK+1))
 
   else  ## as long as its not 127, command is there, but we might not have been able to extract version
-
-    echo ${PASS} ${command}
+    printf "${PASS} ${command}\n"
     OK=$(($OK+1))
   fi
 
@@ -171,17 +167,17 @@ if [ "$#" -eq 0 ]; then
   # print help
   BINARY_NAME="has"
   VERSION="v1.2.1"
-  echo "${BINARY_NAME} ${VERSION}"
-  echo "USAGE:    ${BINARY_NAME} <command-names>.."
-  echo "EXAMPLE:  ${BINARY_NAME} git curl node"
+  printf "${BINARY_NAME} ${VERSION}\n"
+  printf "USAGE:    ${BINARY_NAME} <command-names>..\n"
+  printf "EXAMPLE:  ${BINARY_NAME} git curl node\n"
 
 else
-
   # for each arg
   for cmd in "$@"; do
       __detect $cmd
   done
 
 #  echo  ${OK} / $(($OK+$KO))
-  exit ${KO}
+  exit "${KO}"
 fi
+
