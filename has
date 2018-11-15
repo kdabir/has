@@ -166,7 +166,7 @@ __detect(){
 if [ "$#" -eq 0 ]; then
   # print help
   BINARY_NAME="has"
-  VERSION="v1.2.1"
+  VERSION="v1.3.0"
   printf "${BINARY_NAME} ${VERSION}\n"
   printf "USAGE:    ${BINARY_NAME} <command-names>..\n"
   printf "EXAMPLE:  ${BINARY_NAME} git curl node\n"
