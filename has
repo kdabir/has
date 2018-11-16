@@ -177,9 +177,14 @@ else
       __detect $cmd
   done
 
+  ## display found / total
   #  echo  ${OK} / $(($OK+$KO))
-  if [[ "$KO" -gt "126" ]]; then
-    exit "126"
+
+  ## max status code that can be returned
+  MAX_STATUS_CODE=126
+
+  if [[ "$KO" -gt "${MAX_STATUS_CODE}" ]]; then
+    exit "${MAX_STATUS_CODE}"
   else
     exit "${KO}"
   fi
