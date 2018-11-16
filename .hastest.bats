@@ -48,8 +48,8 @@ teardown() {
 }
 
 
-@test "loads commands from .hasrc file" {
-  printf "bash\nmake\n" >> .hasrc
+@test "loads commands from .hasrc file and excludes comments" {
+  printf "bash\n#comment\nmake\n" >> .hasrc
 
   run bash has
 
