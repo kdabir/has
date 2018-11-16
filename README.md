@@ -65,6 +65,47 @@ Let's say `$ has foobar` returns `foobar not understood`, because `has` may not 
 In such cases, pass `HAS_ALLOW_UNSAFE=y has foobar`. This is should still check for existance of `foobar` and tries to detect version as well.
 
 
+## the `.hasrc` file
+
+`has` looks for `.hasrc` file in the directory from where `has` command is issued. This file can contain commands that `has` 
+will check for. List one command per line. Lines starting with `#` are treated as comments.
+
+
+Following is example of `.hasrc` file:
+
+```
+# tools
+git
+curl
+
+# interpreters
+ruby
+node
+``` 
+
+When `has` is run in dir containing this file, it produces:
+
+```
+$ has
+✔ git 2.19.1
+✔ curl 7.54.0
+✔ ruby 2.3.1
+✔ node 10.7.0
+``` 
+
+Also, CLI arguments passed to `has` are additive to `.hasrc` file. For example, in the same dir, if the following command is fired,
+`has` checks for both commands passed from cli args and provided in `.hasrc` file.  
+
+```
+$ has java
+✔ java 11.0.1
+✔ git 2.19.1
+✔ curl 7.54.0
+✔ ruby 2.3.1
+✔ node 10.7.0
+```
+
+
 ## Demo 
 
 [![asciicast](https://asciinema.org/a/135790.png)](https://asciinema.org/a/135790)
@@ -80,4 +121,10 @@ In such cases, pass `HAS_ALLOW_UNSAFE=y has foobar`. This is should still check 
 4. Adding more features to `has`
 
 
-#### ♥
+## Adding Features
+
+If you are contributing a feature, please ensure to check current tests. Add test cases for your feature. Tests are
+executed using excellent [bats](https://github.com/bats-core/bats-core) testing framework. Add tests and run `make test`
+   
+
+## ♥

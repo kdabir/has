@@ -1,5 +1,7 @@
 #!/usr/bin/env bats
 
+
+## We need to create a new directory to that .hasrc file in the root does not get read by the `has` instance under test
 setup() {
   mkdir -p ./tmp-for-test
   cp -f has ./tmp-for-test/

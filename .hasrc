@@ -1,2 +1,4 @@
 make
 curl
+git
+bats
