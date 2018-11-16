@@ -16,8 +16,11 @@ KO=0
 ## Regex to extract simple version - extracts numeric sem-ver style versions
 REGEX_SIMPLE_VERSION="([[:digit:]]+\.?){2,3}"
 
+## RC file can contain commands to be tested
+RC_FILE=".hasrc"
 
-## try to extract version by executing $1 with $2 arg
+
+# try to extract version by executing $1 with $2 arg
 __dynamic_detect(){
   cmd=$1
   params=$2
@@ -30,7 +33,7 @@ __dynamic_detect--version(){
   __dynamic_detect $1 "--version"
 }
 
-## commands that use `-version` flag
+# commands that use `-version` flag
 __dynamic_detect-version(){
   __dynamic_detect $1 "-version"
 }
@@ -162,23 +165,35 @@ __detect(){
 }
 
 
+
+if [ -s "${RC_FILE}" ];  then
+  HASRC="true"
+fi
+
 # if no arguments passed to script
-if [ "$#" -eq 0 ]; then
+if [[ "${HASRC}" -ne "true" ]] && [ "$#" -eq 0 ]; then
   # print help
   BINARY_NAME="has"
   VERSION="v1.3.0"
   printf "${BINARY_NAME} ${VERSION}\n"
   printf "USAGE:    ${BINARY_NAME} <command-names>..\n"
-  printf "EXAMPLE:  ${BINARY_NAME} git curl node\n"
+  printf "EXAMPLE:  ${BINARY_NAME} git curl node\n\n"
 
 else
-  # for each arg
+  # for each cli-arg
   for cmd in "$@"; do
-      __detect $cmd
+      __detect "$cmd"
   done
 
   ## display found / total
   #  echo  ${OK} / $(($OK+$KO))
+
+  if [[ "${HASRC}" == "true" ]]; then
+    ## for all
+    for line in $(cat ".hasrc" | egrep -v "^\s*(#|$)" ); do
+      __detect "$line"
+    done
+  fi
 
   ## max status code that can be returned
   MAX_STATUS_CODE=126

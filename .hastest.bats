@@ -1,5 +1,17 @@
 #!/usr/bin/env bats
 
+setup() {
+  mkdir -p ./tmp-for-test
+  cp -f has ./tmp-for-test/
+  cd tmp-for-test
+}
+
+teardown() {
+  cd ..
+  rm -rf ./tmp-for-test
+}
+
+
 @test "works with single command check" {
   run bash has git
 
@@ -33,4 +45,29 @@
   run bash has $(for i in {1..256}; do echo foo; done)
 
   [[ "$status" -eq 126 ]]
+}
+
+
+@test "loads commands from .hasrc file" {
+  printf "bash\nmake\n" >> .hasrc
+
+  run bash has
+
+  [[ "$status" -eq 0 ]]
+
+  [[ "$(echo "${output}" | grep "✔" | grep "bash")" ]]
+  [[ "$(echo "${output}" | grep "✔" | grep "make")" ]]
+}
+
+@test "loads commands from .hasrc file and honors cli args as well" {
+  printf "bash\nmake\ngit" >> .hasrc
+
+  HAS_ALLOW_UNSAFE=y run bash has git bc
+
+  [[ "$status" -eq 0 ]]
+
+  [[ "$(echo "${output}" | grep "✔" | grep "bash")" ]]
+  [[ "$(echo "${output}" | grep "✔" | grep "make")" ]]
+  [[ "$(echo "${output}" | grep "✔" | grep "git")" ]]
+  [[ "$(echo "${output}" | grep "✔" | grep "bc")" ]]
 }
