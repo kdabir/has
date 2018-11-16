@@ -106,6 +106,15 @@ $ has java
 ```
 
 
+*Pro Tip*: commit `.hasrc` file in root of your project. This can work as a quick check for confirming presence all command
+line tools required to build and run your project.
+
+on machines that don't even have `has` installed, your project's `.hasrc` is honored by this command: 
+
+`curl -sL https://git.io/_has | bash -s` 
+
+> take a look at .hasrc file of this repo
+
 ## Demo 
 
 [![asciicast](https://asciinema.org/a/135790.png)](https://asciinema.org/a/135790)
