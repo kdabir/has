@@ -115,13 +115,8 @@ on machines that don't even have `has` installed, your project's `.hasrc` is hon
 
 > take a look at [.hasrc](https://github.com/kdabir/has/blob/master/.hasrc) file of this repo
 
-## Demo 
-
-[![asciicast](https://asciinema.org/a/135790.png)](https://asciinema.org/a/135790)
 
 ## Contributing
-
-[![Build Status](https://travis-ci.org/kdabir/has.svg?branch=has)](https://travis-ci.org/kdabir/has)
 
 
 1. Star the repo, tweet about it, spread the word 
@@ -133,7 +128,8 @@ on machines that don't even have `has` installed, your project's `.hasrc` is hon
 ## Adding Features
 
 If you are contributing a feature, please ensure to check current tests. Add test cases for your feature. Tests are
-executed using excellent [bats](https://github.com/bats-core/bats-core) testing framework. Add tests and run `make test`
+executed using the excellent [bats](https://github.com/bats-core/bats-core) testing framework. Add tests and run `make test`
    
+Raise the PR and make sure the tests pass on [Travis-CI](https://travis-ci.org/kdabir/has).
 
-## ♥
+#### ♥
