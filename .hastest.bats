@@ -28,3 +28,9 @@
   [[ "$(echo "${output}" | grep "✘" | grep "foobar")" ]]
   [[ "$(echo "${output}" | grep "✘" | grep "barbaz")" ]]
 }
+
+@test "status code reflects number of failed commands upto 126" {
+  run bash has $(for i in {1..256}; do echo foo; done)
+
+  [[ "$status" -eq 126 ]]
+}

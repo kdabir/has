@@ -177,7 +177,11 @@ else
       __detect $cmd
   done
 
-#  echo  ${OK} / $(($OK+$KO))
-  exit "${KO}"
-fi
+  #  echo  ${OK} / $(($OK+$KO))
+  if [[ "$KO" -gt "126" ]]; then
+    exit "126"
+  else
+    exit "${KO}"
+  fi
 
+fi
