@@ -113,7 +113,7 @@ on machines that don't even have `has` installed, your project's `.hasrc` is hon
 
 `curl -sL https://git.io/_has | bash -s` 
 
-> take a look at .hasrc file of this repo
+> take a look at [.hasrc](https://github.com/kdabir/has/blob/master/.hasrc) file of this repo
 
 ## Demo 
 
