@@ -73,3 +73,12 @@ teardown() {
   [[ "$(echo "${output}" | grep "✔" | grep "git")" ]]
   [[ "$(echo "${output}" | grep "✔" | grep "bc")" ]]
 }
+
+@test "has prints help" {
+
+  run bash has
+
+    [[ "$(echo "${output}" | grep "has")" ]]
+    [[ "$(echo "${output}" | grep "USAGE:")" ]]
+    [[ "$(echo "${output}" | grep "EXAMPLE:")" ]]
+}

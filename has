@@ -170,8 +170,8 @@ if [ -s "${RC_FILE}" ];  then
   HASRC="true"
 fi
 
-# if no arguments passed to script
-if [[ "${HASRC}" -ne "true" ]] && [ "$#" -eq 0 ]; then
+# if HASRC is not set AND no arguments passed to script
+if [[ -z "${HASRC}" ]] && [ "$#" -eq 0 ]; then
   # print help
   BINARY_NAME="has"
   VERSION="v1.3.0"
@@ -188,9 +188,10 @@ else
   ## display found / total
   #  echo  ${OK} / $(($OK+$KO))
 
-  if [[ "${HASRC}" == "true" ]]; then
+  ## if HASRC has been set
+  if [[ -n "${HASRC}" ]]; then
     ## for all
-    for line in $(cat ".hasrc" | egrep -v "^\s*(#|$)" ); do
+    for line in $(cat "${RC_FILE}" | egrep -v "^\s*(#|$)" ); do
       __detect "$line"
     done
   fi
