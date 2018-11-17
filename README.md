@@ -11,7 +11,7 @@
 
 ## How ?
 
-Download the `has` file. There is no dependency apart from `bash` itself 
+[Install](#installing) the `has` script. There is no dependency apart from `bash` itself 
 
     $ has node npm java git gradle 
     ✔ node 8.2.1
@@ -36,10 +36,24 @@ And echo the status:
 
 ## Installing
 
-Just download the `has` script in your path. 
+`has` is a single bash script that does it all. Just [download](https://raw.githubusercontent.com/kdabir/has/master/has) the script and make it available on your `$PATH`. However, to make it even simpler, just follow *one* of these methods.
+
+
+### Cloning the Repo
+
+Just execute the following command in terminal, it clones has repo and install it in your path
 
     git clone https://github.com/kdabir/has.git && cd has && make install
 
+To update just do a `git pull` and `make install`.
+
+### Directly writing to file
+
+    curl -sL https://git.io/_has > /usr/local/bin/has
+
+This command is safe to be called multiple times as well. (to update `has`)
+
+### Directly running of the internet
 
 If you are lazy, you can run `has` directly off the internet as well:
 
@@ -49,7 +63,7 @@ If you are lazy, you can run `has` directly off the internet as well:
     ✔ npm 5.3.0
 
 
-And if that's too much of typing every time, setup an alias
+**ProTip**: if that's too much of typing every time, setup an alias in your `.bashrc`/`.zshrc` file:
     
     alias has="curl -sL https://git.io/_has | bash -s"
 
@@ -106,10 +120,10 @@ $ has java
 ```
 
 
-*Pro Tip*: commit `.hasrc` file in root of your project. This can work as a quick check for confirming presence all command
+**Pro Tip**: commit `.hasrc` file in root of your project. This can work as a quick check for confirming presence all command
 line tools required to build and run your project.
 
-on machines that don't even have `has` installed, your project's `.hasrc` is honored by this command: 
+On machines that don't even have `has` installed, your project's `.hasrc` is honored by this command: 
 
 `curl -sL https://git.io/_has | bash -s` 
 
