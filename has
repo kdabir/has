@@ -174,7 +174,7 @@ fi
 if [[ -z "${HASRC}" ]] && [ "$#" -eq 0 ]; then
   # print help
   BINARY_NAME="has"
-  VERSION="v1.3.0"
+  VERSION="v1.4.0"
   printf "${BINARY_NAME} ${VERSION}\n"
   printf "USAGE:    ${BINARY_NAME} <command-names>..\n"
   printf "EXAMPLE:  ${BINARY_NAME} git curl node\n\n"
