@@ -47,13 +47,13 @@ Just execute the following command in terminal, it clones has repo and install i
 
 To update just do a `git pull` and `make install`.
 
-### Directly writing to file
+### Downloading to a file
 
     curl -sL https://git.io/_has > /usr/local/bin/has
 
 This command is safe to be called multiple times as well. (to update `has`)
 
-### Directly running of the internet
+### Running directly off the internet
 
 If you are lazy, you can run `has` directly off the internet as well:
 
@@ -72,14 +72,14 @@ And use it
     $ has git
     ✔ git 2.14.1
 
-## command not understood by has?
+## Command not understood by has?
 
 Let's say `$ has foobar` returns `foobar not understood`, because `has` may not have whitelisted `foobar`.
 
 In such cases, pass `HAS_ALLOW_UNSAFE=y has foobar`. This is should still check for existance of `foobar` and tries to detect version as well.
 
 
-## the `.hasrc` file
+## The `.hasrc` file
 
 `has` looks for `.hasrc` file in the directory from where `has` command is issued. This file can contain commands that `has` 
 will check for. List one command per line. Lines starting with `#` are treated as comments.
