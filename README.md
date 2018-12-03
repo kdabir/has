@@ -1,6 +1,6 @@
 # has
 
-`has` checks presence of various command line tools on the path and also reports their installed version
+`has` checks presence of various command line tools on the PATH and reports their installed version. 
 
 [![Build Status](https://travis-ci.org/kdabir/has.svg?branch=master)](https://travis-ci.org/kdabir/has)
 [![Open Source Helpers](https://www.codetriage.com/kdabir/has/badges/users.svg)](https://www.codetriage.com/kdabir/has)
