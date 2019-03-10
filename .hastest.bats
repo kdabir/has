@@ -1,18 +1,63 @@
 #!/usr/bin/env bats
 
+INSTALL_DIR=
 
-## We need to create a new directory to that .hasrc file in the root does not get read by the `has` instance under test
+## We need to create a new directory so that .hasrc file in the root does not get read by the `has` instance under test
 setup() {
-  mkdir -p ./tmp-for-test
-  cp -f has ./tmp-for-test/
-  cd tmp-for-test
+  export BATS_TEST_TMPDIR="$BATS_TMPDIR/tmp-for-test"
+  mkdir -p "$BATS_TEST_TMPDIR"
+  cp -f has "$BATS_TEST_TMPDIR"
+  cd "$BATS_TEST_TMPDIR"
 }
 
 teardown() {
-  cd ..
-  rm -rf ./tmp-for-test
+  if [[ -n "$BATS_TEST_TMPDIR" ]]; then
+    rm -rf "$BATS_TEST_TMPDIR"
+  fi
 }
 
+@test "make install creates a valid installation" {
+  INSTALL_DIR="${BATS_TEST_TMPDIR}/.local"
+  cd "${BATS_TEST_DIRNAME}"
+  run make PREFIX="${INSTALL_DIR}" install
+  [ "$status" -eq 0 ]
+  [ -x "${INSTALL_DIR}/bin/has" ]
+
+  # has reads .hasrc from $PWD, so change anywhere else.
+  cd "${INSTALL_DIR}"
+  run "${INSTALL_DIR}/bin/has"
+  [ "$status" -eq 0 ]
+  [ "${lines[0]%% *}" == 'has' ]
+  [ "${lines[1]%% *}" == 'USAGE:' ]
+  rm -rf ${INSTALL_DIR}
+}
+
+@test "..even if has is missing from directory" {
+  INSTALL_DIR="${BATS_TEST_TMPDIR}/local"
+  cd "${BATS_TEST_DIRNAME}"
+  mv has has-been
+  run make PREFIX="${INSTALL_DIR}" install
+  [ "$status" -eq 0 ]
+  [ -x "${INSTALL_DIR}/bin/has" ]
+  cd "${BATS_TEST_DIRNAME}"
+  mv has-been has
+  rm -rf ${INSTALL_DIR}
+}
+
+@test "make update runs git pull" {
+  cd "${BATS_TEST_DIRNAME}"
+  run make update
+  [ "$status" -eq 0 ]
+  [ "${lines[0]}" == "git pull" ]
+}
+
+@test "has prints help" {
+  run bash has
+
+  [[ "$(echo "${output}" | grep "has")" ]]
+  [[ "$(echo "${output}" | grep "USAGE:")" ]]
+  [[ "$(echo "${output}" | grep "EXAMPLE:")" ]]
+}
 
 @test "works with single command check" {
   run bash has git
@@ -72,13 +117,4 @@ teardown() {
   [[ "$(echo "${output}" | grep "✔" | grep "make")" ]]
   [[ "$(echo "${output}" | grep "✔" | grep "git")" ]]
   [[ "$(echo "${output}" | grep "✔" | grep "bc")" ]]
-}
-
-@test "has prints help" {
-
-  run bash has
-
-    [[ "$(echo "${output}" | grep "has")" ]]
-    [[ "$(echo "${output}" | grep "USAGE:")" ]]
-    [[ "$(echo "${output}" | grep "EXAMPLE:")" ]]
 }
