@@ -11,7 +11,7 @@ test:
 	bats .hastest.bats
 
 has:
-	git checkout -- has
+	git checkout --force -- has
 
 install: has
 	install -vD -m 0755 has $(DESTDIR)$(PREFIX)/bin/has
