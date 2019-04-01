@@ -7,19 +7,26 @@ ifeq ($(PREFIX),)
 	PREFIX := /usr/local
 endif
 
-test:
+test : has
 	bats .hastest.bats
 
-has:
-	git checkout -- has
+has :
+	git checkout --force -- has
 
-install: has
+install : has
 	install -vD -m 0755 has $(DESTDIR)$(PREFIX)/bin/has
 
-update: has
-	git fetch --verbose
+# update: has
+update : update-fetch has
 
-uninstall:
+update-fetch : update-force
+	git fetch --verbose --force
+
+update-force :
+	rm -f has
+
+uninstall :
 	rm -f /usr/local/bin/has
 
 .PHONY: test install uninstall update
+

@@ -45,11 +45,11 @@ teardown() {
   rm -rf ${INSTALL_DIR}
 }
 
-@test "make update runs git pull" {
+@test "make update runs git fetch" {
   cd "${BATS_TEST_DIRNAME}"
   run make update
   [ "$status" -eq 0 ]
-  [ "${lines[0]}" == "git fetch --verbose" ]
+  [ "${lines[0]}" =~ "git fetch --verbose" ]
 }
 
 @test "has prints help" {
