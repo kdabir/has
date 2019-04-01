@@ -17,7 +17,7 @@ install: has
 	install -vD -m 0755 has $(DESTDIR)$(PREFIX)/bin/has
 
 update: has
-	git pull
+	git fetch --verbose
 
 uninstall:
 	rm -f /usr/local/bin/has

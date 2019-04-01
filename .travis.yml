@@ -1,9 +1,10 @@
 language: bash
 
 before_install:
-  - sudo add-apt-repository ppa:duggan/bats --yes
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq bats
+  - git clone https://github.com/bats-core/bats-core.git /tmp/bats-core
+  - mkdir -p /tmp/local
+  - bash /tmp/bats-core/install.sh /tmp/local
+  - export PATH=$PATH:/tmp/local/bin
 install:
   - sudo apt-get install -qq bc
 script:

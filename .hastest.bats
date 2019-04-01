@@ -1,10 +1,11 @@
 #!/usr/bin/env bats
 
 INSTALL_DIR=
+BATS_TMPDIR=${BATS_TMPDIR:-/tmp}
 
 ## We need to create a new directory so that .hasrc file in the root does not get read by the `has` instance under test
 setup() {
-  export BATS_TEST_TMPDIR="$w/tmp-for-test"
+  export BATS_TEST_TMPDIR="$BATS_TMPDIR/tmp-for-test"
   mkdir -p "$BATS_TEST_TMPDIR"
   cp -f has "$BATS_TEST_TMPDIR"
   cd "$BATS_TEST_TMPDIR"
@@ -33,7 +34,7 @@ teardown() {
 }
 
 @test "..even if has is missing from directory" {
-  INSTALL_DIR="${BATS_TEST_TMPDIR}/local"
+  INSTALL_DIR="${BATS_TEST_TMPDIR}/system_local"
   cd "${BATS_TEST_DIRNAME}"
   mv has has-been
   run make PREFIX="${INSTALL_DIR}" install
@@ -48,7 +49,7 @@ teardown() {
   cd "${BATS_TEST_DIRNAME}"
   run make update
   [ "$status" -eq 0 ]
- # [ "${lines[0]}" == "git pull" ]
+  [ "${lines[0]}" == "git fetch --verbose" ]
 }
 
 @test "has prints help" {
@@ -58,7 +59,6 @@ teardown() {
   [[ "$(echo "${output}" | grep "USAGE:")" ]]
   [[ "$(echo "${output}" | grep "EXAMPLE:")" ]]
 }
-
 @test "works with single command check" {
   run bash has git
 
@@ -81,7 +81,7 @@ teardown() {
 }
 
 @test "status code reflects number of failed commands" {
-  b  run bash has foobar bc git barbaz
+  HAS_ALLOW_UNSAFE=y run bash has foobar bc git barbaz
 
   [[ "$status" -eq 2 ]]
   [[ "$(echo "${output}" | grep "✘" | grep "foobar")" ]]
