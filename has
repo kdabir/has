@@ -153,7 +153,7 @@ __detect(){
     KO=$(($KO+1))
 
   elif [ ${status} -eq 0 ] || [ ${status} -eq 141 ]; then      ## successfully executed
-    printf "${PASS} ${command} \e[1m\e[33;5;2m${version}\e[m\n"
+    printf "${PASS} ${command} \e[1m\e[33;1;2m${version}\e[m\n"
     OK=$(($OK+1))
 
   else  ## as long as its not 127, command is there, but we might not have been able to extract version
