@@ -56,7 +56,7 @@ cd has
 make PREFIX=$HOME/.local install
 ```
 
-To update just do a `git pull` or `make update` followed by the appropriate `make install` command.
+To update just do a `git fetch` or `make update` followed by the appropriate `make install` command.
 
 ### Downloading to a file
 
@@ -162,6 +162,6 @@ On machines that don't even have `has` installed, your project's `.hasrc` is hon
 If you are contributing a feature, please ensure to check current tests. Add test cases for your feature. Tests are
 executed using the excellent [bats](https://github.com/bats-core/bats-core) testing framework. Add tests and run `make test`
 
-Raise the PR and make sure the tests pass on [Travis-CI](https://travis-ci.org/kdabir/has).
+Raise the PR and **make sure the tests pass** on [Travis-CI](https://travis-ci.org/kdabir/has).
 
 ### ♥

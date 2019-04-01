@@ -48,8 +48,8 @@ teardown() {
 @test "make update runs git fetch" {
   cd "${BATS_TEST_DIRNAME}"
   run make update
-  [ "$status" -eq 0 ]
-  [ "${lines[0]}" =~ "git fetch --verbose" ]
+  [[ "$status" -eq 0 ]]
+  [[ "${lines[@]}" =~ "git fetch --verbose" ]]
 }
 
 @test "has prints help" {
