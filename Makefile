@@ -11,22 +11,28 @@ test : has
 	bats .hastest.bats
 
 has :
+	# ensure 'has' in repo
 	git checkout --force -- has
 
 install : has
-	install -vD -m 0755 has $(DESTDIR)$(PREFIX)/bin/has
+	# install 'has' in specified directory
+	chmod 755 has && \
+	mkdir --verbose --parents $(DESTDIR)$(PREFIX)/bin && \
+	cp --verbose --update has $(DESTDIR)$(PREFIX)/bin/has
 
 # update: has
 update : update-fetch has
 
 update-fetch : update-force
+	# update repo from upstream
 	git fetch --verbose --force
 
 update-force :
-	rm -f has
+	# remove local repo 'has' to force update
+	rm --force has
 
 uninstall :
-	rm -f /usr/local/bin/has
+	rm --force /usr/local/bin/has
 
 .PHONY: test install uninstall update
 
