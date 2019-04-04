@@ -19,7 +19,6 @@ REGEX_SIMPLE_VERSION="([[:digit:]]+\.?){2,3}"
 ## RC file can contain commands to be tested
 RC_FILE=".hasrc"
 
-
 # try to extract version by executing $1 with $2 arg
 __dynamic_detect(){
   cmd=$1
@@ -77,7 +76,7 @@ __detect(){
     vim|emacs|nano|subl)    __dynamic_detect--version ${command} ;;
     bats|tree|ack|autojump) __dynamic_detect--version ${command} ;;
     jq|ag|brew)             __dynamic_detect--version ${command} ;;
-    
+
     R)                      __dynamic_detect--version ${command} ;;
     node|npm|yarn)          __dynamic_detect--version ${command} ;;
     grunt|brunch)           __dynamic_detect--version ${command} ;;
