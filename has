@@ -145,19 +145,20 @@ __detect(){
 
 
   if [ "$status" -eq "-1" ]; then     ## When unsafe processing is not allowed, the -1 signifies
-    printf "${FAIL} ${command} not understood\n"
+    printf '%s %s not understood\n' "${FAIL}" "${command}"
     KO=$(($KO+1))
 
   elif [ ${status} -eq 127 ]; then    ## command not installed
-    printf "${FAIL} ${command}\n"
+    printf '%s %s\n' "${FAIL}" "${command}"
     KO=$(($KO+1))
 
   elif [ ${status} -eq 0 ] || [ ${status} -eq 141 ]; then      ## successfully executed
-    printf "${PASS} ${command} \e[1m\e[33;5;2m${version}\e[m\n"
+    # printf "${PASS} ${command} \e[1m\e[33;5;2m${version}\e[m\n"
+    printf "%s %s \e[1m\e[33;5;2m%s\e[m\n" "${PASS}" "${command}" "${version}"
     OK=$(($OK+1))
 
   else  ## as long as its not 127, command is there, but we might not have been able to extract version
-    printf "${PASS} ${command}\n"
+    printf '%s %s\n' "${PASS}" "${command}"
     OK=$(($OK+1))
   fi
 
@@ -174,9 +175,9 @@ if [[ -z "${HASRC}" ]] && [ "$#" -eq 0 ]; then
   # print help
   BINARY_NAME="has"
   VERSION="v1.4.0"
-  printf "${BINARY_NAME} ${VERSION}\n"
-  printf "USAGE:    ${BINARY_NAME} <command-names>..\n"
-  printf "EXAMPLE:  ${BINARY_NAME} git curl node\n\n"
+  printf '%s %s\n' "${BINARY_NAME}" "${VERSION}"
+  printf 'USAGE:\t\t%s <command-names>..\n' "${BINARY_NAME}"
+  printf 'EXAMPLE:\t%s git curl node\n\n' "${BINARY_NAME}"
 
 else
   # for each cli-arg

@@ -29,11 +29,11 @@ teardown() {
   run "${INSTALL_DIR}/bin/has"
   [ "$status" -eq 0 ]
   [ "${lines[0]%% *}" == 'has' ]
-  [ "${lines[1]%% *}" == 'USAGE:' ]
+  [ "${lines[1]%%:*}" == 'USAGE' ]
   rm -rf ${INSTALL_DIR}
 }
 
-@test "..even if has is missing from directory" {
+@test "..even if 'has' is missing from directory" {
   INSTALL_DIR="${BATS_TEST_TMPDIR}/system_local"
   cd "${BATS_TEST_DIRNAME}"
   mv has has-been
