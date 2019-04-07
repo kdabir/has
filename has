@@ -23,7 +23,7 @@ RC_FILE=".hasrc"
 __dynamic_detect(){
   cmd=$1
   params=$2
-  version=$(eval ${cmd} ${params} "2>&1" | egrep -o "$REGEX_SIMPLE_VERSION" | head -1)
+  version=$(eval ${cmd} ${params} "2>&1" | grep -Eo "$REGEX_SIMPLE_VERSION" | head -1)
   status=$?
 }
 
@@ -98,35 +98,35 @@ __detect(){
     ## Example of commands that need custom processing
     ## go needs version arg
     go)
-      version=$(go version 2>&1| egrep -o "$REGEX_SIMPLE_VERSION" | head -1)
+      version=$(go version 2>&1| grep -Eo "$REGEX_SIMPLE_VERSION" | head -1)
       status=$?
       ;;
 
     ## TODO cleanup, currently need to add extra space in regex, otherwise the time gets selected
     gulp)
-      version=$(gulp --version 2>&1| egrep -o " $REGEX_SIMPLE_VERSION" | head -1)
+      version=$(gulp --version 2>&1| grep -Eo " $REGEX_SIMPLE_VERSION" | head -1)
       status=$?
       ;;
 
     ## ab uses -V flag
     ab)
-      version=$(ab -V 2>&1 | egrep -o "$REGEX_SIMPLE_VERSION" | head -1)
+      version=$(ab -V 2>&1 | grep -Eo "$REGEX_SIMPLE_VERSION" | head -1)
       status=$?
       ;;
 
     ## gor returns version but does not return normal status code, hence needs custom processing
     gor)
-      version=$(gor version 2>&1 | egrep -o "$REGEX_SIMPLE_VERSION" | head -1)
+      version=$(gor version 2>&1 | grep -Eo "$REGEX_SIMPLE_VERSION" | head -1)
       if [ $? -eq 1 ]; then status=0; else status=1; fi
       ;;
 
     sbt)
-        version=$(sbt about 2>&1 | egrep -o "([[:digit:]]{1,4}\.){2}[[:digit:]]{1,4}" | head -1)
+        version=$(sbt about 2>&1 | grep -Eo "([[:digit:]]{1,4}\.){2}[[:digit:]]{1,4}" | head -1)
         status=$?
       ;;
 
     has)
-      version=$(has 2>&1 | egrep -o "$REGEX_SIMPLE_VERSION" | head -1)
+      version=$(has 2>&1 | grep -Eo "$REGEX_SIMPLE_VERSION" | head -1)
       status=$?
       ;;
 
@@ -190,7 +190,7 @@ else
   ## if HASRC has been set
   if [[ -n "${HASRC}" ]]; then
     ## for all
-    for line in $(cat "${RC_FILE}" | egrep -v "^\s*(#|$)" ); do
+    for line in $(cat "${RC_FILE}" | grep -Ev "^\s*(#|$)" ); do
       __detect "$line"
     done
   fi
