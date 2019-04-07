@@ -48,6 +48,7 @@ teardown() {
 @test "make update runs git fetch" {
   cd "${BATS_TEST_DIRNAME}"
   run make update
+
   [[ "$status" -eq 0 ]]
   [[ "${lines[@]}" =~ "git fetch --verbose" ]]
 }
@@ -59,6 +60,7 @@ teardown() {
   [[ "$(echo "${output}" | grep "USAGE:")" ]]
   [[ "$(echo "${output}" | grep "EXAMPLE:")" ]]
 }
+
 @test "works with single command check" {
   run bash has git
 
@@ -94,7 +96,6 @@ teardown() {
   [[ "$status" -eq 126 ]]
 }
 
-
 @test "loads commands from .hasrc file and excludes comments" {
   printf "bash\n#comment\nmake\n" >> .hasrc
 
@@ -106,7 +107,7 @@ teardown() {
   [[ "$(echo "${output}" | grep "✔" | grep "make")" ]]
 }
 
-@test "loads commands from .hasrc file and honors cli args as well" {
+@test "loads commands from .hasrc file and honors CLI args as well" {
   printf "bash\nmake\ngit" >> .hasrc
 
   HAS_ALLOW_UNSAFE=y run bash has git bc
@@ -117,4 +118,29 @@ teardown() {
   [[ "$(echo "${output}" | grep "✔" | grep "make")" ]]
   [[ "$(echo "${output}" | grep "✔" | grep "git")" ]]
   [[ "$(echo "${output}" | grep "✔" | grep "bc")" ]]
+}
+
+@test "testing PASS output with and without unicode" {
+  run bash has git
+
+  [[ "$status" -eq 0 ]]
+  [[ "printf '%b\n' ${lines[0]}" =~ '✓' ]]
+  [[ "printf '%s\n' ${lines[0]}" =~ '\342\234\223' ]]
+}
+
+@test "testing FAIL output with and without unicode" {
+  run bash has foobar
+
+  [[ "$status" -eq 1 ]]
+  [[ "printf '%b\n' ${lines[0]}" =~ '✘' ]]
+  [[ "printf '%s\n' ${lines[0]}" =~ '\342\234\227' ]]
+}
+
+@test "fail count 3: testing output with and without unicode" {
+  run bash has git foobar barbaz barfoo
+
+  [[ "$status" -eq 3 ]]
+  printf '%b\n' ${lines[0]} =~ '✓'
+  printf '%s\n' ${lines[1]} =~ '\342\234\227'
+  printf '%b\n' ${lines[2]} =~ '✘'
 }

@@ -1,13 +1,31 @@
 #!/usr/bin/env bash
-
 ## source: https://github.com/kdabir/has
 
 ## Important so that version is not extracted for failed commands (not found)
 set -o pipefail
 
+readonly BINARY_NAME="has"
+readonly VERSION="v1.4.0"
+
 ## constant - symbols for success failure
-PASS="\e[1m\e[38;5;2m✔\e[m"
-FAIL="\e[1m\e[38;5;1m✘\e[m"
+readonly  txtreset="$(tput sgr0)"
+readonly  txtbold="$(tput bold)"
+readonly  txtblack="$(tput setaf 0)"
+readonly  txtred="$(tput setaf 1)"
+readonly  txtgreen="$(tput setaf 2)"
+readonly  txtyellow="$(tput setaf 3)"
+readonly  txtblue="$(tput setaf 4)"
+readonly  txtpurple="$(tput setaf 5)"
+readonly  txtcyan="$(tput setaf 6)"
+readonly  txtwhite="$(tput setaf 7)"
+# unicode "✗"
+readonly  fancyx='\342\234\227'
+# unicode "✓"
+readonly  checkmark='\342\234\223'
+# PASS="\e[1m\e[38;5;2m✔\e[m"
+# FAIL="\e[1m\e[38;5;1m✘\e[m"
+readonly PASS="${txtbold}${txtgreen}${checkmark}${txtreset}"
+readonly FAIL="${txtbold}${txtred}${fancyx}${txtreset}"
 
 ## These variables are used to keep track of passed and failed commands
 OK=0
@@ -87,7 +105,6 @@ __detect(){
     lein)                   __dynamic_detect--version "${command}" ;;
     aws|eb|sls|gcloud)      __dynamic_detect--version "${command}" ;;
 
-
     # commands that need -version flag
     ant|java|javac)         __dynamic_detect-version "${command}" ;;
     scala|kotlin)           __dynamic_detect-version "${command}" ;;
@@ -121,8 +138,8 @@ __detect(){
       ;;
 
     sbt)
-        version=$(sbt about 2>&1 | grep -Eo "([[:digit:]]{1,4}\.){2}[[:digit:]]{1,4}" | head -1)
-        status=$?
+      version=$(sbt about 2>&1 | grep -Eo "([[:digit:]]{1,4}\.){2}[[:digit:]]{1,4}" | head -1)
+      status=$?
       ;;
 
     has)
@@ -143,28 +160,23 @@ __detect(){
       ;;
   esac
 
-
   if [ "$status" -eq "-1" ]; then     ## When unsafe processing is not allowed, the -1 signifies
-    printf '%s %s not understood\n' "${FAIL}" "${command}"
+    printf '%b %s not understood\n' "${FAIL}" "${command}"
     KO=$(($KO+1))
 
   elif [ ${status} -eq 127 ]; then    ## command not installed
-    printf '%s %s\n' "${FAIL}" "${command}"
+    printf '%b %s\n' "${FAIL}" "${command}"
     KO=$(($KO+1))
 
   elif [ ${status} -eq 0 ] || [ ${status} -eq 141 ]; then      ## successfully executed
-    # printf "${PASS} ${command} \e[1m\e[33;5;2m${version}\e[m\n"
-    printf "%s %s \e[1m\e[33;5;2m%s\e[m\n" "${PASS}" "${command}" "${version}"
+    printf "%b %s %b\n" "${PASS}" "${command}" "${txtbold}${txtyellow}${version}${txtreset}"
     OK=$(($OK+1))
 
   else  ## as long as its not 127, command is there, but we might not have been able to extract version
-    printf '%s %s\n' "${PASS}" "${command}"
+    printf '%b %s\n' "${PASS}" "${command}"
     OK=$(($OK+1))
   fi
-
-}
-
-
+} #end __detect
 
 if [ -s "${RC_FILE}" ];  then
   HASRC="true"
@@ -173,16 +185,14 @@ fi
 # if HASRC is not set AND no arguments passed to script
 if [[ -z "${HASRC}" ]] && [ "$#" -eq 0 ]; then
   # print help
-  BINARY_NAME="has"
-  VERSION="v1.4.0"
   printf '%s %s\n' "${BINARY_NAME}" "${VERSION}"
-  printf 'USAGE:\t\t%s <command-names>..\n' "${BINARY_NAME}"
-  printf 'EXAMPLE:\t%s git curl node\n\n' "${BINARY_NAME}"
+  printf 'USAGE:\t %s <command-names>..\n' "${BINARY_NAME}"
+  printf 'EXAMPLE: %s git curl node\n' "${BINARY_NAME}"
 
 else
   # for each cli-arg
   for cmd in "$@"; do
-      __detect "${cmd}"
+    __detect "${cmd}"
   done
 
   ## display found / total
@@ -191,9 +201,9 @@ else
   ## if HASRC has been set
   if [[ -n "${HASRC}" ]]; then
     ## for all
-    for line in $(grep -Ev "^\s*(#|$)" "${RC_FILE}" ); do
+    while read -r line; do
       __detect "${line}"
-    done
+    done <<<"$(grep -Ev "^\s*(#|$)" "${RC_FILE}" )"
   fi
 
   ## max status code that can be returned
