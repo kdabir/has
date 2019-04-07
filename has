@@ -182,7 +182,7 @@ if [[ -z "${HASRC}" ]] && [ "$#" -eq 0 ]; then
 else
   # for each cli-arg
   for cmd in "$@"; do
-      __detect "$cmd"
+      __detect "${cmd}"
   done
 
   ## display found / total
@@ -191,8 +191,8 @@ else
   ## if HASRC has been set
   if [[ -n "${HASRC}" ]]; then
     ## for all
-    for line in $(cat "${RC_FILE}" | grep -Ev "^\s*(#|$)" ); do
-      __detect "$line"
+    for line in $(grep -Ev "^\s*(#|$)" "${RC_FILE}" ); do
+      __detect "${line}"
     done
   fi
 
