@@ -1,19 +1,23 @@
 # http://editorconfig.org/
-
 root = true
 
 [*]
 indent_style = space
-indent_size = 2
-
 end_of_line = lf
 charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = true
 
+[*.{sh,bash,bats}]
+indent_size = 2
+indent_style = space
+
+# Markdown
 [*.md]
+indent_size = 4
 trim_trailing_whitespace = false
 
+# Makefiles always use tabs for indentation
 [{Makefile, makefile}]
 indent_style = tab
 indent_size = 4
