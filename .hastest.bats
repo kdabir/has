@@ -2,6 +2,8 @@
 
 INSTALL_DIR=
 BATS_TMPDIR=${BATS_TMPDIR:-/tmp}
+fancyx='✗'
+checkmark='✓'
 
 ## We need to create a new directory so that .hasrc file in the root does not get read by the `has` instance under test
 setup() {
@@ -65,29 +67,29 @@ teardown() {
   run bash has git
 
   [[ "$status" -eq 0 ]]
-  [[ "$(echo "${output}" | grep "✔" | grep "git")" ]]
+  [[ "$(echo "${output}" | grep ${checkmark} | grep "git")" ]]
 }
 
 @test "safely tells about tools not configured" {
   run bash has foobar
 
   [[ "$status" -eq 1 ]]
-  [[ "$(echo "${output}" | grep "✘" | grep "foobar not understood")" ]]
+  [[ "$(echo "${output}" | grep ${fancyx} | grep "foobar not understood")" ]]
 }
 
 @test "env var lets override safety check" {
   HAS_ALLOW_UNSAFE=y run bash has foobar
 
   [[ "$status" -eq 1 ]]
-  [[ "$(echo "${output}" | grep "✘" | grep "foobar")" ]]
+  [[ "$(echo "${output}" | grep ${fancyx} | grep "foobar")" ]]
 }
 
 @test "status code reflects number of failed commands" {
   HAS_ALLOW_UNSAFE=y run bash has foobar bc git barbaz
 
   [[ "$status" -eq 2 ]]
-  [[ "$(echo "${output}" | grep "✘" | grep "foobar")" ]]
-  [[ "$(echo "${output}" | grep "✘" | grep "barbaz")" ]]
+  [[ "$(echo "${output}" | grep ${fancyx} | grep "foobar")" ]]
+  [[ "$(echo "${output}" | grep ${fancyx} | grep "barbaz")" ]]
 }
 
 @test "status code reflects number of failed commands upto 126" {
@@ -103,44 +105,41 @@ teardown() {
 
   [[ "$status" -eq 0 ]]
 
-  [[ "$(echo "${output}" | grep "✔" | grep "bash")" ]]
-  [[ "$(echo "${output}" | grep "✔" | grep "make")" ]]
+  [[ "$(echo "${output}" | grep ${checkmark} | grep "bash")" ]]
+  [[ "$(echo "${output}" | grep ${checkmark} | grep "make")" ]]
 }
 
 @test "loads commands from .hasrc file and honors CLI args as well" {
   printf "bash\nmake\ngit" >> .hasrc
-
   HAS_ALLOW_UNSAFE=y run bash has git bc
 
   [[ "$status" -eq 0 ]]
 
-  [[ "$(echo "${output}" | grep "✔" | grep "bash")" ]]
-  [[ "$(echo "${output}" | grep "✔" | grep "make")" ]]
-  [[ "$(echo "${output}" | grep "✔" | grep "git")" ]]
-  [[ "$(echo "${output}" | grep "✔" | grep "bc")" ]]
+  [[ "$(echo "${output}" | grep ${checkmark} | grep "bash")" ]]
+  [[ "$(echo "${output}" | grep ${checkmark} | grep "make")" ]]
+  [[ "$(echo "${output}" | grep ${checkmark} | grep "git")" ]]
+  [[ "$(echo "${output}" | grep ${checkmark} | grep "bc")" ]]
 }
 
-@test "testing PASS output with and without unicode" {
+@test "testing PASS output with unicode" {
   run bash has git
 
   [[ "$status" -eq 0 ]]
   [[ "printf '%b\n' ${lines[0]}" =~ '✓' ]]
-  [[ "printf '%s\n' ${lines[0]}" =~ '\342\234\223' ]]
 }
 
-@test "testing FAIL output with and without unicode" {
+@test "testing FAIL output with unicode" {
   run bash has foobar
 
   [[ "$status" -eq 1 ]]
-  [[ "printf '%b\n' ${lines[0]}" =~ '✘' ]]
-  [[ "printf '%s\n' ${lines[0]}" =~ '\342\234\227' ]]
+  [[ "printf '%b\n' ${lines[0]}" =~ '✗' ]]
 }
 
 @test "fail count 3: testing output with and without unicode" {
   run bash has git foobar barbaz barfoo
 
   [[ "$status" -eq 3 ]]
-  printf '%b\n' ${lines[0]} =~ '✓'
-  printf '%s\n' ${lines[1]} =~ '\342\234\227'
-  printf '%b\n' ${lines[2]} =~ '✘'
+  [[ "printf '%b\n' ${lines[0]}" =~ "${checkmark}" ]]
+  [[ "printf '%b\n' ${lines[2]}" =~ '✗' ]]
 }
+
