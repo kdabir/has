@@ -1,1 +1,9 @@
-* text=auto
+# Auto detect text files and perform LF normalization
+# http://davidlaing.com/2012/09/19/customise-your-gitattributes-to-become-a-git-ninja/
+*           text=auto           eol=lf
+#
+# The above will handle all files NOT found below
+#
+*.sh        text diff=sh        eol=lf
+*.bash      text diff=sh        eol=lf
+*.md        text                eol=lf
