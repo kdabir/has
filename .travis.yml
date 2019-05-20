@@ -1,11 +1,25 @@
 language: bash
+dist: xenial
+addons:
+  apt:
+    update: true
+    packages:
+    - bc
+
+env:
+  global:
+  - export PATH="/usr/local/bin:$PATH"
 
 before_install:
-  - git clone https://github.com/bats-core/bats-core.git /tmp/bats-core
-  - mkdir -p /tmp/local
-  - bash /tmp/bats-core/install.sh /tmp/local
-  - export PATH=$PATH:/tmp/local/bin
-install:
-  - sudo apt-get install -qq bc
+- |
+  if [ "$TRAVIS_OS_NAME" = "linux" ]; then
+    batstmp="$( mktemp -d -p /tmp bats-core.XXXXX)"
+    pushd "${batstmp}"
+    curl -sSLO https://github.com/bats-core/bats-core/archive/master.zip
+    unzip -qo master.zip
+    sudo bash "${batstmp}"/bats-core-master/install.sh /usr/local
+    popd
+  fi
+
 script:
   - make test
