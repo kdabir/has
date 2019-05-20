@@ -81,6 +81,7 @@ __detect(){
     homebrew) command="brew";;
     awsebcli) command="eb";;
     awscli) command="aws";;
+   *coreutils|linux-utils) command="gnu_coreutils" ;;
     *)      command=${name} ;;
   esac
 
@@ -94,6 +95,10 @@ __detect(){
     vim|emacs|nano|subl)    __dynamic_detect--version "${command}" ;;
     bats|tree|ack|autojump) __dynamic_detect--version "${command}" ;;
     jq|ag|brew)             __dynamic_detect--version "${command}" ;;
+    apt|apt-get|aptitude)   __dynamic_detect--version "${command}" ;;
+    sed|awk|grep|file|sudo) __dynamic_detect--version "${command}" ;;
+    gzip|xz|unar|bzip2)     __dynamic_detect--version "${command}" ;;
+    tar|pv)                 __dynamic_detect--version "${command}" ;;
 
     R)                      __dynamic_detect--version "${command}" ;;
     node|npm|yarn)          __dynamic_detect--version "${command}" ;;
@@ -104,6 +109,9 @@ __detect(){
     groovy|gradle|mvn)      __dynamic_detect--version "${command}" ;;
     lein)                   __dynamic_detect--version "${command}" ;;
     aws|eb|sls|gcloud)      __dynamic_detect--version "${command}" ;;
+
+    # commands that need -v flag
+    unzip)                  __dynamic_detect-v "${command}" ;;
 
     # commands that need -version flag
     ant|java|javac)         __dynamic_detect-version "${command}" ;;
@@ -141,6 +149,10 @@ __detect(){
       version=$(sbt about 2>&1 | grep -Eo "([[:digit:]]{1,4}\.){2}[[:digit:]]{1,4}" | head -1)
       status=$?
       ;;
+
+    ## use 'readlink' to test for GNU coreutils
+    # readlink (GNU coreutils) 8.28
+    gnu_coreutils)    __dynamic_detect--version readlink ;;
 
     has)
       version=$(has 2>&1 | grep -Eo "${REGEX_SIMPLE_VERSION}" | head -1)

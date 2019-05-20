@@ -142,3 +142,23 @@ teardown() {
   [[ "printf '%b\n' ${lines[0]}" =~ "${checkmark}" ]]
   [[ "printf '%b\n' ${lines[2]}" =~ '✗' ]]
 }
+
+@test "testing archiving commands" {
+  run $has tar unzip gzip xz unar pv
+
+  [ "$status" -eq 0 ]
+  [ "$(echo "${output}" | grep "tar")" ]
+  [ "$(echo "${output}" | grep "unzip")" ]
+  [ "$(echo "${output}" | grep "xz")" ]
+  [ "$(echo "${output}" | grep "unar")" ]
+  [ "$(echo "${output}" | grep "pv")" ]
+}
+
+@test "testing coreutils commands" {
+  run $has coreutils sed awk grep sudo file linux-utils
+
+  [ "$status" -eq 0 ]
+  [ "$(echo "${lines[0]}" | grep "gnu_coreutils")" ]
+  [ "$(echo "${lines[5]}" | grep "file")" ]
+  [ "$(echo "${lines[6]}" | grep "gnu_coreutils")" ]
+}
