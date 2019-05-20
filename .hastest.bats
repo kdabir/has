@@ -144,14 +144,16 @@ teardown() {
 }
 
 @test "testing archiving commands" {
-  run $has tar unzip gzip xz unar pv
+  run $has tar unzip gzip xz unar pv zip
 
   [ "$status" -eq 0 ]
-  [ "$(echo "${output}" | grep "tar")" ]
-  [ "$(echo "${output}" | grep "unzip")" ]
-  [ "$(echo "${output}" | grep "xz")" ]
-  [ "$(echo "${output}" | grep "unar")" ]
-  [ "$(echo "${output}" | grep "pv")" ]
+  [ "$(echo "${lines[0]}" | grep "tar")" ]
+  [ "$(echo "${lines[1]}" | grep "unzip")" ]
+  [ "$(echo "${lines[2]}" | grep "gzip")" ]
+  [ "$(echo "${lines[3]}" | grep "xz")" ]
+  [ "$(echo "${lines[4]}" | grep "unar")" ]
+  [ "$(echo "${lines[5]}" | grep "pv")" ]
+  [ "$(echo "${lines[6]}" | grep "zip")" ]
 }
 
 @test "testing coreutils commands" {
@@ -161,4 +163,13 @@ teardown() {
   [ "$(echo "${lines[0]}" | grep "gnu_coreutils")" ]
   [ "$(echo "${lines[5]}" | grep "file")" ]
   [ "$(echo "${lines[6]}" | grep "gnu_coreutils")" ]
+}
+
+@test "testing hub version is different to git version" {
+  run $has hub git
+
+  [ "$status" -eq 0 ]
+  [ "$(echo "${lines[0]}" | grep "hub")" ]
+  [ "$(echo "${lines[1]}" | grep "git")" ]
+  [ ! "${lines[0]##*\ }" = "${lines[1]##*\ }" ]
 }

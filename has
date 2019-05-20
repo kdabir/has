@@ -154,6 +154,18 @@ __detect(){
     # readlink (GNU coreutils) 8.28
     gnu_coreutils)    __dynamic_detect--version readlink ;;
 
+    ## hub uses --version but version string is on second line, or third if HUB_VERBOSE set
+    hub)
+      version=$(HUB_VERBOSE='' hub --version 2>&1 | sed -n 2p | grep -Eo "${REGEX_SIMPLE_VERSION}" | head -1)
+      status=$?
+      ;;
+
+    ## zip uses -v but version string is on second line
+    zip)
+      version=$(zip -v 2>&1 | sed -n 2p | grep -Eo "${REGEX_SIMPLE_VERSION}" | head -1)
+      status=$?
+      ;;
+
     has)
       version=$(has 2>&1 | grep -Eo "${REGEX_SIMPLE_VERSION}" | head -1)
       status=$?
