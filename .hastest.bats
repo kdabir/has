@@ -58,7 +58,7 @@ teardown() {
 
 @test "make update runs git fetch" {
   cd "${BATS_TEST_DIRNAME}"
-  skip "make update overwrites my changes"
+  skip "make update overwrites my git working tree"
   run make update
 
   [ "$status" -eq 0 ]
@@ -157,7 +157,7 @@ teardown() {
 }
 
 @test "testing coreutils commands" {
-  run $has coreutils sed awk grep sudo file linux-utils
+  run $has coreutils sed awk grep sudo file linuxutils
 
   [ "$status" -eq 0 ]
   [ "$(echo "${lines[0]}" | grep "gnu_coreutils")" ]
@@ -166,6 +166,9 @@ teardown() {
 }
 
 @test "testing hub version is different to git version" {
+  if ! command -v hub; then
+    skip "'hub' command not found.  This passes for @virgilwashere locally."
+  fi
   run $has hub git
 
   [ "$status" -eq 0 ]
