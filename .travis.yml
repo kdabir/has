@@ -5,6 +5,9 @@ addons:
     update: true
     packages:
     - bc
+    - pv
+    - xz-utils
+    - unar
 
 env:
   global:

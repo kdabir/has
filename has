@@ -8,20 +8,20 @@ readonly BINARY_NAME="has"
 readonly VERSION="v1.4.0"
 
 ## constant - symbols for success failure
-readonly  txtreset="$(tput sgr0)"
-readonly  txtbold="$(tput bold)"
-readonly  txtblack="$(tput setaf 0)"
-readonly  txtred="$(tput setaf 1)"
-readonly  txtgreen="$(tput setaf 2)"
-readonly  txtyellow="$(tput setaf 3)"
-readonly  txtblue="$(tput setaf 4)"
-readonly  txtpurple="$(tput setaf 5)"
-readonly  txtcyan="$(tput setaf 6)"
-readonly  txtwhite="$(tput setaf 7)"
+readonly txtreset="$(tput sgr0)"
+readonly txtbold="$(tput bold)"
+readonly txtblack="$(tput setaf 0)"
+readonly txtred="$(tput setaf 1)"
+readonly txtgreen="$(tput setaf 2)"
+readonly txtyellow="$(tput setaf 3)"
+readonly txtblue="$(tput setaf 4)"
+readonly txtpurple="$(tput setaf 5)"
+readonly txtcyan="$(tput setaf 6)"
+readonly txtwhite="$(tput setaf 7)"
 # unicode "✗"
-readonly  fancyx='\342\234\227'
+readonly fancyx='\342\234\227'
 # unicode "✓"
-readonly  checkmark='\342\234\223'
+readonly checkmark='\342\234\223'
 # PASS="\e[1m\e[38;5;2m✔\e[m"
 # FAIL="\e[1m\e[38;5;1m✘\e[m"
 readonly PASS="${txtbold}${txtgreen}${checkmark}${txtreset}"
@@ -41,7 +41,7 @@ RC_FILE=".hasrc"
 __dynamic_detect(){
   cmd="${1}"
   params="${2}"
-  version=$(eval "${cmd}" "${params}" "2>&1" | grep -Eo "${REGEX_SIMPLE_VERSION}" | head -1)
+  version=$( eval "${cmd}" "${params}" "2>&1" | grep -Eo "${REGEX_SIMPLE_VERSION}" | head -1)
   status=$?
 }
 
@@ -60,28 +60,33 @@ __dynamic_detect-v(){
   __dynamic_detect "${1}" "-v"
 }
 
+# commands that use `-V` flag
+__dynamic_detect-V(){
+  __dynamic_detect "${1}" "-V"
+}
+
 # commands that use `version` argument
 __dynamic_detect-arg_version(){
   __dynamic_detect "${1}" "version"
 }
 
-
 ## the main function
 __detect(){
   name="${1}"
 
-  # setup aliases maps commonly used name to exact command name
+  # setup aliases - maps commonly used name to exact command name
   case ${name} in
-    golang) command="go" ;;
-    jre) command="java" ;;
-    jdk) command="javac" ;;
-    nodejs) command="node" ;;
-    goreplay) command="gor";;
-    httpie) command="http";;
-    homebrew) command="brew";;
-    awsebcli) command="eb";;
-    awscli) command="aws";;
-    *)      command=${name} ;;
+    golang                ) command="go"            ;;
+    jre                   ) command="java"          ;;
+    jdk                   ) command="javac"         ;;
+    nodejs                ) command="node"          ;;
+    goreplay              ) command="gor"           ;;
+    httpie                ) command="http"          ;;
+    homebrew              ) command="brew"          ;;
+    awsebcli              ) command="eb"            ;;
+    awscli                ) command="aws"           ;;
+    *coreutils|linux*utils) command="gnu_coreutils" ;;
+    *                     ) command=${name}         ;;
   esac
 
   case "${command}" in
@@ -94,6 +99,10 @@ __detect(){
     vim|emacs|nano|subl)    __dynamic_detect--version "${command}" ;;
     bats|tree|ack|autojump) __dynamic_detect--version "${command}" ;;
     jq|ag|brew)             __dynamic_detect--version "${command}" ;;
+    apt|apt-get|aptitude)   __dynamic_detect--version "${command}" ;;
+    sed|awk|grep|file|sudo) __dynamic_detect--version "${command}" ;;
+    gzip|xz|unar|bzip2)     __dynamic_detect--version "${command}" ;;
+    tar|pv)                 __dynamic_detect--version "${command}" ;;
 
     R)                      __dynamic_detect--version "${command}" ;;
     node|npm|yarn)          __dynamic_detect--version "${command}" ;;
@@ -105,45 +114,56 @@ __detect(){
     lein)                   __dynamic_detect--version "${command}" ;;
     aws|eb|sls|gcloud)      __dynamic_detect--version "${command}" ;;
 
+    # commands that need -v flag
+    unzip)                  __dynamic_detect-v "${command}" ;;
+
+    # commands that need -V flag
+    ab)                     __dynamic_detect-V "${command}" ;;
+
     # commands that need -version flag
     ant|java|javac)         __dynamic_detect-version "${command}" ;;
     scala|kotlin)           __dynamic_detect-version "${command}" ;;
 
     # commands that need version arg
-    hugo)                   __dynamic_detect-arg_version "${command}" ;;
+    go|hugo)                __dynamic_detect-arg_version "${command}" ;;
 
     ## Example of commands that need custom processing
-    ## go needs version arg
-    go)
-      version=$(go version 2>&1| grep -Eo "${REGEX_SIMPLE_VERSION}" | head -1)
-      status=$?
-      ;;
 
     ## TODO cleanup, currently need to add extra space in regex, otherwise the time gets selected
     gulp)
-      version=$(gulp --version 2>&1| grep -Eo " ${REGEX_SIMPLE_VERSION}" | head -1)
-      status=$?
-      ;;
-
-    ## ab uses -V flag
-    ab)
-      version=$(ab -V 2>&1 | grep -Eo "${REGEX_SIMPLE_VERSION}" | head -1)
+      version=$( gulp --version 2>&1| grep -Eo " ${REGEX_SIMPLE_VERSION}" | head -1)
       status=$?
       ;;
 
     ## gor returns version but does not return normal status code, hence needs custom processing
     gor)
-      version=$(gor version 2>&1 | grep -Eo "${REGEX_SIMPLE_VERSION}" | head -1)
+      version=$( gor version 2>&1 | grep -Eo "${REGEX_SIMPLE_VERSION}" | head -1)
       if [ $? -eq 1 ]; then status=0; else status=1; fi
       ;;
 
     sbt)
-      version=$(sbt about 2>&1 | grep -Eo "([[:digit:]]{1,4}\.){2}[[:digit:]]{1,4}" | head -1)
+      version=$( sbt about 2>&1 | grep -Eo "([[:digit:]]{1,4}\.){2}[[:digit:]]{1,4}" | head -1)
+      status=$?
+      ;;
+
+    ## use 'readlink' to test for GNU coreutils
+    # readlink (GNU coreutils) 8.28
+    gnu_coreutils)    __dynamic_detect--version readlink ;;
+
+    ## hub uses --version but version string is on second line, or third if HUB_VERBOSE set
+    hub)
+      version=$( HUB_VERBOSE='' hub --version 2>&1 | sed -n 2p | grep -Eo "${REGEX_SIMPLE_VERSION}" | head -1)
+      status=$?
+      ;;
+
+    ## zip uses -v but version string is on second line
+    zip)
+      version=$( zip -v 2>&1 | sed -n 2p | grep -Eo "${REGEX_SIMPLE_VERSION}" | head -1)
       status=$?
       ;;
 
     has)
-      version=$(has 2>&1 | grep -Eo "${REGEX_SIMPLE_VERSION}" | head -1)
+      version=$( has 2>&1 | grep -Eo "${REGEX_SIMPLE_VERSION}" | head -1)
       status=$?
       ;;
 
@@ -162,19 +182,19 @@ __detect(){
 
   if [ "$status" -eq "-1" ]; then     ## When unsafe processing is not allowed, the -1 signifies
     printf '%b %s not understood\n' "${FAIL}" "${command}"
-    KO=$(($KO+1))
+    KO=$(( KO+1 ))
 
   elif [ ${status} -eq 127 ]; then    ## command not installed
     printf '%b %s\n' "${FAIL}" "${command}"
-    KO=$(($KO+1))
+    KO=$(( KO+1 ))
 
   elif [ ${status} -eq 0 ] || [ ${status} -eq 141 ]; then      ## successfully executed
     printf "%b %s %b\n" "${PASS}" "${command}" "${txtbold}${txtyellow}${version}${txtreset}"
-    OK=$(($OK+1))
+    OK=$(( OK+1 ))
 
   else  ## as long as its not 127, command is there, but we might not have been able to extract version
     printf '%b %s\n' "${PASS}" "${command}"
-    OK=$(($OK+1))
+    OK=$(( OK+1 ))
   fi
 } #end __detect
 
@@ -203,13 +223,13 @@ else
     ## for all
     while read -r line; do
       __detect "${line}"
-    done <<<"$(grep -Ev "^\s*(#|$)" "${RC_FILE}" )"
+    done <<<"$( grep -Ev "^\s*(#|$)" "${RC_FILE}" )"
   fi
 
   ## max status code that can be returned
   MAX_STATUS_CODE=126
 
-  if [[ "$KO" -gt "${MAX_STATUS_CODE}" ]]; then
+  if [[ "${KO}" -gt "${MAX_STATUS_CODE}" ]]; then
     exit "${MAX_STATUS_CODE}"
   else
     exit "${KO}"

@@ -1,0 +1,24 @@
+---
+enabled: true
+auto: false
+remote_files: []
+comments: true
+statuses: true
+request_review: null
+labels: [linting]
+restylers:
+  - shfmt:
+# -ln str   language variant to parse (bash/posix/mksh, default "bash")
+# -i uint   indent: 0 for tabs (default), >0 for number of spaces
+# -bn       binary ops like && and | may start a line
+# -ci       switch cases will be indented
+# -sr       redirect operators will be followed by a space
+# -kp       keep column alignment paddings
+# -mn       minify program to reduce its size (implies -s)
+    arguments:
+      - -ln bash
+      - -i 2
+      - -ci
+      - -bn
+      - -kp
+      - -sr
