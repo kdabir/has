@@ -40,6 +40,14 @@ $ echo $?
 
 `has` is a single bash script that does it all. Just [download](https://raw.githubusercontent.com/kdabir/has/master/has) the script and make it available on your `$PATH`. However, to make it even simpler, just follow *one* of these methods.
 
+### Homebrew (MacOS)
+
+Just run the following: 
+
+```bash
+brew install kdabir/tap/has
+```
+
 ### Cloning the Repo
 
 Just execute the following command in a terminal: it clones `has` repo and installs it into your path.
