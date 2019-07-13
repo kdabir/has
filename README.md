@@ -7,9 +7,9 @@
 
 [![demo](demo.svg)](demo.svg)
 
-## Quick Start
+## Quick Start 🚴
 
-Just [Install](#installing) the `has` script, there is no dependency apart from `bash` itself. For the command line, just pass the list of commands you want to check as arguments to `has`, for example:
+Just [install](#installing) the `has` script, (there is no dependency apart from `bash` itself). From the command line, pass the list of commands you want to check as arguments to `has`, for example:
 
 ```console
 $ has node npm java git gradle
@@ -51,9 +51,9 @@ fi
 
 ## Installing 🚀
 
-`has` is a single bash script that does it all. Just [download](https://raw.githubusercontent.com/kdabir/has/master/has) the script and make it available on your `$PATH`. However, to make it even simpler, just follow *one* of these methods.
+`has` is a single bash script that does it all. You can [download](https://raw.githubusercontent.com/kdabir/has/master/has) the script and make it available on your `$PATH`. However, to make it even simpler, just follow *one* of these methods.
 
-### Homebrew (MacOS)
+### Homebrew (MacOS) 🍺
 
 Just run the following: 
 
@@ -122,6 +122,8 @@ has is aliased to `curl -sL https://git.io/_has | bash -s'
 Let's say `$ has foobar` returns `foobar not understood`, because `has` may not have whitelisted `foobar`.
 
 In such cases, pass `HAS_ALLOW_UNSAFE=y has foobar`. This should still check for existance of `foobar` and tries to detect version as well.
+
+> the value must exactly be `y` for it to work.
 
 ## The `.hasrc` file
 
