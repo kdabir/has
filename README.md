@@ -7,9 +7,9 @@
 
 [![demo](demo.svg)](demo.svg)
 
-## How ?
+## Quick Start
 
-[Install](#installing) the `has` script. There is no dependency apart from `bash` itself.
+Just [Install](#installing) the `has` script, there is no dependency apart from `bash` itself. For the command line, just pass the list of commands you want to check as arguments to `has`, for example:
 
 ```console
 $ has node npm java git gradle
@@ -20,7 +20,7 @@ $ has node npm java git gradle
 ✔ gradle 4.0.1
 ```
 
-If everything is good `has` exits with status code `0`. The status code reflects number of commands **not found** on your path.
+If everything is good `has` exits with status code `0`. The exit status code reflects number of commands **not found** on your path.
 
 ```console
 $ has node go javac
@@ -36,7 +36,20 @@ $ echo $?
 1
 ```
 
-## Installing
+## Use `has` in scripts
+
+`has` can be used in shell scripts to check presence of tool in very readable way
+
+```bash
+if has node
+    then echo you have what it takes 🎉
+fi
+```
+
+**Pro Tip**: the `has` in above command can be replaced with the entire curl command for to ensure portability of script → `if curl -sL https://git.io/_has | bash -s node then ...`
+
+
+## Installing 🚀
 
 `has` is a single bash script that does it all. Just [download](https://raw.githubusercontent.com/kdabir/has/master/has) the script and make it available on your `$PATH`. However, to make it even simpler, just follow *one* of these methods.
 
