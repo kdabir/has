@@ -120,6 +120,7 @@ __detect(){
     gzip|xz|unar|bzip2)     __dynamic_detect--version "${command}" ;;
     tar|pv)                 __dynamic_detect--version "${command}" ;;
 
+    docker)                 __dynamic_detect--version "${command}" ;;
 
     ## Scripting Language / runtime
     ruby|R|python|python3)  __dynamic_detect--version "${command}" ;;
