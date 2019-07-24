@@ -92,27 +92,56 @@ __detect(){
   case "${command}" in
 
     # commands that need --version flag
+
+    ## Shells
     bash|zsh)               __dynamic_detect--version "${command}" ;;
+
+    ## VCS
     git|hg|svn|bzr)         __dynamic_detect--version "${command}" ;;
-    gcc|make)               __dynamic_detect--version "${command}" ;;
+
+    ## Http
     curl|wget|http)         __dynamic_detect--version "${command}" ;;
-    vim|emacs|nano|subl)    __dynamic_detect--version "${command}" ;;
-    bats|tree|ack|autojump) __dynamic_detect--version "${command}" ;;
-    jq|ag|brew)             __dynamic_detect--version "${command}" ;;
+
+    ## Editors
+    vim|emacs|nano)         __dynamic_detect--version "${command}" ;;
+    subl|code)              __dynamic_detect--version "${command}" ;;
+
+    ## File system search and navigation
+    jq)                     __dynamic_detect--version "${command}" ;;
+    ag|ack|rg)              __dynamic_detect--version "${command}" ;;
+    tree|autojump)          __dynamic_detect--version "${command}" ;;
+
+    ## package mangers
     apt|apt-get|aptitude)   __dynamic_detect--version "${command}" ;;
+    brew)                   __dynamic_detect--version "${command}" ;;
+
+    ## System tools
     sed|awk|grep|file|sudo) __dynamic_detect--version "${command}" ;;
     gzip|xz|unar|bzip2)     __dynamic_detect--version "${command}" ;;
     tar|pv)                 __dynamic_detect--version "${command}" ;;
 
-    R)                      __dynamic_detect--version "${command}" ;;
-    node|npm|yarn)          __dynamic_detect--version "${command}" ;;
-    grunt|brunch)           __dynamic_detect--version "${command}" ;;
-    ruby|gem|rake|bundle)   __dynamic_detect--version "${command}" ;;
-    python|python3)         __dynamic_detect--version "${command}" ;;
+
+    ## Scripting Language / runtime
+    ruby|R|python|python3)  __dynamic_detect--version "${command}" ;;
     perl|perl6|php|php5)    __dynamic_detect--version "${command}" ;;
-    groovy|gradle|mvn)      __dynamic_detect--version "${command}" ;;
-    lein)                   __dynamic_detect--version "${command}" ;;
+    groovy|node)            __dynamic_detect--version "${command}" ;;
+
+    ## Compile
+    gcc|make|bats)          __dynamic_detect--version "${command}" ;;
+
+    ## Build tools
+    lein|gradle|mvn)        __dynamic_detect--version "${command}" ;;
+    grunt|brunch)           __dynamic_detect--version "${command}" ;;
+    gem|rake|bundle)        __dynamic_detect--version "${command}" ;;
+    npm|yarn)               __dynamic_detect--version "${command}" ;;
+
+
+    ## Cloud Tools
     aws|eb|sls|gcloud)      __dynamic_detect--version "${command}" ;;
+    heroku)                 __dynamic_detect--version "${command}" ;;
+    netlify)                __dynamic_detect--version "${command}" ;;
+    netlifyctl)             __dynamic_detect-arg_version "${command}" ;;
+
 
     # commands that need -v flag
     unzip)                  __dynamic_detect-v "${command}" ;;
@@ -121,8 +150,8 @@ __detect(){
     ab)                     __dynamic_detect-V "${command}" ;;
 
     # commands that need -version flag
-    ant|java|javac)         __dynamic_detect-version "${command}" ;;
-    scala|kotlin)           __dynamic_detect-version "${command}" ;;
+    ant)                               __dynamic_detect-version "${command}" ;;
+    java|javac|scala|kotlin)           __dynamic_detect-version "${command}" ;;
 
     # commands that need version arg
     go|hugo)                __dynamic_detect-arg_version "${command}" ;;
