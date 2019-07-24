@@ -85,6 +85,7 @@ __detect(){
     homebrew              ) command="brew"          ;;
     awsebcli              ) command="eb"            ;;
     awscli                ) command="aws"           ;;
+    postgresql            ) command="psql"          ;;
     *coreutils|linux*utils) command="gnu_coreutils" ;;
     *                     ) command=${name}         ;;
   esac
@@ -121,6 +122,9 @@ __detect(){
     tar|pv)                 __dynamic_detect--version "${command}" ;;
 
     docker)                 __dynamic_detect--version "${command}" ;;
+    
+    ## Database CLI
+    psql)                   __dynamic_detect--version "${command}" ;;
 
     ## Scripting Language / runtime
     ruby|R|python|python3)  __dynamic_detect--version "${command}" ;;
