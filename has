@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
 ## source: https://github.com/kdabir/has
 
+## To add more tools, search for "__detect" function in this file
+
 ## Important so that version is not extracted for failed commands (not found)
 set -o pipefail
 
 readonly BINARY_NAME="has"
 readonly VERSION="v1.4.0"
 
-## constant - symbols for success failure
+## constants - symbols for success failure
 readonly txtreset="$(tput sgr0)"
 readonly txtbold="$(tput bold)"
 readonly txtblack="$(tput setaf 0)"
@@ -34,10 +36,12 @@ KO=0
 ## Regex to extract simple version - extracts numeric sem-ver style versions
 REGEX_SIMPLE_VERSION="([[:digit:]]+\.?){2,3}"
 
-## RC file can contain commands to be tested
+## name of RC file that can contain list of tools to be checked
 RC_FILE=".hasrc"
 
 # try to extract version by executing "${1}" with "${2}" arg
+# command name to be executed is dynamically passed to this function as ${1}
+# arg to ${1} is passed in ${2}
 __dynamic_detect(){
   cmd="${1}"
   params="${2}"

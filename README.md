@@ -180,6 +180,14 @@ On machines that don't even have `has` installed, your project's `.hasrc` is hon
 3. Adding support for more commands
 4. Adding more features to `has`
 
+## Adding more tools
+
+If the command you wish to include supports any of `-v`, `--version`, `-version`, `version`, `-V` then you can find 
+corresponding function which can be called to check presence and extract version. However, for many tools version
+extraction may not work and you will need to add custom parsing of command's output. The `has` script is commented
+to guide developers about what needs to be done to add more tools. 
+
+
 ## Adding Features
 
 If you are contributing a feature, please ensure to check current tests. Add test cases for your feature. Tests are
