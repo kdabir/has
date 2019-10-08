@@ -176,7 +176,7 @@ __detect(){
     ## gor returns version but does not return normal status code, hence needs custom processing
     gor)
       version=$( gor version 2>&1 | grep -Eo "${REGEX_SIMPLE_VERSION}" | head -1)
-      if [ $? -eq 1 ]; then status=0; else status=1; fi
+      if [ $? -eq 1 ]; then status=0; else status=127; fi
       ;;
 
     sbt)
