@@ -125,7 +125,8 @@ __detect(){
     gzip|xz|unar|bzip2)     __dynamic_detect--version "${command}" ;;
     tar|pv)                 __dynamic_detect--version "${command}" ;;
 
-    docker)                 __dynamic_detect--version "${command}" ;;
+    # Container runtimes
+    docker|podman)          __dynamic_detect--version "${command}" ;;
     
     ## Database CLI
     psql)                   __dynamic_detect--version "${command}" ;;
