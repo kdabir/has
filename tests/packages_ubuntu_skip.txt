@@ -1,0 +1,26 @@
+# todo: add to test container
+brunch
+code
+eb
+gcloud
+gnu_coreutils
+go
+gor
+has
+heroku
+kotlin
+mvn
+netlify
+netlifyctl
+php5
+podman
+rg
+sbt
+sls
+subl
+
+# installed on container (and has confirms), but
+# todo: has shows EMPTY version string on container
+awk
+brew
+groovy

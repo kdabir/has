@@ -1,0 +1,56 @@
+# non-alpine packages
+apt
+apt-get
+aptitude
+
+# todo: add to test container
+ag
+ant
+autojump
+aws
+brew
+brunch
+code
+eb
+gcloud
+gem
+gnu_coreutils
+gor
+groovy
+grunt
+gulp
+has
+heroku
+hub
+java
+javac
+kotlin
+lein
+mvn
+netlify
+netlifyctl
+node
+perl6
+php5
+podman
+rake
+rg
+sbt
+scala
+sls
+subl
+unar
+
+# installed on container (and has confirms), but
+# todo: has shows EMPTY version string on container
+awk
+bzip2
+grep
+gzip
+wget
+xz
+
+# installed on container (and has confirms), but
+# todo: has grabs INCORRECT version string on container
+jq
+perl
