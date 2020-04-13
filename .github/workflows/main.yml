@@ -1,0 +1,52 @@
+name: CI
+on: [push, pull_request]
+
+jobs:
+  shellcheck:
+    name: shellcheck
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v2
+
+      - name: Run Shellcheck
+        uses: ludeeus/action-shellcheck@0.1.0
+
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        container:
+          - debian # uses debian:buster-20200327-slim which is debian 10.3
+          - ubuntu16 # uses ubuntu:xenial-20200212 which is ubuntu 16.04
+
+    container: sdolenc/testing-has:${{ matrix.container }}
+
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v2
+
+      - name: test
+        run: make test
+        shell: bash
+
+  test_all:
+    name: test_all
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        container:
+          - ubuntu # uses ubuntu:bionic-20200311 which is ubuntu 18.04
+          - alpine # uses bash:5.0.16 which is alpine 3.11
+
+    container: sdolenc/testing-has:${{ matrix.container }}
+
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v2
+
+      - name: test_all
+        run: bats -t ./tests/test_all_packages.bats
+        shell: bash
