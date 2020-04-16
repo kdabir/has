@@ -8,8 +8,6 @@ get_version_from_has() {
 
 @test "test $package" {
   # Ensure inputs
-  [ -n "$package" ]
-  [ -n "$expected_ver" ]
   [ "$(echo "${package}" | wc -w)" -eq 1 ]
   [ "$(echo "${expected_ver}" | wc -w)" -eq 1 ]
 
@@ -23,7 +21,7 @@ get_version_from_has() {
   run get_version_from_has "$output"
   if [ "$status" -eq 0 ]; then
     actual_ver="$output"
-    [ -n "$actual_ver" ]
+    [ "$(echo "${actual_ver}" | wc -w)" -eq 1 ]
   fi
 
   # Compare expected with actual

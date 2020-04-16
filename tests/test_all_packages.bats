@@ -3,14 +3,14 @@
 cd $BATS_TEST_DIRNAME
 
 distro="alpine"
-if command -v apt-get 2>&1 >/dev/null; then
+if grep -iq "ubuntu" /etc/issue; then
   distro="ubuntu"
 fi
 SKIP_FILE=packages_${distro}_skip.txt
 DOCKER_FILE=./containers/${distro}.Dockerfile
 
 expected_version() {
-  grep -Eo "( |#)${1}=[^\` *-]+" $DOCKER_FILE | tr "=" "\n" | tr ":" "\n" | tail -1
+  grep -Eo "( |#)${1}(|@\")=[^\`\"; *-]+" $DOCKER_FILE | tr "=" "\n" | tr ":" "\n" | tail -1
 }
 
 @test "test each package individually and verify version" {

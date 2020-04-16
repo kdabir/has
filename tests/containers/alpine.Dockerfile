@@ -20,7 +20,7 @@ RUN apk add --no-cache \
         emacs=26.3-r2 \
         file=5.37-r1 \
         gcc=9.2.0-r4 \
-        git=2.24.1-r0 \
+        git=2.24.2-r0 \
         go=1.13.4-r1 \
         gradle=5.6.4-r0 \
         httpie=1.0.3-r1 `# http=1.0.3` \
@@ -48,7 +48,17 @@ RUN apk add --no-cache \
         zip=3.0-r7 \
         zsh=5.7.1-r0; \
     \
+    npm install -g brunch@"=3.0.0"; \
+    \
+    gcloud=289.0.0; \
+    curl -L "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${gcloud}-linux-x86_64.tar.gz" | tar xz; \
+    \
     # bats=1.2.0
     commit="87b16eb"; \
     curl -L "https://github.com/bats-core/bats-core/tarball/${commit}" | tar xz; \
-    "bats-core-bats-core-${commit}/install.sh" /usr/local
+    "bats-core-bats-core-${commit}/install.sh" /usr/local; \
+    \
+    hub=2.14.2; \
+    curl -L "https://github.com/github/hub/releases/download/v${hub}/hub-linux-386-${hub}.tgz" | tar xz
+
+ENV PATH /hub-linux-386-${hub}/bin:/google-cloud-sdk/bin:$PATH

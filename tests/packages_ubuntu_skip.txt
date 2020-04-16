@@ -2,8 +2,6 @@
 brunch
 code
 eb
-gcloud
-gnu_coreutils
 go
 gor
 has

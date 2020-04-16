@@ -6,6 +6,7 @@ FROM ubuntu:bionic-20200311
 #       awk
 #       bash=4.4.20
 #       bzip2=1.0.6
+#       gnu_coreutils=8.28
 #       grep=3.1
 #       gzip=1.6
 #       perl=26
@@ -68,10 +69,15 @@ RUN apt-get update && DEBIAN_FRONTEND="noninteractive" apt-get install --no-inst
         zsh=5.4.2* \
         && apt-get -y autoremove && apt-get -y clean && rm -rf /var/lib/apt/lists/*; \
     \
+    gcloud=289.0.0; \
+    curl -L "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${gcloud}-linux-x86_64.tar.gz" | tar xz; \
+    \
     # bats=1.2.0
     commit="87b16eb"; \
     curl -L "https://github.com/bats-core/bats-core/tarball/${commit}" | tar xz; \
     "bats-core-bats-core-${commit}/install.sh" /usr/local; \
     \
-    # hub=2.14.2
-    curl -fsSL https://github.com/github/hub/raw/master/script/get | bash -s 2.14.2
+    hub=2.14.2; \
+    curl -fsSL https://github.com/github/hub/raw/master/script/get | bash -s ${hub}
+
+ENV PATH /google-cloud-sdk/bin:$PATH
