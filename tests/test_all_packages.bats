@@ -31,17 +31,26 @@ expected_version() {
 
   echo "# status code=$final_status" >&3
   [ "$final_status" -eq 0 ]
+  echo "#" >&3
 }
 
 @test "test all packages at once" {
   # subtract skips from full list
   packages_to_skip="$(grep -Ev "^\s*(#|$)" $SKIP_FILE | xargs | tr " " "|")"
-  packages=$(bash packages_all.sh | egrep -Ev "$packages_to_skip" | xargs)
+  packages=$(bash packages_all.sh | egrep -Ev "^($packages_to_skip)$" | xargs)
 
   run ../has $packages
   echo "$output" >&3
   echo "#" >&3
 
+  packages_count=$(echo "${packages}" | wc -w)
+  echo "# tested ${packages_count} commands simultaneously" >&3
+  actual_packages_count=$(echo "${output}" | wc -l)
+  echo "# received output from ${actual_packages_count} commands" >&3
+  [ "$packages_count" -eq "$actual_packages_count" ]
+  echo "#" >&3
+
   echo "# status code=$status" >&3
   [ "$status" -eq 0 ]
+  echo "#" >&3
 }
