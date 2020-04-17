@@ -27,12 +27,13 @@ RUN apk add --no-cache \
         hugo=0.61.0-r0 \
         jq=1.6-r0 \
         make=4.2.1-r2 \
+        maven=3.6.3-r0 `# mvn=3.6.3` \
         mercurial=5.3.2-r0 `# hg=5.3.2` \
         nano=4.6-r0 \
         ncurses=6.1_p20200118-r3 `#tput:todo` \
         npm `# npm=6.13.4 ` \
         perl=5.30.1-r0 ` # perl=30` \
-        php `# php=7.3.16 ` \
+        php7=7.3.17-r0 `# php=7.3.17 ` \
         postgresql=12.2-r0 `# psql=12.2` \
         pv=1.6.6-r1 \
         python=2.7.16-r3 \
@@ -48,17 +49,25 @@ RUN apk add --no-cache \
         zip=3.0-r7 \
         zsh=5.7.1-r0; \
     \
-    npm install -g brunch@"=3.0.0"; \
+    npm install -g \
+        brunch@"=3.0.0" \
+        heroku@"=7.39.3" \
+        netlify-cli@="2.46.0" `# netlify=2.46.0`; \
+    \
+    commit="87b16eb" `# bats=1.2.0`; \
+    curl -L "https://github.com/bats-core/bats-core/tarball/${commit}" | tar xz; \
+    "bats-core-bats-core-${commit}/install.sh" /usr/local; \
     \
     gcloud=289.0.0; \
     curl -L "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${gcloud}-linux-x86_64.tar.gz" | tar xz; \
     \
-    # bats=1.2.0
-    commit="87b16eb"; \
-    curl -L "https://github.com/bats-core/bats-core/tarball/${commit}" | tar xz; \
-    "bats-core-bats-core-${commit}/install.sh" /usr/local; \
+    gor=1.0.0; \
+    curl -L "https://github.com/buger/goreplay/releases/download/v${gor}/gor_${gor}_x64.tar.gz" | tar xz --directory /usr/local/bin; \
     \
     hub=2.14.2; \
-    curl -L "https://github.com/github/hub/releases/download/v${hub}/hub-linux-386-${hub}.tgz" | tar xz
+    curl -L "https://github.com/github/hub/releases/download/v${hub}/hub-linux-386-${hub}.tgz" | tar xz; \
+    \
+    netlifyctl=0.4.0; \
+    curl -L "https://github.com/netlify/netlifyctl/releases/download/v${netlifyctl}/netlifyctl-linux-amd64-${netlifyctl}.tar.gz" | tar xz --directory /usr/local/bin
 
 ENV PATH /hub-linux-386-${hub}/bin:/google-cloud-sdk/bin:$PATH

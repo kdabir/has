@@ -3,14 +3,11 @@ brunch
 code
 eb
 go
-gor
 has
 heroku
 kotlin
 mvn
 netlify
-netlifyctl
-php5
 podman
 rg
 sbt

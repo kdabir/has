@@ -19,22 +19,16 @@ brew
 code
 eb
 gem
-gor
 groovy
 grunt
 gulp
 has
-heroku
 java
 javac
 kotlin
 lein
-mvn
-netlify
-netlifyctl
 node
 perl6
-php5
 podman
 rake
 rg
@@ -43,6 +37,9 @@ scala
 sls
 subl
 unar
+
+# runs best on alpine 3.8 or earlier, but we're using 3.11
+php5
 
 # installed on container (and has confirms), but
 # todo: has shows EMPTY version string on container
@@ -58,3 +55,7 @@ xz
 # todo: has grabs INCORRECT version string on container
 jq
 perl
+
+# installed on container (and has confirms), but
+# todo: has reports command not found
+gor

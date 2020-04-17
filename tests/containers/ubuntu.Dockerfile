@@ -56,6 +56,7 @@ RUN apt-get update && DEBIAN_FRONTEND="noninteractive" apt-get install --no-inst
         rubygems `# gem=2.7.6` \
         scala=2.11.12* \
         silversearcher-ag `# ag=2.1.0` \
+        software-properties-common=0.96.24.32.12 `# todo:add-apt-repository ` \
         subversion `# svn=1.9.7` \
         sudo=1.8.21* \
         tree=1.7.0* \
@@ -66,18 +67,29 @@ RUN apt-get update && DEBIAN_FRONTEND="noninteractive" apt-get install --no-inst
         xz-utils `# xz=5.2.2` \
         yarn `# yarn=0.32` \
         zip=3.0* \
-        zsh=5.4.2* \
-        && apt-get -y autoremove && apt-get -y clean && rm -rf /var/lib/apt/lists/*; \
+        zsh=5.4.2*; \
+    \
+    commit="87b16eb" `# bats=1.2.0`; \
+    curl -L "https://github.com/bats-core/bats-core/tarball/${commit}" | tar xz; \
+    "bats-core-bats-core-${commit}/install.sh" /usr/local; \
     \
     gcloud=289.0.0; \
     curl -L "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${gcloud}-linux-x86_64.tar.gz" | tar xz; \
     \
-    # bats=1.2.0
-    commit="87b16eb"; \
-    curl -L "https://github.com/bats-core/bats-core/tarball/${commit}" | tar xz; \
-    "bats-core-bats-core-${commit}/install.sh" /usr/local; \
+    gor=1.0.0; \
+    curl -L "https://github.com/buger/goreplay/releases/download/v${gor}/gor_${gor}_x64.tar.gz" | tar xz --directory /usr/local/bin; \
     \
     hub=2.14.2; \
-    curl -fsSL https://github.com/github/hub/raw/master/script/get | bash -s ${hub}
+    curl -fsSL "https://github.com/github/hub/raw/master/script/get" | bash -s ${hub}; \
+    \
+    netlifyctl=0.4.0; \
+    curl -L "https://github.com/netlify/netlifyctl/releases/download/v${netlifyctl}/netlifyctl-linux-amd64-${netlifyctl}.tar.gz" | tar xz --directory /usr/local/bin; \
+    \
+    add-apt-repository -y ppa:ondrej/php; \
+    apt-get update && DEBIAN_FRONTEND="noninteractive" apt-get install --no-install-recommends -y -qq \
+        php5.6=5.6.40* `# php5=5.6.40`; \
+    ln -s /usr/bin/php5.6 /usr/bin/php5; \
+    \
+    apt-get -y autoremove && apt-get -y clean && rm -rf /var/lib/apt/lists/*
 
 ENV PATH /google-cloud-sdk/bin:$PATH
