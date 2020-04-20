@@ -10,7 +10,7 @@ SKIP_FILE=packages_${distro}_skip.txt
 DOCKER_FILE=./containers/${distro}.Dockerfile
 
 expected_version() {
-  grep -Eo "( |#)${1}(|@\")=[^\`\"; *-]+" $DOCKER_FILE | tr "=" "\n" | tr ":" "\n" | tail -1
+  grep -Eo "( |#)${1}(|-cli)(|@\"|~)=[^\`\"; *-]+" $DOCKER_FILE | tr "=" "\n" | tr ":" "\n" | tail -1
 }
 
 @test "test each package individually and verify version" {

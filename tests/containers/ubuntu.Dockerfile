@@ -21,6 +21,7 @@ RUN apt-get update && DEBIAN_FRONTEND="noninteractive" apt-get install --no-inst
         aptitude=0.8.10* \
         autojump=22.5.0* \
         awscli `# aws=1.14.44` \
+        build-essential zlib1g-dev libssl-dev libncurses-dev libffi-dev libsqlite3-dev libreadline-dev libbz2-dev `# required for eb`\
         bzr=2.7.0+bzr6622-10 `# bzr=2.8.0` \
         curl=7.58.0* \
         docker.io `# docker=19.03.6` \
@@ -28,20 +29,17 @@ RUN apt-get update && DEBIAN_FRONTEND="noninteractive" apt-get install --no-inst
         file=1:5.32* \
         gcc=4:7.4.0-1ubuntu2.3 `# gcc=7.5.0` \
         git=1:2.17.1* \
+        gpg-agent `# todo:apt-key` \
         gradle=4.4.1* \
         groovy=2.4.16* \
-        grunt=1.0.1-8 `# grunt=1.2.0` \
-        gulp=3.9.1* \
         httpie `# http=0.9.8` \
         hugo=0.40.1* \
         jq=1.5* \
         leiningen `# lein=2.8.1` \
-        linuxbrew-wrapper `# brew` \
+        locales `# required for brew` \
         make=4.1* \
         mercurial `# hg=4.5.3` \
         nano=2.9.3* \
-        nodejs=8.10.0* `# node=8.10.0` \
-        npm=3.5.2* \
         openjdk-11-jdk-headless `# java=11.0.6 # javac=11.0.6` \
         perl6=6.c-1 `# perl6=2018.03` \
         php=1:7.2+60ubuntu1 `# php=7.2.24` \
@@ -56,7 +54,7 @@ RUN apt-get update && DEBIAN_FRONTEND="noninteractive" apt-get install --no-inst
         rubygems `# gem=2.7.6` \
         scala=2.11.12* \
         silversearcher-ag `# ag=2.1.0` \
-        software-properties-common=0.96.24.32.12 `# todo:add-apt-repository ` \
+        software-properties-common=0.96.24.32.12 `# todo:add-apt-repository` \
         subversion `# svn=1.9.7` \
         sudo=1.8.21* \
         tree=1.7.0* \
@@ -73,6 +71,18 @@ RUN apt-get update && DEBIAN_FRONTEND="noninteractive" apt-get install --no-inst
     curl -L "https://github.com/bats-core/bats-core/tarball/${commit}" | tar xz; \
     "bats-core-bats-core-${commit}/install.sh" /usr/local; \
     \
+    brew=2.2.13; \
+    git clone --branch ${brew} https://github.com/Homebrew/brew; \
+    locale-gen en_US en_US.UTF-8; \
+    eval $(brew/bin/brew shellenv); \
+    ln -s /brew/bin/brew /usr/local/bin/brew; \
+    brew --version; \
+    \
+    commit="102025c" `# eb=3.18.0`; \
+    curl -L "https://github.com/aws/aws-elastic-beanstalk-cli-setup/tarball/${commit}" | tar xz; \
+    "aws-aws-elastic-beanstalk-cli-setup-${commit}/scripts/bundled_installer"; \
+    ln -s /root/.ebcli-virtual-env/executables/eb /usr/local/bin/eb; \
+    \
     gcloud=289.0.0; \
     curl -L "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${gcloud}-linux-x86_64.tar.gz" | tar xz; \
     \
@@ -85,10 +95,29 @@ RUN apt-get update && DEBIAN_FRONTEND="noninteractive" apt-get install --no-inst
     netlifyctl=0.4.0; \
     curl -L "https://github.com/netlify/netlifyctl/releases/download/v${netlifyctl}/netlifyctl-linux-amd64-${netlifyctl}.tar.gz" | tar xz --directory /usr/local/bin; \
     \
-    add-apt-repository -y ppa:ondrej/php; \
+    rg=12.0.1; \
+    curl -L "https://github.com/BurntSushi/ripgrep/releases/download/${rg}/ripgrep-${rg}-x86_64-unknown-linux-musl.tar.gz" | tar xz; \
+    ln -s "/ripgrep-${rg}-x86_64-unknown-linux-musl/rg" /usr/local/bin/rg; \
+    \
+    curl -sL https://deb.nodesource.com/setup_12.x | bash - `#node and npm`;\
+    add-apt-repository -y ppa:ondrej/php `#php5`; \
+    add-apt-repository -y ppa:projectatomic/ppa `#podman`; \
+    wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add - `#subl`; \
+    add-apt-repository -y "deb https://download.sublimetext.com/ apt/stable/" `#subl`; \
     apt-get update && DEBIAN_FRONTEND="noninteractive" apt-get install --no-install-recommends -y -qq \
-        php5.6=5.6.40* `# php5=5.6.40`; \
+        nodejs=12.16.2* `# node=12.16.2 # npm=6.14.4` \
+        php5.6=5.6.40* `# php5=5.6.40` \
+        podman=1.6.2* \
+        sublime-text=3211 `# subl=3211`; \
     ln -s /usr/bin/php5.6 /usr/bin/php5; \
+    \
+    npm install --global \
+        brunch@"=3.0.0" \
+        grunt-cli@"=1.3.2" \
+        gulp-cli@"=2.2.0" \
+        heroku@"=7.39.3" \
+        netlify-cli@"=2.46.0" \
+        serverless@"=1.67.3" `# sls=1.67.3`; \
     \
     apt-get -y autoremove && apt-get -y clean && rm -rf /var/lib/apt/lists/*
 

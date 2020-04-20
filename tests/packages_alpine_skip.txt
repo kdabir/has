@@ -1,7 +1,13 @@
+# not pre-installed to container
+# repository cloned just-in-time during CI
+has
+
 # non-alpine packages
 apt
 apt-get
 aptitude
+code
+subl
 
 # gnu_coreutils shows as installed, but is not on alpine.
 # todo: We should change the command we use for this to
@@ -15,27 +21,15 @@ ag
 ant
 autojump
 aws
-brew
-code
 eb
 gem
 groovy
-grunt
-gulp
-has
-java
-javac
 kotlin
 lein
-node
 perl6
-podman
 rake
-rg
 sbt
 scala
-sls
-subl
 unar
 
 # runs best on alpine 3.8 or earlier, but we're using 3.11

@@ -1,21 +1,20 @@
-# todo: add to test container
-brunch
-code
-eb
-go
+# not pre-installed to container
+# repository cloned just-in-time during CI
 has
-heroku
+
+# Tests are run as admin in CI. Code requires an extra
+# paramater to run as admin.
+# todo: (ideal) update has to add the param (always or conditionally for admin)
+# todo: (or) have container alias command w/ additional param
+code
+
+# todo: add to test container
+go
 kotlin
 mvn
-netlify
-podman
-rg
 sbt
-sls
-subl
 
 # installed on container (and has confirms), but
 # todo: has shows EMPTY version string on container
 awk
-brew
 groovy
