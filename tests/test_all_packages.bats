@@ -14,8 +14,8 @@ expected_version() {
 }
 
 @test "test each package individually and verify version" {
+  packages_count=0
   final_status=0
-
   for package in $(bash packages_all.sh); do
     if [ -n $package ] && ! grep -q "^$package$" $SKIP_FILE; then
       run expected_version $package
@@ -25,9 +25,13 @@ expected_version() {
       package="$package" expected_ver="$output" run bats -t test_package.bats
       echo "# $output" >&3
       echo "#" >&3
+      packages_count=$(($packages_count + 1))
       final_status=$(($final_status + $status))
     fi
   done
+
+  echo "# tested ${packages_count} commands individually" >&3
+  echo "#" >&3
 
   echo "# status code=$final_status" >&3
   [ "$final_status" -eq 0 ]
