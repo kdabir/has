@@ -1,20 +1,16 @@
-# not pre-installed to container
-# repository cloned just-in-time during CI
+# Not pre-installed to container, but repository cloned during CI
 has
 
-# Tests are run as admin in CI. Code requires an extra
-# paramater to run as admin.
-# todo: (ideal) update has to add the param (always or conditionally for admin)
-# todo: (or) have container alias command w/ additional param
+# Tests are run as admin in CI. Code requires an extra paramater to get version as admin.
+# todo: add --user-data-dir=/tmp for code when has is run as admin
 code
-
-# todo: add to test container
-go
-kotlin
-mvn
-sbt
 
 # installed on container (and has confirms), but
 # todo: has shows EMPTY version string on container
 awk
 groovy
+
+# --------------------------------------------------------------------------
+# tools below have not be added to the ubuntu test container image.
+# --------------------------------------------------------------------------
+
