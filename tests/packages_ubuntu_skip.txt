@@ -1,0 +1,16 @@
+# Not pre-installed to container, but repository cloned during CI
+has
+
+# Tests are run as admin in CI. Code requires an extra paramater to get version as admin.
+# todo: add --user-data-dir=/tmp for code when has is run as admin
+code
+
+# installed on container (and has confirms), but
+# todo: has shows EMPTY version string on container
+awk
+groovy
+
+# --------------------------------------------------------------------------
+# tools below have not be added to the ubuntu test container image.
+# --------------------------------------------------------------------------
+

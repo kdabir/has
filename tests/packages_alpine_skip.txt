@@ -1,0 +1,55 @@
+# Not pre-installed to container, but repository cloned during CI
+has
+
+# non-alpine packages
+apt
+apt-get
+aptitude
+code
+subl
+
+# gnu_coreutils shows as installed, but is not on alpine.
+# todo: We should change the command we use for this to
+#  something busybox doesn't also implement. Examples:
+#  chcon, csplit, dir, dircolors, fmt, join, logname, pathchk,
+#  pinky, pr, ptx, runcon, stdbuf, tsort, users, vdir, who
+# Then we can move this to the "non-alpine packages" list above.
+gnu_coreutils
+
+# installed on container (and has confirms), but
+# todo: has shows EMPTY version string on container
+awk
+bzip2
+grep
+gzip
+wget
+xz
+
+# installed on container (and has confirms), but
+# todo: has grabs INCORRECT version string on container
+jq
+perl
+
+# installed on container, but
+# todo: has reports command not found
+gor
+
+# --------------------------------------------------------------------------
+# tools below have not be added to the alpine test container image.
+# todo: we may need to compile executable binaries that run on alpine 3.11
+# --------------------------------------------------------------------------
+
+# todo: compile binary with help from:
+#  https://github.com/ggreer/the_silver_searcher
+#  https://github.com/Ketouem/ag-alpine
+ag
+
+# apk available for alpine 3.8
+# todo: compile binary with help from:
+#  https://github.com/sgerrand/alpine-pkg-php5
+php5
+
+# todo: compile binary with help from:
+#  https://theunarchiver.com/command-line
+#  https://github.com/ashang/unar
+unar

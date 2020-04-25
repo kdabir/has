@@ -182,11 +182,16 @@ On machines that don't even have `has` installed, your project's `.hasrc` is hon
 
 ## Adding more tools
 
+The current list of supported packages can be viewed with `bash tests/packages_all.sh`
+
 If the command you wish to include supports any of `-v`, `--version`, `-version`, `version`, `-V` then you can find 
 corresponding function which can be called to check presence and extract version. However, for many tools version
 extraction may not work and you will need to add custom parsing of command's output. The `has` script is commented
 to guide developers about what needs to be done to add more tools. 
 
+`/tests/test_all_packages.bats` will test every package has supports. This includes newly added commands so please add new packages to
+ - `alpine.Dockerfile` and `ubuntu.Dockerfile` to install the tool OR
+ - `packages_alpine_skip.txt` and `packages_ubuntu_skip.txt` to exclude the package from the tests
 
 ## Adding Features
 
