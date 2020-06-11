@@ -187,3 +187,16 @@ teardown() {
   [ "$(echo "${lines[1]}" | grep "git")" ]
   [ ! "${lines[0]##*\ }" = "${lines[1]##*\ }" ]
 }
+
+@test "quite mode" {
+  run $has -q
+  [ "$status" -eq 0 ]
+  [ -z "${output}" ]
+}
+
+@test "status code in quite mode still equal to number of failed commands" {
+  HAS_ALLOW_UNSAFE=y run $has -q foobar bc git barbaz
+
+  [ "$status" -eq 2 ]
+  [ -z "${output}" ]
+}
