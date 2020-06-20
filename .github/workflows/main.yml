@@ -22,7 +22,7 @@ jobs:
           - debian # uses debian:buster-20200327-slim which is debian 10.3
           - ubuntu16 # uses ubuntu:xenial-20200212 which is ubuntu 16.04
 
-    container: sdolenc/testing-has:${{ matrix.container }}
+    container: kdabir/has-test-containers:${{ matrix.container }}
 
     steps:
       - name: Clone Repo
@@ -41,7 +41,7 @@ jobs:
           - ubuntu # uses ubuntu:bionic-20200311 which is ubuntu 18.04
           - alpine # uses bash:5.0.16 which is alpine 3.11
 
-    container: sdolenc/testing-has:${{ matrix.container }}
+    container: kdabir/has-test-containers:${{ matrix.container }}
 
     steps:
       - name: Clone Repo
