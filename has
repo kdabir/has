@@ -7,7 +7,7 @@
 set -o pipefail
 
 readonly BINARY_NAME="has"
-readonly VERSION="v1.4.0"
+readonly VERSION="v1.5.0"
 
 ## constants - symbols for success failure
 if [[ -z $TERM ]]; then
@@ -223,22 +223,35 @@ __detect(){
   esac
 
   if [ "$status" -eq "-1" ]; then     ## When unsafe processing is not allowed, the -1 signifies
-    printf '%b %s not understood\n' "${FAIL}" "${command}"
+    printf '%b %s not understood\n' "${FAIL}" "${command}" > "$OUTPUT"
     KO=$(( KO+1 ))
 
   elif [ ${status} -eq 127 ]; then    ## command not installed
-    printf '%b %s\n' "${FAIL}" "${command}"
+    printf '%b %s\n' "${FAIL}" "${command}" > "$OUTPUT"
     KO=$(( KO+1 ))
 
   elif [ ${status} -eq 0 ] || [ ${status} -eq 141 ]; then      ## successfully executed
-    printf "%b %s %b\n" "${PASS}" "${command}" "${txtbold}${txtyellow}${version}${txtreset}"
+    printf "%b %s %b\n" "${PASS}" "${command}" "${txtbold}${txtyellow}${version}${txtreset}" > "$OUTPUT"
     OK=$(( OK+1 ))
 
   else  ## as long as its not 127, command is there, but we might not have been able to extract version
-    printf '%b %s\n' "${PASS}" "${command}"
+    printf '%b %s\n' "${PASS}" "${command}" > "$OUTPUT"
     OK=$(( OK+1 ))
   fi
 } #end __detect
+
+OPTIND=1
+OUTPUT=/dev/stdout
+
+while getopts "q" opt; do
+    case "$opt" in
+	q) QUIET="true"
+	   OUTPUT=/dev/null
+	   ;;
+    esac
+done
+
+shift $((OPTIND-1))
 
 if [ -s "${RC_FILE}" ];  then
   HASRC="true"
@@ -247,9 +260,9 @@ fi
 # if HASRC is not set AND no arguments passed to script
 if [[ -z "${HASRC}" ]] && [ "$#" -eq 0 ]; then
   # print help
-  printf '%s %s\n' "${BINARY_NAME}" "${VERSION}"
-  printf 'USAGE:\t %s <command-names>..\n' "${BINARY_NAME}"
-  printf 'EXAMPLE: %s git curl node\n' "${BINARY_NAME}"
+  printf '%s %s\n' "${BINARY_NAME}" "${VERSION}" > "$OUTPUT"
+  printf 'USAGE:\t %s [-q] <command-names>..\n' "${BINARY_NAME}" > "$OUTPUT"
+  printf 'EXAMPLE: %s git curl node\n' "${BINARY_NAME}" > "$OUTPUT"
 
 else
   # for each cli-arg
