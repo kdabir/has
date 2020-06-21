@@ -119,18 +119,22 @@ RUN apt-get update && DEBIAN_FRONTEND="noninteractive" apt-get install --no-inst
     sbt --version && sbt --version && \
     \
     add-apt-repository -y ppa:longsleep/golang-backports `#go` && \
-    curl -sL https://deb.nodesource.com/setup_12.x | bash - `#node and npm` &&\
     add-apt-repository -y ppa:ondrej/php `#php5` && \
     add-apt-repository -y ppa:projectatomic/ppa `#podman` && \
     wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add - `#subl` && \
     add-apt-repository -y "deb https://download.sublimetext.com/ apt/stable/" `#subl` && \
     apt-get update && DEBIAN_FRONTEND="noninteractive" apt-get install --no-install-recommends -y -qq \
         golang-go=2:1.14* `# go=1.14.2` \
-        nodejs=12.16.2* `# node=12.16.2 # npm=6.14.4` \
         php5.6=5.6.40* `# php5=5.6.40` \
         podman=1.6.2* \
         sublime-text=3211 `# subl=3211` && \
     ln -s /usr/bin/php5.6 /usr/bin/php5 && \
+    \
+    node=12.18.1 `# npm=6.14.5` && \
+    curl -L "https://nodejs.org/dist/v${node}/node-v${node}-linux-x64.tar.gz" | tar xz && \
+    ln -s "/node-v${node}-linux-x64/bin/node" /usr/local/bin/node
+    ln -s "/node-v${node}-linux-x64/bin/npm"  /usr/local/bin/npm 
+    ln -s "/node-v${node}-linux-x64/bin/npx"  /usr/local/bin/npx `# todo`
     \
     npm install --global \
         brunch@"=3.0.0" \
