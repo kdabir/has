@@ -12,46 +12,46 @@ FROM bash:5.0.16
 #       wget
 #       xz
 RUN apk add --no-cache \
-        ack=3.2.0-r0 \
+        ack~=3.2.0 \
         apache2-utils~=2.4 `# ab=2.3` \
-        apache-ant=1.10.7-r0 `# ant=1.10.7` \
+        apache-ant~=1.10.8 `# ant=1.10.8` \
         build-base libffi-dev openssl-dev `# required for eb` \
-        curl=7.67.0-r0 \
-        bzr=2.7.0-r1 \
-        docker=19.03.5-r0 \
-        emacs=26.3-r2 \
-        file=5.37-r1 \
-        gcc=9.2.0-r4 \
+        curl~=7.67.0 \
+        bzr~=2.7.0 \
+        docker~=19.03.5 \
+        emacs~=26.3 \
+        file~=5.37 \
+        gcc~=9.2.0 \
         git~=2.24.3 \
-        go=1.13.4-r1 \
-        gradle=5.6.4-r0 \
-        hugo=0.61.0-r0 \
-        jq=1.6-r0 \
-        make=4.2.1-r2 \
-        maven=3.6.3-r0 `# mvn=3.6.3` \
-        mercurial=5.3.2-r0 `# hg=5.3.2` \
-        nano=4.6-r0 \
-        ncurses=6.1_p20200118-r3 `#tput:todo` \
-        npm=12.15.0-r1 `# npm=6.13.4 # node=12.15.0` \
-        openjdk11=11.0.5_p10-r0 `# java=11.0.5` \
-        perl=5.30.1-r0 ` # perl=30` \
-        php7=7.3.17-r0 `# php=7.3.17 ` \
-        postgresql=12.2-r0 `# psql=12.2` \
-        pv=1.6.6-r1 \
-        python=2.7.16-r3 \
-        python3-dev=3.8.2-r0 `#python3=3.8.2` \
-        R=3.6.2-r0 \
-        ruby=2.6.6-r2 `# gem=3.0.3` \
-        ruby-bundler=2.0.2-r1 `# bundle=2.0.2` \
+        go~=1.13.10 \
+        gradle~=5.6.4 \
+        hugo~=0.61.0 \
+        jq=~1.6 \
+        make~=4.2.1 \
+        maven~=3.6.3 `# mvn=3.6.3` \
+        mercurial~=5.3.2 `# hg=5.3.2` \
+        nano~=4.6 \
+        ncurses~=6.1_p20200118 `#tput:todo` \
+        npm~=12.15.0 `# npm=6.13.4 # node=12.15.0` \
+        openjdk11~=11.0.5 `# java=11.0.5` \
+        perl~=5.30 ` # perl=30` \
+        php7~=7.3.18 `# php=7.3.18 ` \
+        postgresql~=12.2 `# psql=12.2` \
+        pv~=1.6.6 \
+        python~=2.7.18 \
+        python3-dev~=3.8.2 `#python3=3.8.2` \
+        R~=3.6.2 \
+        ruby~=2.6.6 `# gem=3.0.3` \
+        ruby-bundler~=2.0.2 `# bundle=2.0.2` \
         ruby-bigdecimal ruby-json `# required for brew` \
-        ruby-rake=2.6.6-r2 `# rake=12.3.3` \
-        subversion=1.12.2-r1 `# svn=1.12.2` \
-        sudo=1.8.31-r0 \
-        tree=1.8.0-r0 \
+        ruby-rake~=2.6.6 `# rake=12.3.3` \
+        subversion~=1.12.2 `# svn=1.12.2` \
+        sudo~=1.8.31 \
+        tree~=1.8.0 \
         vim~=8.2 \
-        yarn=1.19.2-r0 \
-        zip=3.0-r7 \
-        zsh=5.7.1-r0 && \
+        yarn~=1.19.2 \
+        zip~=3.0 \
+        zsh~=5.7.1 && \
     \
     # required for brew and lein
     ln -s $(which bash) /bin/bash && \
@@ -136,6 +136,7 @@ RUN apk add --no-cache \
     ln -s "/scala-${scala}/bin/scala" /usr/local/bin/scala && \
     \
     echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
+    echo "http://dl-cdn.alpinelinux.org/alpine/v3.12/community" >> /etc/apk/repositories `# podman requires crun` && \
     apk add --no-cache \
-        leiningen=2.9.1-r0 `# lein=2.9.1` \
-        podman=1.9.0-r0
+        leiningen~=2.9.3 `# lein=2.9.3` \
+        podman~=1.9.3
