@@ -1,5 +1,9 @@
 FROM ubuntu:bionic-20200311
 
+# Updates path with node, npm, npx, and globally installed npm packages
+ENV node=12.18.1
+ENV PATH="${PATH}:/node-v${node}-linux-x64/bin"
+
 # already contains
 #       apt=1.6.12
 #       apt-get=1.6.12
@@ -85,7 +89,7 @@ RUN apt-get update && DEBIAN_FRONTEND="noninteractive" apt-get install --no-inst
     dpkg -i code_${code}.deb || apt-get install -f -y && \
     rm -f code_${code}.deb && \
     \
-    commit="102025c" `# eb=3.18.0` && \
+    commit="102025c" `# eb=3.18.1` && \
     curl -L "https://github.com/aws/aws-elastic-beanstalk-cli-setup/tarball/${commit}" | tar xz && \
     "aws-aws-elastic-beanstalk-cli-setup-${commit}/scripts/bundled_installer" && \
     ln -s /root/.ebcli-virtual-env/executables/eb /usr/local/bin/eb && \
@@ -130,13 +134,9 @@ RUN apt-get update && DEBIAN_FRONTEND="noninteractive" apt-get install --no-inst
         sublime-text=3211 `# subl=3211` && \
     ln -s /usr/bin/php5.6 /usr/bin/php5 && \
     \
-    node=12.18.1 `# npm=6.14.5` && \
     curl -L "https://nodejs.org/dist/v${node}/node-v${node}-linux-x64.tar.gz" | tar xz && \
-    ln -s "/node-v${node}-linux-x64/bin/node" /usr/local/bin/node && \
-    ln -s "/node-v${node}-linux-x64/bin/npm"  /usr/local/bin/npm  && \
-    ln -s "/node-v${node}-linux-x64/bin/npx"  /usr/local/bin/npx `# todo` && \
     \
-    npm install --global \
+    npm install --global `# npm=6.14.5` \
         brunch@"=3.0.0" \
         grunt-cli@"=1.3.2" \
         gulp-cli@"=2.2.0" \
