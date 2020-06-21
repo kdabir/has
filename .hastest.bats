@@ -188,13 +188,13 @@ teardown() {
   [ ! "${lines[0]##*\ }" = "${lines[1]##*\ }" ]
 }
 
-@test "quite mode" {
+@test "quiet mode" {
   run $has -q
   [ "$status" -eq 0 ]
   [ -z "${output}" ]
 }
 
-@test "status code in quite mode still equal to number of failed commands" {
+@test "status code in quiet mode still equal to number of failed commands" {
   HAS_ALLOW_UNSAFE=y run $has -q foobar bc git barbaz
 
   [ "$status" -eq 2 ]
