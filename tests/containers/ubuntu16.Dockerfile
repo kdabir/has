@@ -10,7 +10,6 @@ FROM ubuntu:xenial-20200212
 RUN apt-get update && DEBIAN_FRONTEND="noninteractive" apt-get install --no-install-recommends -y -qq \
         bc \
         pv \
-        xz-utils \
         unar \
         make \
         curl \
