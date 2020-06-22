@@ -56,12 +56,12 @@ RUN apk add --no-cache \
     # required for brew and lein
     ln -s $(which bash) /bin/bash && \
     \
-    npm install --global \
+    npm install --global --no-optional \
         brunch@"=3.0.0" \
         grunt-cli@"=1.3.2" \
         gulp-cli@"=2.2.0" \
         heroku@"=7.39.3" \
-        netlify-cli@"=2.46.0" \
+        netlify-cli@"=2.33.0" \
         serverless@"=1.67.3" `# sls=1.67.3` && \
     \
     autojump=22.5.3 && \
