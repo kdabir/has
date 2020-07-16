@@ -155,6 +155,10 @@ __detect(){
     netlify)                __dynamic_detect--version "${command}" ;;
     netlifyctl)             __dynamic_detect-arg_version "${command}" ;;
 
+    ## Hashicorp Tools
+    terraform|packer)       __dynamic_detect--version "${command}" ;;
+    vagrant|consul)         __dynamic_detect--version "${command}" ;;
+    nomad)                  __dynamic_detect--version "${command}" ;;
 
     # commands that need -v flag
     unzip)                  __dynamic_detect-v "${command}" ;;
