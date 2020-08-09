@@ -11,7 +11,7 @@ readonly VERSION="v1.5.0"
 
 ## constants - symbols for success failure
 if [[ -z $TERM ]]; then
-  $TERM="xterm"
+  TERM="xterm"
 fi
 readonly txtreset="$(tput -T $TERM sgr0)"
 readonly txtbold="$(tput -T $TERM bold)"
