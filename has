@@ -42,6 +42,24 @@ REGEX_SIMPLE_VERSION="([[:digit:]]+\.?){2,3}"
 ## name of RC file that can contain list of tools to be checked
 RC_FILE=".hasrc"
 
+_usage() {
+  cat <<EOF
+Usage: ${BINARY_NAME} [OPTION] <command-names>...
+Has checks the presence of various command line tools on the PATH and reports their installed version.
+
+Options:
+        -q              Silent mode
+        -h, --help      Display this help text and quit
+        -V, --version   Show version number and quit
+
+Examples: ${BINARY_NAME} git curl node
+EOF
+}
+
+_version() {
+  printf '%s\n' "${VERSION}"
+}
+
 # try to extract version by executing "${1}" with "${2}" arg
 # command name to be executed is dynamically passed to this function as ${1}
 # arg to ${1} is passed in ${2}
@@ -247,15 +265,52 @@ __detect(){
 OPTIND=1
 OUTPUT=/dev/stdout
 
-while getopts "q" opt; do
-    case "$opt" in
-	q) QUIET="true"
-	   OUTPUT=/dev/null
-	   ;;
+while getopts ":qhV-" OPTION; do
+  case "$OPTION" in
+  q)
+    QUIET="true"
+    OUTPUT=/dev/null
+    ;;
+  h)
+    _usage
+    exit 0
+    ;;
+  V)
+    _version
+    exit 0
+    ;;
+  -)
+    [ $OPTIND -ge 1 ] && optind=$(expr $OPTIND - 1) || optind=$OPTIND
+    eval OPTION="\$$optind"
+    OPTARG=$(echo $OPTION | cut -d'=' -f2)
+    OPTION=$(echo $OPTION | cut -d'=' -f1)
+    case $OPTION in
+    --version)
+      _version
+      exit 0
+      ;;
+    --help)
+      _usage
+      exit 0
+      ;;
+    *)
+      printf '%s: unrecognized option '%s'\n' "${BINARY_NAME}" "${OPTARG}"
+      _usage
+      exit 2
+      ;;
     esac
+    OPTIND=1
+    shift
+    ;;
+  ?)
+    printf '%s: unrecognized option '%s'\n' "${BINARY_NAME}" "${OPTARG}"
+    _usage
+    exit 2
+    ;;
+  esac
 done
 
-shift $((OPTIND-1))
+shift $((OPTIND - 1))
 
 if [ -s "${RC_FILE}" ];  then
   HASRC="true"
@@ -263,11 +318,7 @@ fi
 
 # if HASRC is not set AND no arguments passed to script
 if [[ -z "${HASRC}" ]] && [ "$#" -eq 0 ]; then
-  # print help
-  printf '%s %s\n' "${BINARY_NAME}" "${VERSION}" > "$OUTPUT"
-  printf 'USAGE:\t %s [-q] <command-names>..\n' "${BINARY_NAME}" > "$OUTPUT"
-  printf 'EXAMPLE: %s git curl node\n' "${BINARY_NAME}" > "$OUTPUT"
-
+  _usage
 else
   # for each cli-arg
   for cmd in "$@"; do
