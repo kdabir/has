@@ -178,9 +178,8 @@ __detect(){
 
     ## Example of commands that need custom processing
 
-    ## TODO cleanup, currently need to add extra space in regex, otherwise the time gets selected
     gulp)
-      version=$( gulp --version 2>&1| grep -Eo " ${REGEX_SIMPLE_VERSION}" | head -1)
+      version=$( gulp --version 2>&1| grep -Eo "${REGEX_SIMPLE_VERSION}" | head -1)
       status=$?
       ;;
 
