@@ -130,7 +130,7 @@ __detect(){
 
     # Container runtimes
     docker|podman)          __dynamic_detect--version "${command}" ;;
-    
+
     ## Database CLI
     psql)                   __dynamic_detect--version "${command}" ;;
 
@@ -148,12 +148,15 @@ __detect(){
     gem|rake|bundle)        __dynamic_detect--version "${command}" ;;
     npm|yarn)               __dynamic_detect--version "${command}" ;;
 
-
     ## Cloud Tools
     aws|eb|sls|gcloud)      __dynamic_detect--version "${command}" ;;
     heroku)                 __dynamic_detect--version "${command}" ;;
     netlify)                __dynamic_detect--version "${command}" ;;
     netlifyctl)             __dynamic_detect-arg_version "${command}" ;;
+
+    ## GPG Tools
+    gpg|gpgconf|gpg-agent|gpg-connect-agent)       __dynamic_detect--version "${command}" ;;
+    gpgsm)                  __dynamic_detect--version "${command}" ;;
 
     ## Hashicorp Tools
     terraform|packer)       __dynamic_detect--version "${command}" ;;
