@@ -119,9 +119,10 @@ __detect(){
     ag|ack|rg)              __dynamic_detect--version "${command}" ;;
     tree|autojump)          __dynamic_detect--version "${command}" ;;
 
-    ## package mangers
+    ## Package managers
     apt|apt-get|aptitude)   __dynamic_detect--version "${command}" ;;
     brew)                   __dynamic_detect--version "${command}" ;;
+    composer)               __dynamic_detect-V "${command}" ;;
 
     ## System tools
     sed|awk|grep|file|sudo) __dynamic_detect--version "${command}" ;;
@@ -130,7 +131,7 @@ __detect(){
 
     # Container runtimes
     docker|podman)          __dynamic_detect--version "${command}" ;;
-    
+
     ## Database CLI
     psql)                   __dynamic_detect--version "${command}" ;;
 
