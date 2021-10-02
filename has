@@ -101,6 +101,8 @@ __detect(){
 
   # setup aliases - maps commonly used name to exact command name
   case ${name} in
+    rust                  ) command="rustc"         ;;
+    ssl                   ) command="openssl"       ;;
     golang                ) command="go"            ;;
     jre                   ) command="java"          ;;
     jdk                   ) command="javac"         ;;
@@ -120,7 +122,7 @@ __detect(){
     # commands that need --version flag
 
     ## Shells
-    bash|zsh)               __dynamic_detect--version "${command}" ;;
+    bash|zsh|fish)          __dynamic_detect--version "${command}" ;;
 
     ## VCS
     git|hg|svn|bzr)         __dynamic_detect--version "${command}" ;;
@@ -130,7 +132,7 @@ __detect(){
 
     ## Editors
     vim|emacs|nano)         __dynamic_detect--version "${command}" ;;
-    subl|code)              __dynamic_detect--version "${command}" ;;
+    subl|code|codium)       __dynamic_detect--version "${command}" ;;
 
     ## File system search and navigation
     jq)                     __dynamic_detect--version "${command}" ;;
@@ -160,12 +162,16 @@ __detect(){
 
     ## Compile
     gcc|make|bats)          __dynamic_detect--version "${command}" ;;
+    ninja)                  __dynamic_detect--version "${command}" ;;
 
     ## Build tools
     lein|gradle|mvn)        __dynamic_detect--version "${command}" ;;
     grunt|brunch)           __dynamic_detect--version "${command}" ;;
     gem|rake|bundle)        __dynamic_detect--version "${command}" ;;
     npm|yarn)               __dynamic_detect--version "${command}" ;;
+
+    ## Rust
+    rustc|cargo)            __dynamic_detect--version "${command}" ;;    
 
     ## Cloud Tools
     aws|eb|sls|gcloud)      __dynamic_detect--version "${command}" ;;
@@ -194,6 +200,7 @@ __detect(){
 
     # commands that need version arg
     go|hugo)                __dynamic_detect-arg_version "${command}" ;;
+    openssl)                __dynamic_detect-arg_version "${command}" ;;
 
     ## Example of commands that need custom processing
 
