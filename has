@@ -143,17 +143,22 @@ __detect(){
     apt|apt-get|aptitude)   __dynamic_detect--version "${command}" ;;
     brew)                   __dynamic_detect--version "${command}" ;;
     composer)               __dynamic_detect-V "${command}" ;;
+    pip|pip3|conda)         __dynamic_detect-V "${command}" ;;
 
     ## System tools
     sed|awk|grep|file|sudo) __dynamic_detect--version "${command}" ;;
     gzip|xz|unar|bzip2)     __dynamic_detect--version "${command}" ;;
     tar|pv)                 __dynamic_detect--version "${command}" ;;
-
+    gunzip)                 __dynamic_detect--version "${command}" ;;
+    tee)                    __dynamic_detect--version "${command}" ;;
+    screen)                 __dynamic_detect-v "${command}" ;;
+    
     # Container runtimes
     docker|podman)          __dynamic_detect--version "${command}" ;;
 
     ## Database CLI
     psql)                   __dynamic_detect--version "${command}" ;;
+    sqlite3)                __dynamic_detect-version "${command}" ;;
 
     ## Scripting Language / runtime
     ruby|R|python|python3)  __dynamic_detect--version "${command}" ;;
@@ -187,6 +192,9 @@ __detect(){
     terraform|packer)       __dynamic_detect--version "${command}" ;;
     vagrant|consul)         __dynamic_detect--version "${command}" ;;
     nomad)                  __dynamic_detect--version "${command}" ;;
+
+    ## Browsers
+    firefox)                __dynamic_detect-v "${command}" ;;
 
     # commands that need -v flag
     unzip)                  __dynamic_detect-v "${command}" ;;
