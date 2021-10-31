@@ -32,6 +32,14 @@ readonly checkmark='\342\234\223'
 readonly PASS="${txtbold}${txtgreen}${checkmark}${txtreset}"
 readonly FAIL="${txtbold}${txtred}${fancyx}${txtreset}"
 
+## These variables are used to control decoration of output
+COLOR_AUTO="auto"
+COLOR_NEVER="never"
+COLOR_ALWAYS="always"
+COLOR_OPTS=(${COLOR_AUTO} ${COLOR_NEVER} ${COLOR_ALWAYS})
+COLOR="${COLOR_AUTO}"
+COLOR_PREFIX="--color"
+
 ## These variables are used to keep track of passed and failed commands
 OK=0
 KO=0
@@ -58,6 +66,15 @@ EOF
 
 _version() {
   printf '%s\n' "${VERSION}"
+}
+
+# function to parse color option
+_set_color() {
+  local found=0;
+  for opt in "${COLOR_OPTS[@]}"; do
+    [ "${1}" == "${COLOR_PREFIX}_${opt}" ] && COLOR="${opt}" && found=1 && break
+  done
+  [ ${found} -eq 1 ] || >&2 echo "Error: wrong flag ${1}"
 }
 
 # try to extract version by executing "${1}" with "${2}" arg
@@ -98,6 +115,12 @@ __dynamic_detect-arg_version(){
 ## the main function
 __detect(){
   name="${1}"
+
+  # default values (for case when decoration applied)
+  fail=${FAIL}
+  pass=${PASS}
+  wrapper_beg="${txtbold}${txtyellow}"
+  wrapper_end="${txtreset}"
 
   # setup aliases - maps commonly used name to exact command name
   case ${name} in
@@ -262,20 +285,27 @@ __detect(){
       ;;
   esac
 
+  if [ "${COLOR}" == "${COLOR_NEVER}" ] || [[ ! -t 1 && "${COLOR}" == "${COLOR_AUTO}" ]]; then
+    pass=${checkmark}
+    fail=${fancyx}
+    wrapper_beg=""
+    wrapper_end=""
+  fi
+
   if [ "$status" -eq "-1" ]; then     ## When unsafe processing is not allowed, the -1 signifies
-    printf '%b %s not understood\n' "${FAIL}" "${command}" > "$OUTPUT"
+    printf '%b %s not understood\n' "${fail}" "${command}" > "$OUTPUT"
     KO=$(( KO+1 ))
 
   elif [ ${status} -eq 127 ]; then    ## command not installed
-    printf '%b %s\n' "${FAIL}" "${command}" > "$OUTPUT"
+    printf '%b %s\n' "${fail}" "${command}" > "$OUTPUT"
     KO=$(( KO+1 ))
 
   elif [ ${status} -eq 0 ] || [ ${status} -eq 141 ]; then      ## successfully executed
-    printf "%b %s %b\n" "${PASS}" "${command}" "${txtbold}${txtyellow}${version}${txtreset}" > "$OUTPUT"
+    printf "%b %s %b\n" "${pass}" "${command}" "${wrapper_beg}${version}${wrapper_end}" > "$OUTPUT"
     OK=$(( OK+1 ))
 
   else  ## as long as its not 127, command is there, but we might not have been able to extract version
-    printf '%b %s\n' "${PASS}" "${command}" > "$OUTPUT"
+    printf '%b %s\n' "${pass}" "${command}" > "$OUTPUT"
     OK=$(( OK+1 ))
   fi
 } #end __detect
@@ -310,6 +340,9 @@ while getopts ":qhV-" OPTION; do
     --help)
       _usage
       exit 0
+      ;;
+    ${COLOR_PREFIX}*)
+      _set_color "${OPTION}"
       ;;
     *)
       printf '%s: unrecognized option '%s'\n' "${BINARY_NAME}" "${OPTARG}"
