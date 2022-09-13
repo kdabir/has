@@ -10,7 +10,9 @@ readonly BINARY_NAME="has"
 readonly VERSION="v1.6.0"
 
 ## constants - symbols for success failure
-if [[ -z $TERM ]]; then
+if [[ ! -t 1 ]]; then
+  TERM="dumb"
+elif [[ -z $TERM ]]; then
   TERM="xterm"
 fi
 readonly txtreset="$(tput -T $TERM sgr0)"
@@ -152,7 +154,7 @@ __detect(){
     gunzip)                 __dynamic_detect--version "${command}" ;;
     tee)                    __dynamic_detect--version "${command}" ;;
     screen)                 __dynamic_detect-v "${command}" ;;
-    
+
     # Container runtimes
     docker|podman)          __dynamic_detect--version "${command}" ;;
 
@@ -176,7 +178,7 @@ __detect(){
     npm|yarn)               __dynamic_detect--version "${command}" ;;
 
     ## Rust
-    rustc|cargo)            __dynamic_detect--version "${command}" ;;    
+    rustc|cargo)            __dynamic_detect--version "${command}" ;;
 
     ## Cloud Tools
     aws|eb|sls|gcloud)      __dynamic_detect--version "${command}" ;;
