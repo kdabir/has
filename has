@@ -7,7 +7,7 @@
 set -o pipefail
 
 readonly BINARY_NAME="has"
-readonly VERSION="v1.7.0"
+readonly VERSION="v1.5.0"
 
 ## constants - symbols for success failure
 if [[ ! -t 1 ]]; then
