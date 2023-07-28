@@ -91,6 +91,13 @@ curl -sL https://git.io/_has | sudo tee /usr/local/bin/has >/dev/null
 
 These commands are safe to be called multiple times as well (to update `has`)
 
+### asdf users
+
+```
+asdf plugin add has https://github.com/sylvainmetayer/asdf-has
+asdf install has 1.4.0
+```
+
 ### Running directly off the Internet
 
 If you are lazy, you can run `has` directly off the Internet as well:
