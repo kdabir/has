@@ -7,7 +7,7 @@
 set -o pipefail
 
 readonly BINARY_NAME="has"
-readonly VERSION="v1.6.0"
+readonly VERSION="v1.7.0"
 
 ## constants - symbols for success failure
 if [[ ! -t 1 ]]; then
@@ -74,7 +74,7 @@ _version() {
 _set_color() {
   local found=0;
   for opt in "${COLOR_OPTS[@]}"; do
-    [ "${1}" == "${COLOR_PREFIX}_${opt}" ] && COLOR="${opt}" && found=1 && break
+    [ "${1}" == "${COLOR_PREFIX}-${opt}" ] && COLOR="${opt}" && found=1 && break
   done
   [ ${found} -eq 1 ] || >&2 echo "Error: wrong flag ${1}"
 }
@@ -165,11 +165,9 @@ __detect(){
     ag|ack|rg)              __dynamic_detect--version "${command}" ;;
     tree|autojump)          __dynamic_detect--version "${command}" ;;
 
-    ## Package managers
+    ## OS Package managers
     apt|apt-get|aptitude)   __dynamic_detect--version "${command}" ;;
     brew)                   __dynamic_detect--version "${command}" ;;
-    composer)               __dynamic_detect-V "${command}" ;;
-    pip|pip3|conda)         __dynamic_detect-V "${command}" ;;
 
     ## System tools
     sed|awk|grep|file|sudo) __dynamic_detect--version "${command}" ;;
@@ -186,20 +184,29 @@ __detect(){
     psql)                   __dynamic_detect--version "${command}" ;;
     sqlite3)                __dynamic_detect-version "${command}" ;;
 
+
+    ########### Programming languages Build tools & Package managers ###########
+
+
+    ## Build and Compile
+    gcc|make|cmake|bats)    __dynamic_detect--version "${command}" ;;
+    ninja)                  __dynamic_detect--version "${command}" ;;
+    composer)               __dynamic_detect-V "${command}" ;;
+    pip|pip3|conda)         __dynamic_detect-V "${command}" ;;
+    lein|gradle|mvn)        __dynamic_detect--version "${command}" ;;
+    grunt|brunch)           __dynamic_detect--version "${command}" ;;
+    gem|rake|bundle)        __dynamic_detect--version "${command}" ;;
+    npm|yarn|pnpm)          __dynamic_detect--version "${command}" ;;
+    act)                    __dynamic_detect--version "${command}" ;;
+
     ## Scripting Language / runtime
     ruby|R|python|python3)  __dynamic_detect--version "${command}" ;;
     perl|perl6|php|php5)    __dynamic_detect--version "${command}" ;;
     groovy|node)            __dynamic_detect--version "${command}" ;;
 
-    ## Compile
-    gcc|make|cmake|bats)          __dynamic_detect--version "${command}" ;;
-    ninja)                  __dynamic_detect--version "${command}" ;;
-
-    ## Build tools
-    lein|gradle|mvn)        __dynamic_detect--version "${command}" ;;
-    grunt|brunch)           __dynamic_detect--version "${command}" ;;
-    gem|rake|bundle)        __dynamic_detect--version "${command}" ;;
-    npm|yarn)               __dynamic_detect--version "${command}" ;;
+    # JVM tools that need -version flag
+    ant)                               __dynamic_detect-version "${command}" ;;
+    java|javac|scala|kotlin)           __dynamic_detect-version "${command}" ;;
 
     ## Rust
     rustc|cargo)            __dynamic_detect--version "${command}" ;;
@@ -211,7 +218,8 @@ __detect(){
     netlifyctl)             __dynamic_detect-arg_version "${command}" ;;
 
     ## GPG Tools
-    gpg|gpgconf|gpg-agent|gpg-connect-agent)       __dynamic_detect--version "${command}" ;;
+    gpg|gpgconf|gpg-agent)  __dynamic_detect--version "${command}" ;;
+    gpg-connect-agent)      __dynamic_detect--version "${command}" ;;
     gpgsm)                  __dynamic_detect--version "${command}" ;;
 
     ## Hashicorp Tools
@@ -228,9 +236,6 @@ __detect(){
     # commands that need -V flag
     ab)                     __dynamic_detect-V "${command}" ;;
 
-    # commands that need -version flag
-    ant)                               __dynamic_detect-version "${command}" ;;
-    java|javac|scala|kotlin)           __dynamic_detect-version "${command}" ;;
 
     # commands that need version arg
     go|hugo)                __dynamic_detect-arg_version "${command}" ;;
@@ -282,7 +287,7 @@ __detect(){
       ;;
 
     has)
-      version=$( has -V 2>&1 | grep -Eo "${REGEX_SIMPLE_VERSION}" | head -1)
+      version=$( has -v 2>&1 | grep -Eo "${REGEX_SIMPLE_VERSION}" | head -1)
       status=$?
       ;;
 
@@ -327,7 +332,7 @@ __detect(){
 OPTIND=1
 OUTPUT=/dev/stdout
 
-while getopts ":qhV-" OPTION; do
+while getopts ":qhv-" OPTION; do
   case "$OPTION" in
   q)
     QUIET="true"
@@ -337,7 +342,7 @@ while getopts ":qhV-" OPTION; do
     _usage
     exit 0
     ;;
-  V)
+  v)
     _version
     exit 0
     ;;
