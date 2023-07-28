@@ -103,6 +103,7 @@ __detect(){
   case ${name} in
     rust                  ) command="rustc"         ;;
     ssl                   ) command="openssl"       ;;
+    openssh               ) command="ssh"           ;;
     golang                ) command="go"            ;;
     jre                   ) command="java"          ;;
     jdk                   ) command="javac"         ;;
@@ -166,7 +167,7 @@ __detect(){
     groovy|node)            __dynamic_detect--version "${command}" ;;
 
     ## Compile
-    gcc|make|bats)          __dynamic_detect--version "${command}" ;;
+    gcc|make|cmake|bats)          __dynamic_detect--version "${command}" ;;
     ninja)                  __dynamic_detect--version "${command}" ;;
 
     ## Build tools
@@ -208,7 +209,6 @@ __detect(){
 
     # commands that need version arg
     go|hugo)                __dynamic_detect-arg_version "${command}" ;;
-    openssl)                __dynamic_detect-arg_version "${command}" ;;
 
     ## Example of commands that need custom processing
 
@@ -225,6 +225,18 @@ __detect(){
 
     sbt)
       version=$( sbt about 2>&1 | grep -Eo "([[:digit:]]{1,4}\.){2}[[:digit:]]{1,4}" | head -1)
+      status=$?
+      ;;
+
+    # openssl can have a letter at the end of the version number (eg. "1.1.1j")
+    openssl)
+      version=$( openssl version 2>&1 | grep -Eo "${REGEX_SIMPLE_VERSION}[[:alnum:]]*" |head -1)
+      status=$?
+      ;;
+
+    # openssh version output has a lot going on
+    ssh)
+      version=$(ssh -V 2>&1 |grep -Eo "OpenSSH_${REGEX_SIMPLE_VERSION}[[:alnum:]]*" |cut -d'_' -f2)
       status=$?
       ;;
 
@@ -245,7 +257,7 @@ __detect(){
       ;;
 
     has)
-      version=$( has 2>&1 | grep -Eo "${REGEX_SIMPLE_VERSION}" | head -1)
+      version=$( has -V 2>&1 | grep -Eo "${REGEX_SIMPLE_VERSION}" | head -1)
       status=$?
       ;;
 
