@@ -198,6 +198,6 @@ to guide developers about what needs to be done to add more tools.
 If you are contributing a feature, please ensure to check current tests. Add test cases for your feature. Tests are
 executed using the excellent [bats](https://github.com/bats-core/bats-core) testing framework. Add tests and run `make test`
 
-Raise the PR and **make sure the tests pass** on [Travis-CI](https://travis-ci.org/kdabir/has).
+Raise the PR and **make sure the tests pass** on [GitHub Actions](https://github.com/kdabir/has/actions).
 
 ### ♥
