@@ -128,7 +128,7 @@ has is aliased to `curl -sL https://git.io/_has | bash -s'
 
 Let's say `$ has foobar` returns `foobar not understood`, because `has` may not have whitelisted `foobar`.
 
-In such cases, pass `HAS_ALLOW_UNSAFE=y has foobar`. This should still check for existance of `foobar` and tries to detect version as well.
+In such cases, pass `HAS_ALLOW_UNSAFE=y has foobar`. This should still check for existence of `foobar` and tries to detect version as well.
 
 > the value must exactly be `y` for it to work.
 
