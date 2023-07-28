@@ -2,7 +2,7 @@
 
 `has` checks presence of various command line tools on the PATH and reports their installed version.
 
-[![Build Status](https://travis-ci.org/kdabir/has.svg?branch=master)](https://travis-ci.org/kdabir/has)
+[![Build Status](https://github.com/kdabir/has/actions/workflows/main.yml/badge.svg)](https://github.com/kdabir/has/actions/workflows/main.yml)
 [![Open Source Helpers](https://www.codetriage.com/kdabir/has/badges/users.svg)](https://www.codetriage.com/kdabir/has)
 
 [![demo](demo.svg)](demo.svg)
