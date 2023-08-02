@@ -22,9 +22,6 @@ readonly txtreset
 txtbold="$(tput -T $TERM bold)"
 readonly txtbold
 
-txtblack="$(tput -T $TERM setaf 0)"
-readonly txtblack
-
 txtred="$(tput -T $TERM setaf 1)"
 readonly txtred
 
@@ -33,18 +30,6 @@ readonly txtgreen
 
 txtyellow="$(tput -T $TERM setaf 3)"
 readonly txtyellow
-
-txtblue="$(tput -T $TERM setaf 4)"
-readonly txtblue
-
-txtpurple="$(tput -T $TERM setaf 5)"
-readonly txtpurple
-
-txtcyan="$(tput -T $TERM setaf 6)"
-readonly txtcyan
-
-txtwhite="$(tput -T $TERM setaf 7)"
-readonly txtwhite
 
 # unicode "✗"
 readonly fancyx='\342\234\227'
