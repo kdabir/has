@@ -341,7 +341,6 @@ OUTPUT=/dev/stdout
 while getopts ":qhv-" OPTION; do
   case "$OPTION" in
   q)
-    QUIET="true"
     OUTPUT=/dev/null
     ;;
   h)
