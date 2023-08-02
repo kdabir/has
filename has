@@ -16,19 +16,19 @@ elif [[ -z $TERM ]]; then
   TERM="xterm"
 fi
 
-txtreset="$(tput -T $TERM sgr0)"
+txtreset="$(tput -T "$TERM" sgr0)"
 readonly txtreset
 
-txtbold="$(tput -T $TERM bold)"
+txtbold="$(tput -T "$TERM" bold)"
 readonly txtbold
 
-txtred="$(tput -T $TERM setaf 1)"
+txtred="$(tput -T "$TERM" setaf 1)"
 readonly txtred
 
-txtgreen="$(tput -T $TERM setaf 2)"
+txtgreen="$(tput -T "$TERM" setaf 2)"
 readonly txtgreen
 
-txtyellow="$(tput -T $TERM setaf 3)"
+txtyellow="$(tput -T "$TERM" setaf 3)"
 readonly txtyellow
 
 # unicode "✗"
@@ -44,7 +44,7 @@ readonly FAIL="${txtbold}${txtred}${fancyx}${txtreset}"
 COLOR_AUTO="auto"
 COLOR_NEVER="never"
 COLOR_ALWAYS="always"
-COLOR_OPTS=(${COLOR_AUTO} ${COLOR_NEVER} ${COLOR_ALWAYS})
+COLOR_OPTS=( "${COLOR_AUTO}" "${COLOR_NEVER}" "${COLOR_ALWAYS}")
 COLOR="${COLOR_AUTO}"
 COLOR_PREFIX="--color"
 
@@ -355,8 +355,8 @@ while getopts ":qhv-" OPTION; do
   -)
     [ $OPTIND -ge 1 ] && optind=$(expr $OPTIND - 1) || optind=$OPTIND
     eval OPTION="\$$optind"
-    OPTARG=$(echo $OPTION | cut -d'=' -f2)
-    OPTION=$(echo $OPTION | cut -d'=' -f1)
+    OPTARG=$(echo "$OPTION" | cut -d'=' -f2)
+    OPTION=$(echo "$OPTION" | cut -d'=' -f1)
     case $OPTION in
     --version)
       _version
