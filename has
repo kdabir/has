@@ -44,7 +44,7 @@ readonly FAIL="${txtbold}${txtred}${fancyx}${txtreset}"
 COLOR_AUTO="auto"
 COLOR_NEVER="never"
 COLOR_ALWAYS="always"
-COLOR_OPTS=( "${COLOR_AUTO}" "${COLOR_NEVER}" "${COLOR_ALWAYS}")
+COLOR_OPTS=("${COLOR_AUTO} ${COLOR_NEVER} ${COLOR_ALWAYS}")
 COLOR="${COLOR_AUTO}"
 COLOR_PREFIX="--color"
 
