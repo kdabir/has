@@ -196,6 +196,7 @@ __detect(){
 
     ## Build and Compile
     gcc|make|cmake|bats)    __dynamic_detect--version "${command}" ;;
+    g++|clang|ccache)       __dynamic_detect--version "${command}" ;;
     ninja)                  __dynamic_detect--version "${command}" ;;
     composer)               __dynamic_detect-V "${command}" ;;
     pip|pip3|conda)         __dynamic_detect-V "${command}" ;;
