@@ -157,17 +157,17 @@ __detect(){
     bash|zsh|fish)          __dynamic_detect--version "${command}" ;;
 
     ## VCS
-    git|hg|svn|bzr)         __dynamic_detect--version "${command}" ;;
+    git|tig|hg|svn|bzr)     __dynamic_detect--version "${command}" ;;
 
     ## Http
-    curl|wget|http)         __dynamic_detect--version "${command}" ;;
+    curl|wget|http|aria2c)  __dynamic_detect--version "${command}" ;;
 
     ## Editors
     vim|emacs|nano)         __dynamic_detect--version "${command}" ;;
     subl|code|codium)       __dynamic_detect--version "${command}" ;;
 
     ## File system search and navigation
-    jq)                     __dynamic_detect--version "${command}" ;;
+    jq|yq)                  __dynamic_detect--version "${command}" ;;
     ag|ack|rg)              __dynamic_detect--version "${command}" ;;
     tree|autojump)          __dynamic_detect--version "${command}" ;;
 
@@ -182,12 +182,14 @@ __detect(){
     gunzip)                 __dynamic_detect--version "${command}" ;;
     tee)                    __dynamic_detect--version "${command}" ;;
     screen)                 __dynamic_detect-v "${command}" ;;
+    tmux)                   __dynamic_detect-V "${command}" ;;
+    htop)                   __dynamic_detect--version "${command}" ;;
 
     # Container runtimes
-    docker|podman)          __dynamic_detect--version "${command}" ;;
+    docker|docker-compose|podman)   __dynamic_detect--version "${command}" ;;
 
     ## Database CLI
-    psql)                   __dynamic_detect--version "${command}" ;;
+    psql|mysql)             __dynamic_detect--version "${command}" ;;
     sqlite3)                __dynamic_detect-version "${command}" ;;
 
 
@@ -241,7 +243,7 @@ __detect(){
     unzip)                  __dynamic_detect-v "${command}" ;;
 
     # commands that need -V flag
-    ab)                     __dynamic_detect-V "${command}" ;;
+    ab|unrar)               __dynamic_detect-V "${command}" ;;
 
 
     # commands that need version arg
