@@ -77,7 +77,7 @@ RUN apt-get update && DEBIAN_FRONTEND="noninteractive" apt-get install --no-inst
     "bats-core-bats-core-${commit}/install.sh" /usr/local && \
     \
     brew=2.2.13 && \
-    git clone --branch ${brew} https://github.com/Homebrew/brew && \
+    git clone --depth=1 --branch ${brew} https://github.com/Homebrew/brew && \
     locale-gen en_US en_US.UTF-8 && \
     eval $(brew/bin/brew shellenv) && \
     ln -s /brew/bin/brew /usr/local/bin/brew && \
