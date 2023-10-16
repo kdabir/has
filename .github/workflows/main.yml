@@ -17,6 +17,7 @@ jobs:
     name: test
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         container:
           - debian # uses debian:buster-20200327-slim which is debian 10.3
@@ -36,6 +37,7 @@ jobs:
     name: test_all
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         container:
           - ubuntu # uses ubuntu:bionic-20200311 which is ubuntu 18.04
