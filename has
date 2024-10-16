@@ -341,13 +341,14 @@ __detect(){
 OUTPUT=/dev/stdout
 
 OPTS=$(getopt -o qvh --long quiet,version,help,color: -- "$@")
+# shellcheck disable=SC2181
 if [[ $? -ne 0 ]]; then
     _usage
     exit 1;
 fi
 
 eval set -- "$OPTS"
-while [ : ]; do
+while true; do
   case "$1" in
     -q | --quiet)
         OUTPUT=/dev/null
