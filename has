@@ -66,7 +66,7 @@ Has checks the presence of various command line tools on the PATH and reports th
 Options:
         -q              Silent mode
         -h, --help      Display this help text and quit
-        -V, --version   Show version number and quit
+        -v, --version   Show version number and quit
 
 Examples: ${BINARY_NAME} git curl node
 EOF
