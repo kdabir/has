@@ -1,6 +1,0 @@
-# make to install/test the project
-make
-curl
-git
-# bats for testing
-bats
