@@ -28,7 +28,7 @@ teardown() {
   [ "${lines[2]}" = 'Options:' ]
   [ "${lines[3]}" = '        -q                           Silent mode' ]
   [ "${lines[4]}" = '        -h, --help                   Display this help text and quit' ]
-  [ "${lines[5]}" = '        -V, --version                Show version number and quit' ]
+  [ "${lines[5]}" = '        -v, --version                Show version number and quit' ]
   [ "${lines[6]}" = '        --color [auto|never|always]  Use colors (default: auto)' ]
   [ "${lines[7]}" = 'Examples: has git curl node' ]
 }
@@ -50,7 +50,7 @@ teardown() {
   [ "${lines[2]}" = 'Options:' ]
   [ "${lines[3]}" = '        -q                           Silent mode' ]
   [ "${lines[4]}" = '        -h, --help                   Display this help text and quit' ]
-  [ "${lines[5]}" = '        -V, --version                Show version number and quit' ]
+  [ "${lines[5]}" = '        -v, --version                Show version number and quit' ]
   [ "${lines[6]}" = '        --color [auto|never|always]  Use colors (default: auto)' ]
   [ "${lines[7]}" = 'Examples: has git curl node' ]
 }
@@ -214,7 +214,7 @@ teardown() {
   [ "${lines[2]}" = 'Options:' ]
   [ "${lines[3]}" = '        -q                           Silent mode' ]
   [ "${lines[4]}" = '        -h, --help                   Display this help text and quit' ]
-  [ "${lines[5]}" = '        -V, --version                Show version number and quit' ]
+  [ "${lines[5]}" = '        -v, --version                Show version number and quit' ]
   [ "${lines[6]}" = '        --color [auto|never|always]  Use colors (default: auto)' ]
   [ "${lines[7]}" = 'Examples: has git curl node' ]
 }
