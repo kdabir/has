@@ -53,7 +53,7 @@ docker-test:
 
 .PHONY: docker-test-%
 docker-test-%:
-	docker build -t test-image:$* -f docker/$*/Dockerfile .
+	docker build -t test-image:$* -f tests/containers/$*.Dockerfile .
 	docker run --rm \
 		-v $(PWD):/workspace \
 		-w /workspace \
