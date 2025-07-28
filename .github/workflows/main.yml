@@ -13,8 +13,20 @@ jobs:
       - name: Run Shellcheck
         uses: ludeeus/action-shellcheck@2.0.0
 
-  test:
-    name: test
+  unit-test:
+    name: unit-test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v4
+
+      - name: Run Unit Tests
+        run: make test
+        shell: bash    
+
+  intg-test:
+    name: intg-test
     runs-on: ubuntu-latest
     strategy:
       matrix:
