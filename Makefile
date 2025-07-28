@@ -42,3 +42,20 @@ uninstall :
 
 .PHONY: test install uninstall update
 
+CONTAINERS = ubuntu alpine
+
+.PHONY: docker-test
+
+docker-test:
+	@for c in $(CONTAINERS); do \
+		$(MAKE) docker-test-$$c; \
+	done
+
+.PHONY: docker-test-%
+docker-test-%:
+	docker build -t test-image:$* -f docker/$*/Dockerfile .
+	docker run --rm \
+		-v $(PWD):/workspace \
+		-w /workspace \
+		test-image:$* \
+		bash -c "make test || bats -t ./tests/test_all_packages.bats || true"
