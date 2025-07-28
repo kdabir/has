@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# Simulate only the `version`
+if [ "$1" == "version" ]; then
+    echo "go version go${GO_VERSION:-1.23.6}"  # Default mock version
+else
+  echo "$* is not implemented in mocks/go"  # fallback for other commands
+fi
