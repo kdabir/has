@@ -11,6 +11,7 @@ endif
 
 test : has
 	bats tests/unit/unit-tests.bats
+	bats tests/unit/with-mocks.bats
 
 test-intg : has
 	bats -t tests/intg/test_all_packages.bats
