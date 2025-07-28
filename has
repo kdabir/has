@@ -44,9 +44,8 @@ readonly FAIL="${txtbold}${txtred}${fancyx}${txtreset}"
 COLOR_AUTO="auto"
 COLOR_NEVER="never"
 COLOR_ALWAYS="always"
-COLOR_OPTS=("${COLOR_AUTO} ${COLOR_NEVER} ${COLOR_ALWAYS}")
+COLOR_OPTS=("${COLOR_AUTO}" "${COLOR_NEVER}" "${COLOR_ALWAYS}")
 COLOR="${COLOR_AUTO}"
-COLOR_PREFIX="--color"
 
 ## These variables are used to keep track of passed and failed commands
 OK=0
@@ -64,9 +63,10 @@ Usage: ${BINARY_NAME} [OPTION] <command-names>...
 Has checks the presence of various command line tools on the PATH and reports their installed version.
 
 Options:
-        -q              Silent mode
-        -h, --help      Display this help text and quit
-        -V, --version   Show version number and quit
+        -q                           Silent mode
+        -h, --help                   Display this help text and quit
+        -v, --version                Show version number and quit
+        --color [auto|never|always]  Use colors (default: auto)
 
 Examples: ${BINARY_NAME} git curl node
 EOF
@@ -80,7 +80,7 @@ _version() {
 _set_color() {
   local found=0;
   for opt in "${COLOR_OPTS[@]}"; do
-    [ "${1}" == "${COLOR_PREFIX}-${opt}" ] && COLOR="${opt}" && found=1 && break
+    [ "${1}" == "${opt}" ] && COLOR="${opt}" && found=1 && break
   done
   [ ${found} -eq 1 ] || >&2 echo "Error: wrong flag ${1}"
 }
@@ -348,57 +348,39 @@ __detect(){
   fi
 } #end __detect
 
-OPTIND=1
 OUTPUT=/dev/stdout
 
-while getopts ":qhv-" OPTION; do
-  case "$OPTION" in
-  q)
-    OUTPUT=/dev/null
-    ;;
-  h)
+OPTS=$(getopt -o qvh --long quiet,version,help,color: -- "$@")
+# shellcheck disable=SC2181
+if [[ $? -ne 0 ]]; then
     _usage
-    exit 0
-    ;;
-  v)
-    _version
-    exit 0
-    ;;
-  -)
-    [ $OPTIND -ge 1 ] && optind=$((OPTIND - 1)) || optind=$OPTIND
-    eval OPTION="\$$optind"
-    OPTARG=$(echo "$OPTION" | cut -d'=' -f2)
-    OPTION=$(echo "$OPTION" | cut -d'=' -f1)
-    case $OPTION in
-    --version)
-      _version
-      exit 0
-      ;;
-    --help)
-      _usage
-      exit 0
-      ;;
-    ${COLOR_PREFIX}*)
-      _set_color "${OPTION}"
-      ;;
-    *)
-      printf '%s: unrecognized option '%s'\n' "${BINARY_NAME}" "${OPTARG}"
-      _usage
-      exit 2
-      ;;
-    esac
-    OPTIND=1
-    shift
-    ;;
-  ?)
-    printf '%s: unrecognized option '%s'\n' "${BINARY_NAME}" "${OPTARG}"
-    _usage
-    exit 2
-    ;;
-  esac
-done
+    exit 1;
+fi
 
-shift $((OPTIND - 1))
+eval set -- "$OPTS"
+while true; do
+  case "$1" in
+    -q | --quiet)
+        OUTPUT=/dev/null
+        ;;
+    -v | --version)
+        _version
+        exit 0
+        ;;
+    -h | --help)
+        _usage
+        exit 0
+        ;;
+    --color)
+        shift
+        _set_color "$1"
+        ;;
+    --) shift
+        break
+        ;;
+  esac
+  shift
+done
 
 if [ -s "${RC_FILE}" ];  then
   HASRC="true"
