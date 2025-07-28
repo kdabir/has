@@ -9,7 +9,6 @@ fancyx='✗'
 checkmark='✓'
 ## We need to create a new directory so that .hasrc file in the root does not get read by the `has` instance under test
 setup() {
-
   export PATH="$BATS_TEST_DIRNAME/mocks:$PATH"
   export HAS_TMPDIR="${BATS_TMPDIR}/tmp-for-test"
   mkdir -p "${HAS_TMPDIR}"
@@ -29,7 +28,7 @@ teardown() {
   local GIT_VERSION="2.39.5"
   export GIT_VERSION
 
-  run has git
+  run $has git
 
   echo "OUTPUT: ${lines[0]}" >&3
 
@@ -43,7 +42,7 @@ teardown() {
   local UNZIP_VERSION="6.00"
   export UNZIP_VERSION
 
-  run has unzip
+  run $has unzip
 
   echo "OUTPUT: ${lines[0]}" >&3
 
@@ -58,7 +57,7 @@ teardown() {
   local JAVA_VERSION="24.0.2"
   export JAVA_VERSION
 
-  run has java
+  run $has java
 
   echo "OUTPUT: ${lines[0]}" >&3
 
@@ -72,7 +71,7 @@ teardown() {
   local COMPOSER_VERSION="2.7.2"
   export COMPOSER_VERSION
 
-  run has composer
+  run $has composer
 
   echo "OUTPUT: ${lines[0]}" >&3
 
@@ -86,7 +85,7 @@ teardown() {
   local GO_VERSION="1.23.6"
   export GO_VERSION
 
-  run has go
+  run $has go
 
   echo "OUTPUT: ${lines[0]}" >&3
 
@@ -97,7 +96,7 @@ teardown() {
 }
 
 @test "fails gracefully for unknown command" {
-  run has notarealcmd
+  run $has notarealcmd
 
   echo "OUTPUT: ${lines[0]}" >&3
 
