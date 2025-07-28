@@ -10,7 +10,10 @@ ifeq ($(PREFIX),)
 endif
 
 test : has
-	bats .hastest.bats
+	bats tests/unit/unit-tests.bats
+
+test-intg : has
+	bats -t tests/intg/test_all_packages.bats
 
 has :
 	# ensure 'has' in repo

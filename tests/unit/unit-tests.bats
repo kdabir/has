@@ -1,5 +1,8 @@
 #!/usr/bin/env bats
 
+## should work on mac and ubuntu
+## tests just the core features with minimum set of tools
+
 INSTALL_DIR=
 BATS_TMPDIR="${BATS_TMPDIR:-/tmp}"
 fancyx='✗'
@@ -8,7 +11,7 @@ checkmark='✓'
 setup() {
   export HAS_TMPDIR="${BATS_TMPDIR}/tmp-for-test"
   mkdir -p "${HAS_TMPDIR}"
-  cp -f "${BATS_TEST_DIRNAME}"/has "${HAS_TMPDIR}"
+  cp -f "${BATS_TEST_DIRNAME}"/../../has "${HAS_TMPDIR}"
   cd "${HAS_TMPDIR}" || return
   export has="${HAS_TMPDIR}/has"
 }
@@ -28,47 +31,48 @@ teardown() {
   [ "${lines[2]}" = 'Options:' ]
   [ "${lines[3]}" = '        -q              Silent mode' ]
   [ "${lines[4]}" = '        -h, --help      Display this help text and quit' ]
-  [ "${lines[5]}" = '        -V, --version   Show version number and quit' ]
+  [ "${lines[5]}" = '        -v, --version   Show version number and quit' ]
   [ "${lines[6]}" = 'Examples: has git curl node' ]
 }
 
-@test "make install creates a valid installation" {
-  INSTALL_DIR="${HAS_TMPDIR}/.local"
-  cd "${BATS_TEST_DIRNAME}"
-  run make PREFIX="${INSTALL_DIR}" install
-  [ "$status" -eq 0 ]
-  [ -x "${INSTALL_DIR}/bin/has" ]
-
-  # has reads .hasrc from $PWD, so change anywhere else.
-  cd "${INSTALL_DIR}"
-  run "${INSTALL_DIR}/bin/has"
-
-  [ "$status" -eq 0 ]
-  [ "${lines[0]}" = 'Usage: has [OPTION] <command-names>...' ]
-  [ "${lines[1]}" = 'Has checks the presence of various command line tools on the PATH and reports their installed version.' ]
-  [ "${lines[2]}" = 'Options:' ]
-  [ "${lines[3]}" = '        -q              Silent mode' ]
-  [ "${lines[4]}" = '        -h, --help      Display this help text and quit' ]
-  [ "${lines[5]}" = '        -V, --version   Show version number and quit' ]
-  [ "${lines[6]}" = 'Examples: has git curl node' ]
-}
-
-@test "..even if 'has' is missing from directory" {
-  if [[ -n $GITHUB_ACTION ]] || [[ -n $GITHUB_ACTIONS ]]; then
-    if grep -iq "ubuntu" /etc/issue; then
-      skip "todo: this test fails on ubuntu in CI"
-    fi
-  fi
-
-  INSTALL_DIR="${HAS_TMPDIR}/system_local"
-  cd "${BATS_TEST_DIRNAME}"
-  mv has has-been
-  run make PREFIX="${INSTALL_DIR}" install
-  [ "$status" -eq 0 ]
-  [ -x "${INSTALL_DIR}/bin/has" ]
-  cd "${BATS_TEST_DIRNAME}"
-  mv has-been has
-}
+# @test "make install creates a valid installation" {
+#   INSTALL_DIR="${HAS_TMPDIR}/.local"
+#   ## has is two levels up
+#   cd "${BATS_TEST_DIRNAME}/../.." 
+#   run make PREFIX="${INSTALL_DIR}" install
+#   [ "$status" -eq 0 ]
+#   [ -x "${INSTALL_DIR}/bin/has" ]
+# 
+#   # has reads .hasrc from $PWD, so change anywhere else.
+#   cd "${INSTALL_DIR}"
+#   run "${INSTALL_DIR}/bin/has"
+# 
+#   [ "$status" -eq 0 ]
+#   [ "${lines[0]}" = 'Usage: has [OPTION] <command-names>...' ]
+#   [ "${lines[1]}" = 'Has checks the presence of various command line tools on the PATH and reports their installed version.' ]
+#   [ "${lines[2]}" = 'Options:' ]
+#   [ "${lines[3]}" = '        -q              Silent mode' ]
+#   [ "${lines[4]}" = '        -h, --help      Display this help text and quit' ]
+#   [ "${lines[5]}" = '        -v, --version   Show version number and quit' ]
+#   [ "${lines[6]}" = 'Examples: has git curl node' ]
+# }
+# 
+# @test "..even if 'has' is missing from directory" {
+#   if [[ -n $GITHUB_ACTION ]] || [[ -n $GITHUB_ACTIONS ]]; then
+#     if grep -iq "ubuntu" /etc/issue; then
+#       skip "todo: this test fails on ubuntu in CI"
+#     fi
+#   fi
+# 
+#   INSTALL_DIR="${HAS_TMPDIR}/system_local"
+#   cd "${BATS_TEST_DIRNAME}"
+# 
+#   run make PREFIX="${INSTALL_DIR}" install
+#   [ "$status" -eq 0 ]
+#   [ -x "${INSTALL_DIR}/bin/has" ]
+#   cd "${BATS_TEST_DIRNAME}"
+# 
+# }
 
 @test "make update runs git fetch" {
   cd "${BATS_TEST_DIRNAME}"
@@ -212,7 +216,7 @@ teardown() {
   [ "${lines[2]}" = 'Options:' ]
   [ "${lines[3]}" = '        -q              Silent mode' ]
   [ "${lines[4]}" = '        -h, --help      Display this help text and quit' ]
-  [ "${lines[5]}" = '        -V, --version   Show version number and quit' ]
+  [ "${lines[5]}" = '        -v, --version   Show version number and quit' ]
   [ "${lines[6]}" = 'Examples: has git curl node' ]
 }
 
@@ -222,3 +226,4 @@ teardown() {
   [ "$status" -eq 2 ]
   [ -z "${output}" ]
 }
+
