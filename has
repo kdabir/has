@@ -7,7 +7,7 @@
 set -o pipefail
 
 readonly BINARY_NAME="has"
-readonly VERSION="v1.5.0"
+readonly VERSION="v1.5.1"
 
 ## constants - symbols for success failure
 if [[ ! -t 1 ]]; then
@@ -200,22 +200,32 @@ __detect(){
     gcc|make|cmake|bats)    __dynamic_detect--version "${command}" ;;
     g++|clang|ccache)       __dynamic_detect--version "${command}" ;;
     ninja)                  __dynamic_detect--version "${command}" ;;
-    composer)               __dynamic_detect-V "${command}" ;;
-    pip|pip3|conda)         __dynamic_detect-V "${command}" ;;
-    lein|gradle|mvn)        __dynamic_detect--version "${command}" ;;
-    grunt|brunch)           __dynamic_detect--version "${command}" ;;
-    gem|rake|bundle)        __dynamic_detect--version "${command}" ;;
-    npm|yarn|pnpm)          __dynamic_detect--version "${command}" ;;
     act)                    __dynamic_detect--version "${command}" ;;
 
-    ## Scripting Language / runtime
-    ruby|R|python|python3)  __dynamic_detect--version "${command}" ;;
-    perl|perl6|php|php5)    __dynamic_detect--version "${command}" ;;
-    groovy|node)            __dynamic_detect--version "${command}" ;;
+    ## Ruby
+    ruby|gem|rake|bundle)        __dynamic_detect--version "${command}" ;;
 
-    # JVM tools that need -version flag
-    ant)                               __dynamic_detect-version "${command}" ;;
-    java|javac|scala|kotlin)           __dynamic_detect-version "${command}" ;;
+    ## Perl and PHP
+    perl|perl6|php|php5)    __dynamic_detect--version "${command}" ;;
+    composer)               __dynamic_detect-V "${command}" ;;
+
+    ## JavaScript Ecosystem
+    node|npm|npx)          __dynamic_detect--version "${command}" ;;
+    yarn|pnpm)             __dynamic_detect--version "${command}" ;;
+    bun|deno)              __dynamic_detect--version "${command}" ;;
+    grunt|brunch|vite)     __dynamic_detect--version "${command}" ;;
+
+    ## Python Ecosystem
+    python|python3)        __dynamic_detect--version "${command}" ;;
+    pipenv|poetry|uv)      __dynamic_detect--version "${command}" ;;
+    pip|pip3|conda)        __dynamic_detect-V "${command}" ;;
+
+    # JVM Ecosystem
+    # some tools that need -version flag
+    java|javac|scala|kotlin)   __dynamic_detect-version "${command}" ;;
+    ant)                       __dynamic_detect-version "${command}" ;;
+    lein|gradle|mvn)           __dynamic_detect--version "${command}" ;;
+    groovy|groovyConsole)      __dynamic_detect--version "${command}" ;;
 
     ## Rust
     rustc|cargo)            __dynamic_detect--version "${command}" ;;
