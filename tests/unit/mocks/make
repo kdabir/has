@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# Simulate only the `--version` flag, as has relies on it for make
+if [[ "$1" == "--version" ]]; then
+    echo "GNU Make ${MAKE_VERSION:-4.4.1}"  # Default mock version
+else
+  echo "$* is not implemented in mocks/make"  # fallback for other commands
+fi
+

@@ -9,6 +9,7 @@ fancyx='✗'
 checkmark='✓'
 ## We need to create a new directory so that .hasrc file in the root does not get read by the `has` instance under test
 setup() {
+  export PATH="$BATS_TEST_DIRNAME/mocks:$PATH"
   export HAS_TMPDIR="${BATS_TMPDIR}/tmp-for-test"
   mkdir -p "${HAS_TMPDIR}"
   cp -f "${BATS_TEST_DIRNAME}"/../../has "${HAS_TMPDIR}"
@@ -38,15 +39,15 @@ teardown() {
 # @test "make install creates a valid installation" {
 #   INSTALL_DIR="${HAS_TMPDIR}/.local"
 #   ## has is two levels up
-#   cd "${BATS_TEST_DIRNAME}/../.." 
+#   cd "${BATS_TEST_DIRNAME}/../.."
 #   run make PREFIX="${INSTALL_DIR}" install
 #   [ "$status" -eq 0 ]
 #   [ -x "${INSTALL_DIR}/bin/has" ]
-# 
+#
 #   # has reads .hasrc from $PWD, so change anywhere else.
 #   cd "${INSTALL_DIR}"
 #   run "${INSTALL_DIR}/bin/has"
-# 
+#
 #   [ "$status" -eq 0 ]
 #   [ "${lines[0]}" = 'Usage: has [OPTION] <command-names>...' ]
 #   [ "${lines[1]}" = 'Has checks the presence of various command line tools on the PATH and reports their installed version.' ]
@@ -56,22 +57,22 @@ teardown() {
 #   [ "${lines[5]}" = '        -v, --version   Show version number and quit' ]
 #   [ "${lines[6]}" = 'Examples: has git curl node' ]
 # }
-# 
+#
 # @test "..even if 'has' is missing from directory" {
 #   if [[ -n $GITHUB_ACTION ]] || [[ -n $GITHUB_ACTIONS ]]; then
 #     if grep -iq "ubuntu" /etc/issue; then
 #       skip "todo: this test fails on ubuntu in CI"
 #     fi
 #   fi
-# 
+#
 #   INSTALL_DIR="${HAS_TMPDIR}/system_local"
 #   cd "${BATS_TEST_DIRNAME}"
-# 
+#
 #   run make PREFIX="${INSTALL_DIR}" install
 #   [ "$status" -eq 0 ]
 #   [ -x "${INSTALL_DIR}/bin/has" ]
 #   cd "${BATS_TEST_DIRNAME}"
-# 
+#
 # }
 
 #@test "make update runs git fetch" {
@@ -89,10 +90,13 @@ teardown() {
 #}
 
 @test "works with single command check" {
+  local GIT_VERSION="2.39.5"
+  export GIT_VERSION
   run $has git
 
   [ "$status" -eq 0 ]
   [ "$(echo "${lines[0]}" | grep "git")" ]
+  [ "$(echo "${lines[0]}" | grep "${GIT_VERSION}")" ]
 }
 
 @test "'has' warns about tools not configured" {
@@ -110,7 +114,7 @@ teardown() {
 }
 
 @test "status code reflects number of failed commands" {
-  HAS_ALLOW_UNSAFE=y run $has foobar bc git barbaz
+  HAS_ALLOW_UNSAFE=y run $has foobar git barbaz
 
   [ "$status" -eq 2 ]
   [ "$(echo "${output}" | grep ${fancyx} | grep "foobar")" ]
@@ -135,7 +139,7 @@ teardown() {
 
 @test "loads commands from .hasrc file and honors CLI args as well" {
   printf "bash\nmake\ngit" >> .hasrc
-  HAS_ALLOW_UNSAFE=y run $has git jq
+  run $has git jq
 
   [ "$status" -eq 0 ]
   [ "$(echo "${output}" | grep ${checkmark} | grep "bash")" ]
@@ -223,4 +227,3 @@ teardown() {
   [ "$status" -eq 2 ]
   [ -z "${output}" ]
 }
-
