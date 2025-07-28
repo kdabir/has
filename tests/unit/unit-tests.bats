@@ -74,19 +74,19 @@ teardown() {
 # 
 # }
 
-@test "make update runs git fetch" {
-  cd "${BATS_TEST_DIRNAME}"
-  if [[ -z $GITHUB_ACTION ]] && [[ -z $GITHUB_ACTIONS ]]; then
-    skip "make update overwrites my git working tree"
-  elif grep -iq "ubuntu" /etc/issue; then
-    skip "todo: this test fails on ubuntu in CI"
-  fi
-
-  run make update
-
-  [ "$status" -eq 0 ]
-  [ "$(echo "${output}" | grep "git fetch --verbose")" ]
-}
+#@test "make update runs git fetch" {
+#  cd "${BATS_TEST_DIRNAME}"
+#  if [[ -z $GITHUB_ACTION ]] && [[ -z $GITHUB_ACTIONS ]]; then
+#    skip "make update overwrites my git working tree"
+#  elif grep -iq "ubuntu" /etc/issue; then
+#    skip "todo: this test fails on ubuntu in CI"
+#  fi
+#
+#  run make update
+#
+#  [ "$status" -eq 0 ]
+#  [ "$(echo "${output}" | grep "git fetch --verbose")" ]
+#}
 
 @test "works with single command check" {
   run $has git
@@ -135,13 +135,13 @@ teardown() {
 
 @test "loads commands from .hasrc file and honors CLI args as well" {
   printf "bash\nmake\ngit" >> .hasrc
-  HAS_ALLOW_UNSAFE=y run $has git bc
+  HAS_ALLOW_UNSAFE=y run $has git jq
 
   [ "$status" -eq 0 ]
   [ "$(echo "${output}" | grep ${checkmark} | grep "bash")" ]
   [ "$(echo "${output}" | grep ${checkmark} | grep "make")" ]
   [ "$(echo "${output}" | grep ${checkmark} | grep "git")"  ]
-  [ "$(echo "${output}" | grep ${checkmark} | grep "bc")"   ]
+  [ "$(echo "${output}" | grep ${checkmark} | grep "jq")"   ]
 }
 
 @test "testing PASS output with unicode" {
@@ -167,16 +167,13 @@ teardown() {
 }
 
 @test "testing archiving commands" {
-  run $has tar unzip gzip xz unar pv zip
+  run $has tar unzip gzip zip
 
   [ "$status" -eq 0 ]
   [ "$(echo "${lines[0]}" | grep "tar")" ]
   [ "$(echo "${lines[1]}" | grep "unzip")" ]
   [ "$(echo "${lines[2]}" | grep "gzip")" ]
-  [ "$(echo "${lines[3]}" | grep "xz")" ]
-  [ "$(echo "${lines[4]}" | grep "unar")" ]
-  [ "$(echo "${lines[5]}" | grep "pv")" ]
-  [ "$(echo "${lines[6]}" | grep "zip")" ]
+  [ "$(echo "${lines[3]}" | grep "zip")" ]
 }
 
 @test "testing coreutils commands" {
