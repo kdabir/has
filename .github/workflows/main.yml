@@ -21,6 +21,10 @@ jobs:
       - name: Clone Repo
         uses: actions/checkout@v4
 
+      - name: Setup Bats and bats libs
+        id: setup-bats
+        uses: bats-core/bats-action@3.0.0        
+
       - name: Run Unit Tests
         run: make test
         shell: bash    
