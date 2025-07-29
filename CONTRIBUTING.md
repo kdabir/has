@@ -8,7 +8,7 @@ Thank you for your interest in contributing! Please follow these guidelines to g
    ```bash
    git clone https://github.com/kdabir/has.git
    cd has
-   chmod +x ./has
+   chmod +x ./has   
    ```
 2. **Run the main script:**
    ```bash
@@ -18,10 +18,16 @@ Thank you for your interest in contributing! Please follow these guidelines to g
    ```bash
    ./has git curl node
    ```
+3.  Install Prequisites for development
+
+   ```bash
+   ./has
+   ```
+
+   running `has` from root of the project tells you about the pre-requisites required  (because of `.hasrc` file)
 
 ## How to Test Locally
 
-### Unit Tests (run anywhere)
 1. **Install dependencies:**
    - On Ubuntu:
      ```bash
@@ -38,72 +44,16 @@ Thank you for your interest in contributing! Please follow these guidelines to g
    bats tests/unit/unit-tests.bats
    ```
 
-### Integration Tests (run in Docker)
-1. **Build and run the Docker image** (see below for details)
-2. **Run integration tests:**
-   ```bash
-   make test-intg
-   # or
-   bats -t tests/intg/test_all_packages.bats
-   ```
+## Adding support for a tool
 
-You can also run individual test files with `bats tests/unit/unit-tests.bats` or `bats -t tests/intg/test_all_packages.bats` on both platforms.
+Look at existing checks in the `./has` file, basically you need to call one of the following:
 
-## How to Run Tests Using Docker
+- commands that use `--version` flag -> `__dynamic_detect--version()` 
+- commands that use `-version` flag -> `__dynamic_detect-version()`
+- commands that use `-v` flag -> `__dynamic_detect-v()`
+- commands that use `-V` flag -> `__dynamic_detect-V()`
 
-If you don't have all dependencies/tools on your host, you can run tests inside a Docker container:
 
-1. **Build the Docker image** (choose the appropriate Dockerfile, e.g., `ubuntu.Dockerfile`):
-   ```bash
-   docker build -f tests/containers/ubuntu.Dockerfile -t has-test-ubuntu .
-   ```
-2. **Run the tests inside the container:**
-   ```bash
-   docker run --rm -it has-test-ubuntu make test
-   ```
-   Or for all packages:
-   ```bash
-   docker run --rm -it has-test-ubuntu make test-intg
-   ```
-3. **(Optional) Mount your local code for development:**
-   ```bash
-   docker run --rm -it -v "$PWD":/workspace -w /workspace has-test-ubuntu bash
-   # Then run tests interactively inside the container
-   make test
-   ```
-
-This ensures a consistent environment and all required tools are available for testing.
-
-## How to Add a Command and Add It to Docker Image
-
-1. **Add support for a new command:**
-   - Edit the `has` script and add your command to the `__detect` function or the relevant section.
-   - Follow the pattern for similar commands.
-2. **Test your change locally** (see above).
-3. **Add the command to Docker images:**
-   - Edit the relevant Dockerfile in `tests/containers/` (e.g., `ubuntu.Dockerfile`).
-   - Add the package to the `apt-get install` or other relevant install section.
-   - Build the Docker image locally to verify:
-     ```bash
-     docker build -f tests/containers/ubuntu.Dockerfile -t has-test-ubuntu .
-     docker run --rm -it has-test-ubuntu
-     ```
-
-## How to Publish the Updated Docker Images
-
-1. **Build the image:**
-   ```bash
-   docker build -f tests/containers/ubuntu.Dockerfile -t kdabir/has-test-containers:ubuntu .
-   ```
-2. **Login to Docker Hub:**
-   ```bash
-   docker login
-   ```
-3. **Push the image:**
-   ```bash
-   docker push kdabir/has-test-containers:ubuntu
-   ```
-   Replace `ubuntu` with the appropriate tag for other images.
-
----
-For more details, see the main ./has file, test files and Dockerfile comments. If you have questions, open an issue or discussion!
+## Looking for support to maintain docker based tests
+I'm not expert at docker (or shell scripts for that matter). I need someone to look at `tests/to-fix` dir to help me
+with integration tests for all tools installed in docker containers.
