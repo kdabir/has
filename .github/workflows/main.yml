@@ -13,21 +13,31 @@ jobs:
       - name: Run Shellcheck
         uses: ludeeus/action-shellcheck@2.0.0
 
-  unit-test:
-    name: unit-test
+  unit-test-ubuntu:
+    name: unit-test (ubuntu)
     runs-on: ubuntu-latest
-
     steps:
       - name: Clone Repo
         uses: actions/checkout@v4
-
       - name: Setup Bats and bats libs
         id: setup-bats
         uses: bats-core/bats-action@3.0.0
-
       - name: Run Unit Tests
         run: make test
         shell: bash
+
+  unit-test-macos:
+    name: unit-test (macos)
+    runs-on: macos-latest
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v4
+      - name: Install bats-core
+        run: brew install bats-core
+      - name: Run Unit Tests
+        run: make test
+        shell: zsh
+
 
   intg-test:
     name: intg-test
