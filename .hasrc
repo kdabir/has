@@ -1,6 +1,12 @@
-# make to install/test the project
+# required to install/test the project
 make
 curl
 git
-# bats for testing
+# bats for testing shell script
 bats
+# for running integration tests 
+# their outputs will be tested
+sed
+awk
+jq
+node

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# Simulate only the `--version` flag, as has relies on it for git
+if [[ "$1" == "--version" ]]; then
+    echo "git version ${GIT_VERSION:-2.39.5}"  # Default mock version
+else
+  echo "$* is not implemented in mocks/git"  # fallback for other commands
+fi

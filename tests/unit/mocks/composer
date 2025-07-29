@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# Simulate only the `-V` flag, as has relies on it for composer
+if [[ "$1" == "-V" ]]; then
+    # Output only the version number, matching what has expects
+    echo "Composer version ${COMPOSER_VERSION:-2.7.2}"
+else
+  echo "$* is not implemented in mocks/composer"  # fallback for other commands
+fi

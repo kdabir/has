@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# Simulate only the `--version` flag, as has relies on it for jq
+if [[ "$1" == "--version" ]]; then
+    echo "jq-${JQ_VERSION:-1.7.1}"  # Default mock version
+else
+  echo "$* is not implemented in mocks/jq"  # fallback for other commands
+fi
+

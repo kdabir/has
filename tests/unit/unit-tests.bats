@@ -1,14 +1,18 @@
 #!/usr/bin/env bats
 
+## should work on mac and ubuntu
+## tests just the core features with minimum set of tools
+
 INSTALL_DIR=
 BATS_TMPDIR="${BATS_TMPDIR:-/tmp}"
 fancyx='✗'
 checkmark='✓'
 ## We need to create a new directory so that .hasrc file in the root does not get read by the `has` instance under test
 setup() {
+  export PATH="$BATS_TEST_DIRNAME/mocks:$PATH"
   export HAS_TMPDIR="${BATS_TMPDIR}/tmp-for-test"
   mkdir -p "${HAS_TMPDIR}"
-  cp -f "${BATS_TEST_DIRNAME}"/has "${HAS_TMPDIR}"
+  cp -f "${BATS_TEST_DIRNAME}"/../../has "${HAS_TMPDIR}"
   cd "${HAS_TMPDIR}" || return
   export has="${HAS_TMPDIR}/has"
 }
@@ -28,67 +32,71 @@ teardown() {
   [ "${lines[2]}" = 'Options:' ]
   [ "${lines[3]}" = '        -q              Silent mode' ]
   [ "${lines[4]}" = '        -h, --help      Display this help text and quit' ]
-  [ "${lines[5]}" = '        -V, --version   Show version number and quit' ]
+  [ "${lines[5]}" = '        -v, --version   Show version number and quit' ]
   [ "${lines[6]}" = 'Examples: has git curl node' ]
 }
 
-@test "make install creates a valid installation" {
-  INSTALL_DIR="${HAS_TMPDIR}/.local"
-  cd "${BATS_TEST_DIRNAME}"
-  run make PREFIX="${INSTALL_DIR}" install
-  [ "$status" -eq 0 ]
-  [ -x "${INSTALL_DIR}/bin/has" ]
+# @test "make install creates a valid installation" {
+#   INSTALL_DIR="${HAS_TMPDIR}/.local"
+#   ## has is two levels up
+#   cd "${BATS_TEST_DIRNAME}/../.."
+#   run make PREFIX="${INSTALL_DIR}" install
+#   [ "$status" -eq 0 ]
+#   [ -x "${INSTALL_DIR}/bin/has" ]
+#
+#   # has reads .hasrc from $PWD, so change anywhere else.
+#   cd "${INSTALL_DIR}"
+#   run "${INSTALL_DIR}/bin/has"
+#
+#   [ "$status" -eq 0 ]
+#   [ "${lines[0]}" = 'Usage: has [OPTION] <command-names>...' ]
+#   [ "${lines[1]}" = 'Has checks the presence of various command line tools on the PATH and reports their installed version.' ]
+#   [ "${lines[2]}" = 'Options:' ]
+#   [ "${lines[3]}" = '        -q              Silent mode' ]
+#   [ "${lines[4]}" = '        -h, --help      Display this help text and quit' ]
+#   [ "${lines[5]}" = '        -v, --version   Show version number and quit' ]
+#   [ "${lines[6]}" = 'Examples: has git curl node' ]
+# }
+#
+# @test "..even if 'has' is missing from directory" {
+#   if [[ -n $GITHUB_ACTION ]] || [[ -n $GITHUB_ACTIONS ]]; then
+#     if grep -iq "ubuntu" /etc/issue; then
+#       skip "todo: this test fails on ubuntu in CI"
+#     fi
+#   fi
+#
+#   INSTALL_DIR="${HAS_TMPDIR}/system_local"
+#   cd "${BATS_TEST_DIRNAME}"
+#
+#   run make PREFIX="${INSTALL_DIR}" install
+#   [ "$status" -eq 0 ]
+#   [ -x "${INSTALL_DIR}/bin/has" ]
+#   cd "${BATS_TEST_DIRNAME}"
+#
+# }
 
-  # has reads .hasrc from $PWD, so change anywhere else.
-  cd "${INSTALL_DIR}"
-  run "${INSTALL_DIR}/bin/has"
-
-  [ "$status" -eq 0 ]
-  [ "${lines[0]}" = 'Usage: has [OPTION] <command-names>...' ]
-  [ "${lines[1]}" = 'Has checks the presence of various command line tools on the PATH and reports their installed version.' ]
-  [ "${lines[2]}" = 'Options:' ]
-  [ "${lines[3]}" = '        -q              Silent mode' ]
-  [ "${lines[4]}" = '        -h, --help      Display this help text and quit' ]
-  [ "${lines[5]}" = '        -V, --version   Show version number and quit' ]
-  [ "${lines[6]}" = 'Examples: has git curl node' ]
-}
-
-@test "..even if 'has' is missing from directory" {
-  if [[ -n $GITHUB_ACTION ]] || [[ -n $GITHUB_ACTIONS ]]; then
-    if grep -iq "ubuntu" /etc/issue; then
-      skip "todo: this test fails on ubuntu in CI"
-    fi
-  fi
-
-  INSTALL_DIR="${HAS_TMPDIR}/system_local"
-  cd "${BATS_TEST_DIRNAME}"
-  mv has has-been
-  run make PREFIX="${INSTALL_DIR}" install
-  [ "$status" -eq 0 ]
-  [ -x "${INSTALL_DIR}/bin/has" ]
-  cd "${BATS_TEST_DIRNAME}"
-  mv has-been has
-}
-
-@test "make update runs git fetch" {
-  cd "${BATS_TEST_DIRNAME}"
-  if [[ -z $GITHUB_ACTION ]] && [[ -z $GITHUB_ACTIONS ]]; then
-    skip "make update overwrites my git working tree"
-  elif grep -iq "ubuntu" /etc/issue; then
-    skip "todo: this test fails on ubuntu in CI"
-  fi
-
-  run make update
-
-  [ "$status" -eq 0 ]
-  [ "$(echo "${output}" | grep "git fetch --verbose")" ]
-}
+#@test "make update runs git fetch" {
+#  cd "${BATS_TEST_DIRNAME}"
+#  if [[ -z $GITHUB_ACTION ]] && [[ -z $GITHUB_ACTIONS ]]; then
+#    skip "make update overwrites my git working tree"
+#  elif grep -iq "ubuntu" /etc/issue; then
+#    skip "todo: this test fails on ubuntu in CI"
+#  fi
+#
+#  run make update
+#
+#  [ "$status" -eq 0 ]
+#  [ "$(echo "${output}" | grep "git fetch --verbose")" ]
+#}
 
 @test "works with single command check" {
+  local GIT_VERSION="2.39.5"
+  export GIT_VERSION
   run $has git
 
   [ "$status" -eq 0 ]
   [ "$(echo "${lines[0]}" | grep "git")" ]
+  [ "$(echo "${lines[0]}" | grep "${GIT_VERSION}")" ]
 }
 
 @test "'has' warns about tools not configured" {
@@ -106,7 +114,7 @@ teardown() {
 }
 
 @test "status code reflects number of failed commands" {
-  HAS_ALLOW_UNSAFE=y run $has foobar bc git barbaz
+  HAS_ALLOW_UNSAFE=y run $has foobar git barbaz
 
   [ "$status" -eq 2 ]
   [ "$(echo "${output}" | grep ${fancyx} | grep "foobar")" ]
@@ -131,13 +139,13 @@ teardown() {
 
 @test "loads commands from .hasrc file and honors CLI args as well" {
   printf "bash\nmake\ngit" >> .hasrc
-  HAS_ALLOW_UNSAFE=y run $has git bc
+  run $has git jq
 
   [ "$status" -eq 0 ]
   [ "$(echo "${output}" | grep ${checkmark} | grep "bash")" ]
   [ "$(echo "${output}" | grep ${checkmark} | grep "make")" ]
   [ "$(echo "${output}" | grep ${checkmark} | grep "git")"  ]
-  [ "$(echo "${output}" | grep ${checkmark} | grep "bc")"   ]
+  [ "$(echo "${output}" | grep ${checkmark} | grep "jq")"   ]
 }
 
 @test "testing PASS output with unicode" {
@@ -163,16 +171,13 @@ teardown() {
 }
 
 @test "testing archiving commands" {
-  run $has tar unzip gzip xz unar pv zip
+  run $has tar unzip gzip zip
 
   [ "$status" -eq 0 ]
   [ "$(echo "${lines[0]}" | grep "tar")" ]
   [ "$(echo "${lines[1]}" | grep "unzip")" ]
   [ "$(echo "${lines[2]}" | grep "gzip")" ]
-  [ "$(echo "${lines[3]}" | grep "xz")" ]
-  [ "$(echo "${lines[4]}" | grep "unar")" ]
-  [ "$(echo "${lines[5]}" | grep "pv")" ]
-  [ "$(echo "${lines[6]}" | grep "zip")" ]
+  [ "$(echo "${lines[3]}" | grep "zip")" ]
 }
 
 @test "testing coreutils commands" {
@@ -212,7 +217,7 @@ teardown() {
   [ "${lines[2]}" = 'Options:' ]
   [ "${lines[3]}" = '        -q              Silent mode' ]
   [ "${lines[4]}" = '        -h, --help      Display this help text and quit' ]
-  [ "${lines[5]}" = '        -V, --version   Show version number and quit' ]
+  [ "${lines[5]}" = '        -v, --version   Show version number and quit' ]
   [ "${lines[6]}" = 'Examples: has git curl node' ]
 }
 

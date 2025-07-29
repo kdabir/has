@@ -13,40 +13,43 @@ jobs:
       - name: Run Shellcheck
         uses: ludeeus/action-shellcheck@2.0.0
 
-  test:
-    name: test
+  test-ubuntu:
+    name: test (ubuntu)
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        container:
-          - debian # uses debian:buster-20200327-slim which is debian 10.3
-          - ubuntu16 # uses ubuntu:xenial-20200212 which is ubuntu 16.04
-
-    container: kdabir/has-test-containers:${{ matrix.container }}
-
     steps:
       - name: Clone Repo
         uses: actions/checkout@v4
-
-      - name: test
-        run: make test
+      - name: Setup Bats and bats libs
+        id: setup-bats
+        uses: bats-core/bats-action@3.0.0
+      - name: Run Unit Tests
+        run: make unit-test
+        shell: bash
+      - name: Run Integration Tests
+        run: make intg-test
         shell: bash
 
-  test_all:
-    name: test_all
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        container:
-          - ubuntu # uses ubuntu:bionic-20200311 which is ubuntu 18.04
-          - alpine # uses bash:5.0.16 which is alpine 3.11
-
-    container: kdabir/has-test-containers:${{ matrix.container }}
-
+  test-macos:
+    name: test (macos)
+    runs-on: macos-latest
     steps:
       - name: Clone Repo
         uses: actions/checkout@v4
-
-      - name: test_all
-        run: bats -t ./tests/test_all_packages.bats
+      - name: Install bats-core
+        run: brew install bats-core
+      - name: Run Unit Tests
+        run: make unit-test
         shell: bash
+      - name: Run Integration Tests
+        run: make intg-test
+        shell: bash
+
+  # intg-test:
+  #   name: intg-test
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Clone Repo
+  #       uses: actions/checkout@v4
+  #     - name: Run Integration Tests in Docker
+  #       run: make docker-test
+  #       shell: bash

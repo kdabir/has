@@ -28,3 +28,4 @@ get_version_from_has() {
   # We grep instead of direct compare because has adds ansi colors with tput
   [ "$(echo "${actual_ver}" | grep "$expected_ver")" ]
 }
+

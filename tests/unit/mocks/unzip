@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# Simulate only the `-v` flag, as has relies on it for unzip
+if [[ "$1" == "-v" ]]; then
+    echo "UnZip ${UNZIP_VERSION:-6.00} of 20 April 2009, by Info-ZIP. Maintainer: Info-ZIP."
+else
+  echo "$* is not implemented in mocks/unzip"  # fallback for other commands
+fi

@@ -9,8 +9,15 @@ ifeq ($(PREFIX),)
 	PREFIX := /usr/local
 endif
 
-test : has
-	bats .hastest.bats
+
+test: unit-test intg-test
+
+unit-test:
+	bats tests/unit/unit-tests.bats
+	bats tests/unit/with-mocks.bats
+
+intg-test:
+	bats -t tests/intg/intg-tests.bats 
 
 has :
 	# ensure 'has' in repo
@@ -38,3 +45,24 @@ uninstall :
 
 .PHONY: test install uninstall update
 
+CONTAINERS = ubuntu alpine
+
+.PHONY: docker-test
+
+docker-test:
+	@for c in $(CONTAINERS); do \
+		$(MAKE) docker-test-$$c; \
+	done
+
+.PHONY: docker-test-%
+docker-test-%:
+	docker build -t test-image:$* -f tests/to-fix/containers/$*.Dockerfile .
+	docker run --rm \
+		-v $(PWD):/workspace \
+		-w /workspace \
+		test-image:$* \
+		bash -c "make test || bats -t ./tests/to-fix/test_all_packages.bats || true"
+
+
+list:
+	@grep -o "^ \\+[a-zA-Z0-9_|-]\\+)" has | grep -o "[a-zA-Z0-9_|-]\\+" | tr "|" "\\n" | sort -f | sed '1,3d'

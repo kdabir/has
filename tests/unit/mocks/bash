@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# Simulate only the `--version` flag, as has relies on it for bash
+if [[ "$1" == "--version" ]]; then
+    echo "bash, version ${BASH_VERSION:-5.2.21}(1)-release (x86_64-apple-darwin)"  # Default mock version
+else
+  echo "$* is not implemented in mocks/bash"  # fallback for other commands
+fi
+

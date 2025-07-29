@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# Simulate only the `-version`
+if [ "$1" == "-version" ]; then
+    echo "java version ${JAVA_VERSION:-24.0.2}"  # Default mock version
+else
+  echo "$* is not implemented in mocks/java"  # fallback for other commands
+fi
