@@ -62,3 +62,7 @@ docker-test-%:
 		-w /workspace \
 		test-image:$* \
 		bash -c "make test || bats -t ./tests/to-fix/test_all_packages.bats || true"
+
+
+list:
+	@grep -o "^ \\+[a-zA-Z0-9_|-]\\+)" has | grep -o "[a-zA-Z0-9_|-]\\+" | tr "|" "\\n" | sort -f | sed '1,3d'
