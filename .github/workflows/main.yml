@@ -36,7 +36,7 @@ jobs:
         run: brew install bats-core
       - name: Run Unit Tests
         run: make test
-        shell: zsh
+        shell: bash
 
 
   intg-test:
