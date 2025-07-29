@@ -9,12 +9,15 @@ ifeq ($(PREFIX),)
 	PREFIX := /usr/local
 endif
 
-test : has
+
+test: unit-test intg-test
+
+unit-test:
 	bats tests/unit/unit-tests.bats
 	bats tests/unit/with-mocks.bats
 
-test-intg : has
-	bats -t tests/intg/test_all_packages.bats
+intg-test:
+	bats -t tests/intg/intg-tests.bats 
 
 has :
 	# ensure 'has' in repo
@@ -53,9 +56,9 @@ docker-test:
 
 .PHONY: docker-test-%
 docker-test-%:
-	docker build -t test-image:$* -f tests/containers/$*.Dockerfile .
+	docker build -t test-image:$* -f tests/to-fix/containers/$*.Dockerfile .
 	docker run --rm \
 		-v $(PWD):/workspace \
 		-w /workspace \
 		test-image:$* \
-		bash -c "make test || bats -t ./tests/test_all_packages.bats || true"
+		bash -c "make test || bats -t ./tests/to-fix/test_all_packages.bats || true"

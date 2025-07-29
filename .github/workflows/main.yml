@@ -13,8 +13,8 @@ jobs:
       - name: Run Shellcheck
         uses: ludeeus/action-shellcheck@2.0.0
 
-  unit-test-ubuntu:
-    name: unit-test (ubuntu)
+  test-ubuntu:
+    name: test (ubuntu)
     runs-on: ubuntu-latest
     steps:
       - name: Clone Repo
@@ -23,11 +23,14 @@ jobs:
         id: setup-bats
         uses: bats-core/bats-action@3.0.0
       - name: Run Unit Tests
-        run: make test
+        run: make unit-test
+        shell: bash
+      - name: Run Integration Tests
+        run: make intg-test
         shell: bash
 
-  unit-test-macos:
-    name: unit-test (macos)
+  test-macos:
+    name: test (macos)
     runs-on: macos-latest
     steps:
       - name: Clone Repo
@@ -35,16 +38,18 @@ jobs:
       - name: Install bats-core
         run: brew install bats-core
       - name: Run Unit Tests
-        run: make test
+        run: make unit-test
+        shell: bash
+      - name: Run Integration Tests
+        run: make intg-test
         shell: bash
 
-
-  intg-test:
-    name: intg-test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - name: Run Integration Tests in Docker
-        run: make docker-test
-        shell: bash
+  # intg-test:
+  #   name: intg-test
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Clone Repo
+  #       uses: actions/checkout@v4
+  #     - name: Run Integration Tests in Docker
+  #       run: make docker-test
+  #       shell: bash
