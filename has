@@ -365,7 +365,11 @@ while getopts ":qhv-" OPTION; do
     exit 0
     ;;
   -)
-    [ $OPTIND -ge 1 ] && optind=$((OPTIND - 1)) || optind=$OPTIND
+    if [ "$OPTIND" -ge 2 ]; then
+      optind=$((OPTIND - 1))
+    else
+      optind=$OPTIND
+    fi
     eval OPTION="\$$optind"
     OPTARG=$(echo "$OPTION" | cut -d'=' -f2)
     OPTION=$(echo "$OPTION" | cut -d'=' -f1)

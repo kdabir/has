@@ -216,21 +216,25 @@ teardown() {
   [ -z "${output}" ]
 }
 
-@test "'has' prints version with --version and -v" {
-#  run $has --version
-#  [ "$status" -eq 0 ]
-#  [[ "${output}" =~ ^has\ version\ [0-9]+\.[0-9]+\.[0-9]+ ]]
+@test "'has' prints version with --version" {
+  run $has --version
+  [ "$status" -eq 0 ]
+  [[ "${output}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+ ]]
+}
 
+@test "'has' prints version with -v" {
   run $has -v
   [ "$status" -eq 0 ]
   [[ "${output}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+ ]]
 }
 
-@test "'has' prints help with --help and -h" {
-#  run $has --help
-#  [ "$status" -eq 0 ]
-#  [ "${lines[0]}" = 'Usage: has [OPTION] <command-names>...' ]
+@test "'has' prints help with --help" {
+  run $has --help
+  [ "$status" -eq 0 ]
+  __assert_usage
+}
 
+@test "'has' prints help with -h" {
   run $has -h
   [ "$status" -eq 0 ]
   __assert_usage
