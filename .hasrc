@@ -4,7 +4,9 @@ curl
 git
 # bats for testing shell script
 bats
-# for running integration tests 
+# linting shell scripts
+shellcheck
+# tools for running integration tests
 # their outputs will be tested
 sed
 awk

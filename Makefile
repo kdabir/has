@@ -17,7 +17,7 @@ unit-test:
 	bats tests/unit/with-mocks.bats
 
 intg-test:
-	bats -t tests/intg/intg-tests.bats 
+	bats -t tests/intg/intg-tests.bats
 
 has :
 	# ensure 'has' in repo
@@ -66,3 +66,9 @@ docker-test-%:
 
 list:
 	@grep -o "^ \\+[a-zA-Z0-9_|-]\\+)" has | grep -o "[a-zA-Z0-9_|-]\\+" | tr "|" "\\n" | sort -f | sed '1,3d'
+
+
+check:
+	@shellcheck has
+
+.PHONY: check
