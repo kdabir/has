@@ -58,7 +58,7 @@ REGEX_SIMPLE_VERSION="([[:digit:]]+\.?){2,3}"
 ## name of RC file that can contain list of tools to be checked
 RC_FILE=".hasrc"
 
-_usage() {
+_print_usage() {
   cat <<EOF
 Usage: ${BINARY_NAME} [OPTION] <command-names>...
 Has checks the presence of various command line tools on the PATH and reports their installed version.
@@ -72,7 +72,7 @@ Examples: ${BINARY_NAME} git curl node
 EOF
 }
 
-_version() {
+_print_version() {
   printf '%s\n' "${VERSION}"
 }
 
@@ -357,11 +357,11 @@ while getopts ":qhv-" OPTION; do
     OUTPUT=/dev/null
     ;;
   h)
-    _usage
+    _print_usage
     exit 0
     ;;
   v)
-    _version
+    _print_version
     exit 0
     ;;
   -)
@@ -371,11 +371,11 @@ while getopts ":qhv-" OPTION; do
     OPTION=$(echo "$OPTION" | cut -d'=' -f1)
     case $OPTION in
     --version)
-      _version
+      _print_version
       exit 0
       ;;
     --help)
-      _usage
+      _print_usage
       exit 0
       ;;
     ${COLOR_PREFIX}*)
@@ -383,7 +383,7 @@ while getopts ":qhv-" OPTION; do
       ;;
     *)
       printf '%s: unrecognized option '%s'\n' "${BINARY_NAME}" "${OPTARG}"
-      _usage
+      _print_usage
       exit 2
       ;;
     esac
@@ -392,7 +392,7 @@ while getopts ":qhv-" OPTION; do
     ;;
   ?)
     printf '%s: unrecognized option '%s'\n' "${BINARY_NAME}" "${OPTARG}"
-    _usage
+    _print_usage
     exit 2
     ;;
   esac
@@ -406,7 +406,7 @@ fi
 
 # if HASRC is not set AND no arguments passed to script
 if [[ -z "${HASRC}" ]] && [ "$#" -eq 0 ]; then
-  _usage
+  _print_usage
 else
   # for each cli-arg
   for cmd in "$@"; do

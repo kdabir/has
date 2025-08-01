@@ -27,13 +27,7 @@ teardown() {
   run $has
 
   [ "$status" -eq 0 ]
-  [ "${lines[0]}" = 'Usage: has [OPTION] <command-names>...' ]
-  [ "${lines[1]}" = 'Has checks the presence of various command line tools on the PATH and reports their installed version.' ]
-  [ "${lines[2]}" = 'Options:' ]
-  [ "${lines[3]}" = '        -q              Silent mode' ]
-  [ "${lines[4]}" = '        -h, --help      Display this help text and quit' ]
-  [ "${lines[5]}" = '        -v, --version   Show version number and quit' ]
-  [ "${lines[6]}" = 'Examples: has git curl node' ]
+  __assert_usage
 }
 
 # @test "make install creates a valid installation" {
@@ -212,13 +206,7 @@ teardown() {
   run $has -q
 
   [ "$status" -eq 0 ]
-  [ "${lines[0]}" = 'Usage: has [OPTION] <command-names>...' ]
-  [ "${lines[1]}" = 'Has checks the presence of various command line tools on the PATH and reports their installed version.' ]
-  [ "${lines[2]}" = 'Options:' ]
-  [ "${lines[3]}" = '        -q              Silent mode' ]
-  [ "${lines[4]}" = '        -h, --help      Display this help text and quit' ]
-  [ "${lines[5]}" = '        -v, --version   Show version number and quit' ]
-  [ "${lines[6]}" = 'Examples: has git curl node' ]
+  __assert_usage
 }
 
 @test "status code in quiet mode still equal to number of failed commands" {
@@ -226,4 +214,35 @@ teardown() {
 
   [ "$status" -eq 2 ]
   [ -z "${output}" ]
+}
+
+@test "'has' prints version with --version and -v" {
+#  run $has --version
+#  [ "$status" -eq 0 ]
+#  [[ "${output}" =~ ^has\ version\ [0-9]+\.[0-9]+\.[0-9]+ ]]
+
+  run $has -v
+  [ "$status" -eq 0 ]
+  [[ "${output}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+ ]]
+}
+
+@test "'has' prints help with --help and -h" {
+#  run $has --help
+#  [ "$status" -eq 0 ]
+#  [ "${lines[0]}" = 'Usage: has [OPTION] <command-names>...' ]
+
+  run $has -h
+  [ "$status" -eq 0 ]
+  __assert_usage
+}
+
+
+__assert_usage() {
+    [ "${lines[0]}" = 'Usage: has [OPTION] <command-names>...' ]
+    [ "${lines[1]}" = 'Has checks the presence of various command line tools on the PATH and reports their installed version.' ]
+    [ "${lines[2]}" = 'Options:' ]
+    [ "${lines[3]}" = '        -q              Silent mode' ]
+    [ "${lines[4]}" = '        -h, --help      Display this help text and quit' ]
+    [ "${lines[5]}" = '        -v, --version   Show version number and quit' ]
+    [ "${lines[6]}" = 'Examples: has git curl node' ]
 }
