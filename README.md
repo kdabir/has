@@ -8,7 +8,7 @@
 
 ## Quick Start 🚴
 
-Just [install](#installing) the `has` script, (there is no dependency apart from `bash` itself). From the command line, pass the list of commands you want to check as arguments to `has`, for example:
+Just [install](#installing-) the `has` script, (there is no dependency apart from `bash` itself). From the command line, pass the list of commands you want to check as arguments to `has`, for example:
 
 ```console
 $ has node npm java git gradle
