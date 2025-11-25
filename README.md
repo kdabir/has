@@ -60,6 +60,12 @@ Just run the following:
 brew install kdabir/tap/has
 ```
 
+### npm
+
+```bash
+npm install -g kdabir/has
+```
+
 ### Cloning the Repo
 
 Just execute the following command in a terminal: it clones `has` repo and installs it into your path.

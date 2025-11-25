@@ -67,6 +67,12 @@ docker-test-%:
 list:
 	@grep -o "^ \\+[a-zA-Z0-9_|-]\\+)" has | grep -o "[a-zA-Z0-9_|-]\\+" | tr "|" "\\n" | sort -f | sed '1,3d'
 
+npm:
+	NEW_VERSION=$$(grep -oE 'VERSION="v[^"]+"' has | cut -d'"' -f2 | cut -c2-); \
+	sed -i -E "s/\"version\": \".+\"/\"version\": \"$${NEW_VERSION}\"/" package.json; \
+	npm publish
+	
+.PHONY: npm
 
 check:
 	@shellcheck has
