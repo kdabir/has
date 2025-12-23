@@ -97,6 +97,12 @@ asdf plugin add has https://github.com/sylvainmetayer/asdf-has
 asdf install has 1.4.0
 ```
 
+### mise-en-place users
+
+```bash
+mise use -g has@latest
+```
+
 ### Running directly off the Internet
 
 If you are lazy, you can run `has` directly off the Internet as well:
