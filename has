@@ -238,6 +238,9 @@ __detect(){
     ## Rust
     rustc|cargo)            __dynamic_detect--version "${command}" ;;
 
+    ## R
+    R)                      __dynamic_detect--version "${command}" ;;
+
     ## Cloud Tools
     aws|eb|sls|gcloud)      __dynamic_detect--version "${command}" ;;
     heroku)                 __dynamic_detect--version "${command}" ;;
