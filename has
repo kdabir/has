@@ -91,7 +91,7 @@ _set_color() {
 __dynamic_detect(){
   cmd="${1}"
   params="${2}"
-  version=$( eval "${cmd}" "${params}" "2>&1" | grep -Eo "${REGEX_SIMPLE_VERSION}" | head -1)
+  version=$( eval "${cmd}" "${params}" "2>&1" </dev/null | grep -a -Eo "${REGEX_SIMPLE_VERSION}" | head -1)
   status=$?
 }
 
