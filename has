@@ -291,7 +291,7 @@ __detect(){
 
     # openssh version output has a lot going on
     ssh)
-      version=$(ssh -V 2>&1 |grep -Eo "OpenSSH_${REGEX_SIMPLE_VERSION}[[:alnum:]]*" |cut -d'_' -f2)
+      version=$( ssh -V 2>&1 | grep -Eo "OpenSSH_${REGEX_SIMPLE_VERSION}[[:alnum:]]*" |cut -d'_' -f2)
       status=$?
       ;;
 
@@ -443,4 +443,5 @@ else
   fi
 
 fi
+
 
