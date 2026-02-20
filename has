@@ -3,11 +3,13 @@
 
 ## To add more tools, search for "__detect" function in this file
 
-## Important so that version is not extracted for failed commands (not found)
-set -o pipefail
-
 readonly BINARY_NAME="has"
 readonly VERSION="v1.5.2"
+
+# Suppress null byte warnings from command substitution
+if [[ "${BASH_VERSINFO[0]}" -ge 4 ]]; then
+    exec 2> >(grep -v "warning: command substitution: ignored null byte" >&2)
+fi
 
 ## constants - symbols for success failure
 if [[ ! -t 1 ]]; then
@@ -91,8 +93,13 @@ _set_color() {
 __dynamic_detect(){
   cmd="${1}"
   params="${2}"
-  version=$( eval "${cmd}" "${params}" "2>&1" | grep -Eo "${REGEX_SIMPLE_VERSION}" | head -1)
+  cmd_output=$(eval "${cmd}" "${params}" "2>&1" </dev/null)
   status=$?
+  if [ ${status} -eq 0 ]; then
+    version=$(echo "$cmd_output" | grep -Eo "${REGEX_SIMPLE_VERSION}" | head -1)
+  else
+    version=""
+  fi
 }
 
 # commands that use `--version` flag
@@ -262,19 +269,17 @@ __detect(){
 
     ## Example of commands that need custom processing
 
-    gulp)
-      version=$( gulp --version 2>&1| grep -Eo "${REGEX_SIMPLE_VERSION}" | head -1)
-      status=$?
-      ;;
+    gulp)                   __dynamic_detect--version "${command}" ;;
 
     ## gor returns version but does not return normal status code, hence needs custom processing
     gor)
-      version=$( gor version 2>&1 | grep -Eo "${REGEX_SIMPLE_VERSION}" | head -1)
+      cmd_output=$(gor version 2>&1)
       if [ $? -eq 1 ]; then status=0; else status=127; fi
+      version=$(echo "$cmd_output"  | grep -Eo "Version:(${REGEX_SIMPLE_VERSION})" | cut -d':' -f2)
       ;;
 
     sbt)
-      version=$( sbt about 2>&1 | grep -Eo "([[:digit:]]{1,4}\.){2}[[:digit:]]{1,4}" | head -1)
+      version=$( sbt --version 2>&1 | grep -Eo "([[:digit:]]{1,4}\.){2}[[:digit:]]{1,4}" | head -1)
       status=$?
       ;;
 
@@ -296,20 +301,19 @@ __detect(){
 
     ## hub uses --version but version string is on second line, or third if HUB_VERBOSE set
     hub)
-      version=$( HUB_VERBOSE='' hub --version 2>&1 | sed -n 2p | grep -Eo "${REGEX_SIMPLE_VERSION}" | head -1)
+      cmd_output=$( HUB_VERBOSE='' hub --version 2>&1)
       status=$?
+      version=$(echo "$cmd_output" | sed -n 2p | grep -Eo "${REGEX_SIMPLE_VERSION}" | head -1)
       ;;
 
     ## zip uses -v but version string is on second line
     zip)
-      version=$( zip -v 2>&1 | sed -n 2p | grep -Eo "${REGEX_SIMPLE_VERSION}" | head -1)
+      cmd_output=$( zip -v 2>&1)
       status=$?
+      version=$(echo "$cmd_output" | sed -n 2p | grep -Eo "${REGEX_SIMPLE_VERSION}" | head -1)
       ;;
 
-    has)
-      version=$( has -v 2>&1 | grep -Eo "${REGEX_SIMPLE_VERSION}" | head -1)
-      status=$?
-      ;;
+    has)    __dynamic_detect--version has ;;
 
     *)
       ## Can allow dynamic checking here, i.e. checking commands that are not listed above
@@ -439,3 +443,4 @@ else
   fi
 
 fi
+
