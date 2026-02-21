@@ -39,6 +39,7 @@ RUN apt-get update && DEBIAN_FRONTEND="noninteractive" apt-get install --no-inst
         httpie=0.9.8* `# http=0.9.8` \
         hugo=0.40.1* \
         jq=1.5* \
+        just=1.5* \
         leiningen=2.8.1* `# lein=2.8.1` \
         locales `# required for brew` \
         make=4.1* \
