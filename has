@@ -202,6 +202,7 @@ __detect(){
     g++|clang|ccache)       __dynamic_detect--version "${command}" ;;
     ninja)                  __dynamic_detect--version "${command}" ;;
     act)                    __dynamic_detect--version "${command}" ;;
+    just)                   __dynamic_detect--version "${command}" ;;
 
     ## Ruby
     ruby|gem|rake|bundle)        __dynamic_detect--version "${command}" ;;
