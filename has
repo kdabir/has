@@ -64,6 +64,9 @@ Usage: ${BINARY_NAME} [OPTION] <command-names>...
 Has checks the presence of various command line tools on the PATH and reports their installed version.
 
 Options:
+        --color-auto    Enable color output automatically (default)
+        --color-always  Always enable color output
+        --color-never   Disable color output
         -q              Silent mode
         -h, --help      Display this help text and quit
         -v, --version   Show version number and quit
@@ -79,7 +82,7 @@ _print_version() {
 # function to parse color option
 _set_color() {
   local found=0;
-  for opt in "${COLOR_OPTS[@]}"; do
+  for opt in ${COLOR_OPTS}; do
     [ "${1}" == "${COLOR_PREFIX}-${opt}" ] && COLOR="${opt}" && found=1 && break
   done
   [ ${found} -eq 1 ] || >&2 echo "Error: wrong flag ${1}"
