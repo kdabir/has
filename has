@@ -197,11 +197,13 @@ __detect(){
 
 
     ## Build and Compile
-    gcc|make|cmake|bats)    __dynamic_detect--version "${command}" ;;
+    gcc|make|cmake)         __dynamic_detect--version "${command}" ;;
     shellcheck)             __dynamic_detect--version "${command}" ;;
     g++|clang|ccache)       __dynamic_detect--version "${command}" ;;
     ninja)                  __dynamic_detect--version "${command}" ;;
     act)                    __dynamic_detect--version "${command}" ;;
+    just)                   __dynamic_detect--version "${command}" ;;
+    bats)                   __dynamic_detect--version "${command}" ;;
 
     ## Ruby
     ruby|gem|rake|bundle)        __dynamic_detect--version "${command}" ;;

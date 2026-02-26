@@ -27,6 +27,7 @@ RUN apk add --no-cache \
         gradle~=5.6.4 \
         hugo~=0.61.0 \
         jq=~1.6 \
+        just=~1.5 \
         make~=4.2.1 \
         maven~=3.6.3 `# mvn=3.6.3` \
         mercurial~=5.3.2 `# hg=5.3.2` \
