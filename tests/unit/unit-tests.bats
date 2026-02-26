@@ -210,7 +210,7 @@ teardown() {
 }
 
 @test "status code in quiet mode still equal to number of failed commands" {
-  HAS_ALLOW_UNSAFE=y run $has -q foobar bc git barbaz
+  HAS_ALLOW_UNSAFE=y run $has -q foobar ls git barbaz
 
   [ "$status" -eq 2 ]
   [ -z "${output}" ]
