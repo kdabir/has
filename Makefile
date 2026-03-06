@@ -23,11 +23,25 @@ has :
 	# ensure 'has' in repo
 	git checkout --force -- has
 
+# Completion directories
+BASH_COMPLETION_DIR := $(DESTDIR)$(PREFIX)/share/bash-completion/completions
+ZSH_COMPLETION_DIR := $(DESTDIR)$(PREFIX)/share/zsh/site-functions
+
 # install 'has' in specified directory
 install : has
 	chmod 755 has && \
 	mkdir -v -p $(DESTDIR)$(PREFIX)/bin && \
 	cp -v has $(DESTDIR)$(PREFIX)/bin/has
+
+# install shell completions
+install-completions:
+	mkdir -v -p $(BASH_COMPLETION_DIR) && \
+	mkdir -v -p $(ZSH_COMPLETION_DIR) && \
+	cp -v completions/has.bash $(BASH_COMPLETION_DIR)/has && \
+	cp -v completions/_has $(ZSH_COMPLETION_DIR)/_has
+
+# install everything
+install-all: install install-completions
 
 # update: has
 update : update-fetch has
@@ -43,7 +57,13 @@ update-force :
 uninstall :
 	rm -f $(DESTDIR)$(PREFIX)/bin/has
 
-.PHONY: test install uninstall update
+uninstall-completions:
+	rm -f $(BASH_COMPLETION_DIR)/has
+	rm -f $(ZSH_COMPLETION_DIR)/_has
+
+uninstall-all: uninstall uninstall-completions
+
+.PHONY: test install install-completions install-all uninstall uninstall-completions uninstall-all update
 
 CONTAINERS = ubuntu alpine
 
