@@ -107,6 +107,15 @@ teardown() {
   [ "$(echo "${output}" | grep ${fancyx} | grep "foobar")" ]
 }
 
+@test "env var 'HAS_ALLOW_UNSAFE' is case insensitive" {
+  for value in Y yes Yes YES; do
+    HAS_ALLOW_UNSAFE=$value run $has foobar
+
+    [ "$status" -eq 1 ]
+    [ -z "$(echo "${output}" | grep "foobar not understood")" ]
+  done
+}
+
 @test "status code reflects number of failed commands" {
   HAS_ALLOW_UNSAFE=y run $has foobar git barbaz
 

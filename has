@@ -318,7 +318,7 @@ __detect(){
 
     *)
       ## Can allow dynamic checking here, i.e. checking commands that are not listed above
-      if [[ "${HAS_ALLOW_UNSAFE}" == "y" ]]; then
+      if [[ "${HAS_ALLOW_UNSAFE}" == [Yy] || "${HAS_ALLOW_UNSAFE}" == [Yy][Ee][Ss] ]]; then
         __dynamic_detect--version "${command}"
         ## fallback checking based on status!=127 (127 means command not found)
         ## TODO can check other type of supported version-checks if status was not 127
