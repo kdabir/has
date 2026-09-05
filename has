@@ -44,7 +44,7 @@ readonly FAIL="${txtbold}${txtred}${fancyx}${txtreset}"
 COLOR_AUTO="auto"
 COLOR_NEVER="never"
 COLOR_ALWAYS="always"
-COLOR_OPTS=("${COLOR_AUTO} ${COLOR_NEVER} ${COLOR_ALWAYS}")
+COLOR_OPTS=("${COLOR_AUTO}" "${COLOR_NEVER}" "${COLOR_ALWAYS}")
 COLOR="${COLOR_AUTO}"
 COLOR_PREFIX="--color"
 
@@ -82,7 +82,7 @@ _print_version() {
 # function to parse color option
 _set_color() {
   local found=0;
-  for opt in ${COLOR_OPTS}; do
+  for opt in "${COLOR_OPTS[@]}"; do
     [ "${1}" == "${COLOR_PREFIX}-${opt}" ] && COLOR="${opt}" && found=1 && break
   done
   [ ${found} -eq 1 ] || >&2 echo "Error: wrong flag ${1}"
