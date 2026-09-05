@@ -78,6 +78,28 @@ make PREFIX=$HOME/.local install
 
 To update just do a `git fetch` or `make update` followed by the appropriate `make install` command.
 
+#### Installing Shell Completions
+
+After cloning the repo, you can install shell completions for bash and zsh:
+
+```bash
+# Install everything (has + completions)
+sudo make install-all
+
+# Or install completions separately
+sudo make install-completions
+```
+
+For non-root installation:
+
+```bash
+make PREFIX=$HOME/.local install-all
+```
+
+The completions will be installed to:
+- Bash: `$PREFIX/share/bash-completion/completions/has`
+- Zsh: `$PREFIX/share/zsh/site-functions/_has`
+
 ### Downloading to a file
 
 ```bash

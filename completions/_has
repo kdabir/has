@@ -1,0 +1,22 @@
+#compdef has
+
+# Zsh completion script for 'has' - https://github.com/kdabir/has
+# A simple utility to check the presence of command line tools
+
+_has() {
+  local -a opts
+  opts=(
+    '-q[Silent mode]'
+    '(-h --help)'{-h,--help}'[Display this help text and quit]'
+    '(-v --version)'{-v,--version}'[Show version number and quit]'
+    '--color-auto[Enable color output automatically (default)]'
+    '--color-never[Disable color output]'
+    '--color-always[Always enable color output]'
+  )
+
+  _arguments -s -S \
+    $opts \
+    '*: :_command_names -e'
+}
+
+_has "$@"
