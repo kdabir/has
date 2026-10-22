@@ -80,7 +80,7 @@ To update just do a `git fetch` or `make update` followed by the appropriate `ma
 
 #### Installing Shell Completions
 
-After cloning the repo, you can install shell completions for bash and zsh:
+After cloning the repo, you can install shell completions for bash, zsh and fish:
 
 ```bash
 # Install everything (has + completions)
@@ -99,6 +99,7 @@ make PREFIX=$HOME/.local install-all
 The completions will be installed to:
 - Bash: `$PREFIX/share/bash-completion/completions/has`
 - Zsh: `$PREFIX/share/zsh/site-functions/_has`
+- fish: `$PREFIX/share/fish/vendor_completions.d/has.fish`
 
 ### Downloading to a file
 

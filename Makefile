@@ -26,6 +26,7 @@ has :
 # Completion directories
 BASH_COMPLETION_DIR := $(DESTDIR)$(PREFIX)/share/bash-completion/completions
 ZSH_COMPLETION_DIR := $(DESTDIR)$(PREFIX)/share/zsh/site-functions
+FISH_COMPLETION_DIR := $(DESTDIR)$(PREFIX)/share/fish/vendor_completions.d
 
 # install 'has' in specified directory
 install : has
@@ -37,8 +38,10 @@ install : has
 install-completions:
 	mkdir -v -p $(BASH_COMPLETION_DIR) && \
 	mkdir -v -p $(ZSH_COMPLETION_DIR) && \
+	mkdir -v -p $(FISH_COMPLETION_DIR) && \
 	cp -v completions/has.bash $(BASH_COMPLETION_DIR)/has && \
-	cp -v completions/_has $(ZSH_COMPLETION_DIR)/_has
+	cp -v completions/_has $(ZSH_COMPLETION_DIR)/_has && \
+	cp -v completions/has.fish $(FISH_COMPLETION_DIR)/has.fish
 
 # install everything
 install-all: install install-completions
@@ -60,6 +63,7 @@ uninstall :
 uninstall-completions:
 	rm -f $(BASH_COMPLETION_DIR)/has
 	rm -f $(ZSH_COMPLETION_DIR)/_has
+	rm -f $(FISH_COMPLETION_DIR)/has.fish
 
 uninstall-all: uninstall uninstall-completions
 
