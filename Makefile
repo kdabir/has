@@ -29,7 +29,6 @@ ZSH_COMPLETION_DIR := $(DESTDIR)$(PREFIX)/share/zsh/site-functions
 
 # install 'has' in specified directory
 install : has
-	chmod 755 has && \
 	mkdir -v -p $(DESTDIR)$(PREFIX)/bin && \
 	cp -v has $(DESTDIR)$(PREFIX)/bin/has
 

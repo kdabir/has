@@ -8,7 +8,6 @@ Thank you for your interest in contributing! Please follow these guidelines to g
    ```bash
    git clone https://github.com/kdabir/has.git
    cd has
-   chmod +x ./has   
    ```
 2. **Run the main script:**
    ```bash
